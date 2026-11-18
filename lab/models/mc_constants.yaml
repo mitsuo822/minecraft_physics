@@ -1,0 +1,17 @@
+# MCのエンティティの落下に関する定数の「予想値」。
+# 出典: knowledge/mechanics/重力と空気抵抗.md。すべて【未確認】（記憶にもとづく）。
+# 実測で確かめたら、knowledge 側を【実測】に更新し、ここも合わせる。
+#
+# order:
+#   move_then_accel : 位置を今の速度で動かしてから、v <- (v - g)(1 - d)      （生物）
+#   accel_then_move : v' = v - g、位置を v' で動かし、v <- v'(1 - d)        （アイテム・落下するブロック）
+mc_version: unknown
+confidence: 未確認
+types:
+  pig:           {g: 0.08, d: 0.02, order: move_then_accel, group: 生物}
+  armor_stand:   {g: 0.08, d: 0.02, order: move_then_accel, group: 生物}
+  item:          {g: 0.04, d: 0.02, order: accel_then_move, group: アイテム}
+  falling_block: {g: 0.04, d: 0.02, order: accel_then_move, group: 落下するブロック}
+  tnt:           {g: 0.04, d: 0.02, order: accel_then_move, group: 着火したTNT}
+  snowball:      {g: 0.03, d: 0.01, order: unknown, group: 投げたもの}
+  arrow:         {g: 0.05, d: 0.01, order: unknown, group: 矢}

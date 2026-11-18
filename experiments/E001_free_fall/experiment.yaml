@@ -27,23 +27,26 @@ world:
   time: noon
 
 setup:
-  structure: mc/structures/drop_tower_256.nbt   # 高さ256ブロックの塔（未作成）
-  origin: [0, -60, 0]
-  drop_height: 256          # 装置の床からの高さ（ブロック）
+  origin: [0, -60, 0]       # スーパーフラットの既定では、草ブロックの上面が y=-60（未確認）
+  forceload: [[-16, -16], [16, 16]]   # プレイヤーがいなくてもエンティティが動くように
+  prepare:                  # 毎回の前後に実行（前回の金床などを消す）
+    - "fill -4 -60 -4 12 -50 4 air"
   entities:
-    - {id: anvil,  summon: "falling_block", nbt: '{BlockState:{Name:"minecraft:anvil"},Time:1}'}
-    - {id: pig,    summon: "pig",           nbt: '{NoAI:1b}'}
-    - {id: item,   summon: "item",          nbt: '{Item:{id:"minecraft:iron_ingot",count:1},PickupDelay:32767}'}
+    - {id: anvil, label: 金床,         summon: "falling_block", nbt: 'BlockState:{Name:"minecraft:anvil"},Time:1'}
+    - {id: pig,   label: 豚,           summon: "pig",           nbt: 'Invulnerable:1b'}
+    - {id: item,  label: 鉄インゴット, summon: "item",          nbt: 'Item:{id:"minecraft:iron_ingot",count:1},PickupDelay:32767'}
+  # 注意【未確認】: アイテムのNBTの書式（count の小文字など）はバージョンで違う。
+  # 豚に NoAI を付けると重力も止まるかもしれないので付けていない。
 
+# tick は「止めた状態で召喚した直後」を 0 とする。runner が tick freeze / step を自分で行うので、
+# ここには tick freeze / unfreeze を書かない。
 procedure:
-  - {tick: -1, cmd: "tick freeze"}
-  - {tick: -1, spawn: [anvil, pig, item], at: [0, "drop_height", 0], spacing: [3, 0, 0]}
-  - {tick: 0,  cmd: "tick unfreeze"}     # 計測では unfreeze せず step で進める
+  - {tick: 0, spawn: [anvil, pig, item], at: [0, 256, 0], spacing: [4, 0, 0]}
 
 measure:
   targets: [anvil, pig, item]
   fields: [Pos, Motion, OnGround]
-  until: {all_on_ground: true, max_ticks: 600}
+  until: {all_on_ground: true, max_ticks: 1200}
   repeats: 3
 
 analysis:

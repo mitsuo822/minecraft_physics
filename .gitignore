@@ -16,3 +16,10 @@ mc/server/versions/
 __pycache__/
 .venv/
 *.pyc
+# サーバの実ファイル（server.properties にはRCONのパスワードが入る）
+mc/server/server.properties
+mc/server/eula.txt
+mc/server/*.json
+mc/server/config/
+mc/server/mods/
+*.egg-info/

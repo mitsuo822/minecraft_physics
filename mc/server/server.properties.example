@@ -1,0 +1,18 @@
+# E001 などの計測用サーバの設定（変更する項目だけ）。初回起動で作られる server.properties の該当行を書き換える。
+# ※ 項目名はバージョンで違うことがある【未確認】。起動ログに警告が出ないか確認する。
+
+# RCON（Pythonから操作する口）。パスワードは自分で決める。ポート25575はルーターで開けないこと
+enable-rcon=true
+rcon.port=25575
+rcon.password=ここに長いパスワード
+broadcast-rcon-to-ops=false
+
+# 実験用の平らなワールド
+level-type=minecraft\:flat
+level-seed=1
+generate-structures=false
+spawn-protection=0
+difficulty=peaceful
+
+# 誰も接続していないとサーバが一時停止し、tick step が進まなくなる（1.21.2以降の項目【未確認】）
+pause-when-empty-seconds=0

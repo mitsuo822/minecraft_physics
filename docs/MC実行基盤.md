@@ -40,6 +40,8 @@
 - 短所: RCONの往復が1tickごとに入るので、実時間よりずっと遅い。長い実験では遅すぎるかもしれない。
 - 遅すぎる場合: サーバ側modで毎tickの値をファイルに書き出す方式に移る（P1で実測して判断する）。
 - 確認すること: `/tick step` 中もエンティティの物理が通常のtickと同じに進むか【未確認】。E001 で、普通に動かしたときの着地tickと一致するかを見る。
+- 実装済み（2026-11-18）: `lab/runner.py`。`tick step 1` は非同期に進むので、`time query gametime` が1増えるまで待ってから読む。
+  プレイヤーがいないとサーバが一時停止する設定（`pause-when-empty-seconds`）は0にする（`mc/server/`）。
 
 CSVの列（案）: `tick, target, x, y, z, vx, vy, vz, on_ground`
 
