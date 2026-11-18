@@ -1,0 +1,9 @@
+# P0 で確定する。各modに name / version / source(URL) / license / 用途 を書く。
+mc_version: TBD
+profiles:
+  base:        # 計測・撮影の基盤
+    loader: fabric
+    mods: []   # 候補: carpet, flashback, iris, distant_horizons, worldedit
+  create:      # Create を使う回だけ
+    loader: TBD
+    mods: []

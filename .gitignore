@@ -1,0 +1,18 @@
+# 大きな素材はgit外（ローカルの素材フォルダ）に置く
+media/
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.flac
+*.mcpr
+# MCの実行時ファイル
+mc/server/world*/
+mc/server/logs/
+mc/server/*.jar
+mc/server/libraries/
+mc/server/versions/
+# Python
+__pycache__/
+.venv/
+*.pyc

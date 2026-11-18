@@ -1,0 +1,62 @@
+# E001: 自由落下 — MCの重力は地球の何倍？ 重いものは先に落ちる？
+# 状態: 雛形（未実行）。コマンドの書式・座標は P1 で実機確認する。
+id: E001
+title: 自由落下と終端速度
+mc_version: "TBD"        # P0 で決定
+profile: base            # mc/mods.yaml の構成名
+
+question: "金床と豚とアイテムを同時に落としたら、どれが先に地面に着く？"
+
+hypotheses:
+  - id: real_physics
+    text: "現実（真空）では質量によらず同時に落ちる。空気中でも、この3つなら差は小さい"
+  - id: naive
+    text: "重い金床が先に落ちる（よくある誤解）"
+  - id: mc_guess
+    text: "MCではエンティティの種類ごとに重力と空気抵抗の値が違うので、質量ではなく種類で差が出る"
+    confidence: 未確認   # knowledge/mechanics/重力と空気抵抗.md を参照
+
+theory:
+  real: lab/models/free_fall_real.py   # g=9.8 m/s^2、空気抵抗あり/なし
+  mc: lab/models/free_fall_mc.py       # v <- (v - g_tick) * (1 - drag) の漸化式（順序は要確認）
+
+world:
+  type: flat
+  seed: 1
+  gamerules: {doDaylightCycle: false, doWeatherCycle: false, randomTickSpeed: 0, doMobSpawning: false}
+  time: noon
+
+setup:
+  structure: mc/structures/drop_tower_256.nbt   # 高さ256ブロックの塔（未作成）
+  origin: [0, -60, 0]
+  drop_height: 256          # 装置の床からの高さ（ブロック）
+  entities:
+    - {id: anvil,  summon: "falling_block", nbt: '{BlockState:{Name:"minecraft:anvil"},Time:1}'}
+    - {id: pig,    summon: "pig",           nbt: '{NoAI:1b}'}
+    - {id: item,   summon: "item",          nbt: '{Item:{id:"minecraft:iron_ingot",count:1},PickupDelay:32767}'}
+
+procedure:
+  - {tick: -1, cmd: "tick freeze"}
+  - {tick: -1, spawn: [anvil, pig, item], at: [0, "drop_height", 0], spacing: [3, 0, 0]}
+  - {tick: 0,  cmd: "tick unfreeze"}     # 計測では unfreeze せず step で進める
+
+measure:
+  targets: [anvil, pig, item]
+  fields: [Pos, Motion, OnGround]
+  until: {all_on_ground: true, max_ticks: 600}
+  repeats: 3
+
+analysis:
+  compare:
+    - "各対象の y(t) と vy(t) を、MCモデル・現実モデルと重ねる"
+    - "終端速度（vy の収束値）を m/s に換算して、現実の人のスカイダイビング（約55 m/s【未確認】）と比べる"
+    - "初速0からの最初の数tickの加速度を m/s^2 に換算し、地球の g の何倍かを出す"
+  conclusion_template: "MCでは{要因}によって{結果}。現実との違いは{理由}"
+
+shots:
+  - {name: wide_side, aspect: "16:9", camera: {pos: [30, 128, 0], look_at: [0, 128, 0]}, speed: 1.0}
+  - {name: follow_down, aspect: "16:9", camera: {follow: pig, offset: [6, 2, 6]}, speed: 0.25}
+  - {name: landing_close, aspect: "16:9", camera: {pos: [6, 2, 6], look_at: [0, 0, 0]}, speed: 0.1}
+  - {name: short_vertical, aspect: "9:16", camera: {pos: [12, 40, 0], look_at: [0, 20, 0]}, speed: 0.25}
+
+approval: null   # 関門2: {by: ..., at: ...}

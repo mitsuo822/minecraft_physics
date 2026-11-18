@@ -1,0 +1,23 @@
+# テーマ候補。採点は 1〜5 の仮の値（主観）。P5 で採点を自動化する。
+# 系統: A=MCは現実と同じ？ / B=名実験をMCで再現 / C=MCでしかできない極端実験
+# 採点の軸: surprise=意外性, visual=映え, edu=教養度, feasible=実現しやすさ
+# status: idea → selected(関門1) → designed(関門2) → measured → published
+
+- {id: T01, type: A, title: "MCの重力は地球の何倍？",                 surprise: 4, visual: 3, edu: 5, feasible: 5, status: selected, experiment: E001}
+- {id: T02, type: B, title: "ガリレオの落下実験をMCでやると“間違った”結果になる", surprise: 5, visual: 4, edu: 5, feasible: 5, status: idea, note: "E001 の結果で作れる。T01 と1本にまとめる案も"}
+- {id: T03, type: A, title: "終端速度: MCで一番速く落ちるのは何？",     surprise: 3, visual: 3, edu: 4, feasible: 5, status: idea}
+- {id: T04, type: A, title: "氷・青氷・ソウルサンドの摩擦係数を測る",   surprise: 3, visual: 3, edu: 4, feasible: 4, status: idea}
+- {id: T05, type: A, title: "矢を一番遠くに飛ばす角度は45°？",          surprise: 4, visual: 4, edu: 5, feasible: 4, status: idea, note: "空気抵抗があると最適角は45°より小さくなる"}
+- {id: T06, type: A, title: "MCの水にアルキメデスの原理は成り立つ？",    surprise: 4, visual: 3, edu: 4, feasible: 3, status: idea}
+- {id: T07, type: A, title: "TNTの爆風は距離の2乗で弱まる？",            surprise: 3, visual: 5, edu: 4, feasible: 4, status: idea}
+- {id: T08, type: A, title: "MCの明るさは逆2乗の法則に従わない",          surprise: 4, visual: 4, edu: 4, feasible: 5, status: idea}
+- {id: T09, type: A, title: "音はMCでも遅れて届く？ 音速を測る",           surprise: 3, visual: 2, edu: 4, feasible: 4, status: idea}
+- {id: T10, type: A, title: "レッドストーンの信号は光の何分の1の速さ？",   surprise: 4, visual: 3, edu: 4, feasible: 5, status: idea}
+- {id: T11, type: B, title: "ニュートンのゆりかごをmodで作る",            surprise: 3, visual: 5, edu: 4, feasible: 2, status: idea, note: "物理系modの選定次第"}
+- {id: T12, type: B, title: "フーコーの振り子: MCの世界は回っているか",    surprise: 4, visual: 4, edu: 5, feasible: 2, status: idea}
+- {id: T13, type: B, title: "エラトステネスの方法でMCの世界の大きさを測る", surprise: 5, visual: 3, edu: 5, feasible: 3, status: idea, note: "平らな世界では影の角度が変わらない→「MCの地球は無限に大きい」"}
+- {id: T14, type: B, title: "Createで永久機関は作れるか（エネルギー保存則）", surprise: 5, visual: 5, edu: 5, feasible: 3, status: idea}
+- {id: T15, type: C, title: "TNTキャノンで第一宇宙速度は出せるか",         surprise: 4, visual: 5, edu: 4, feasible: 3, status: idea}
+- {id: T16, type: C, title: "砂には“安息角”がない: MCの粉体",              surprise: 4, visual: 4, edu: 4, feasible: 5, status: idea}
+- {id: T17, type: C, title: "もしMCの重力が現実と同じだったら（自作mod）",   surprise: 4, visual: 4, edu: 5, feasible: 3, status: idea, note: "T01 の続編。重力の値を変えるmodを作る"}
+- {id: T18, type: C, title: "1億ブロックの水が流れきるまで何秒？",          surprise: 3, visual: 5, edu: 3, feasible: 3, status: idea}
