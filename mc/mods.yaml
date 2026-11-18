@@ -1,9 +1,26 @@
-# P0 で確定する。各modに name / version / source(URL) / license / 用途 を書く。
-mc_version: TBD
+# 2026-11-18 決定: 基盤は Minecraft Java 26.3（2026-09-15 公開の安定版）＋ Fabric。
+# 各modの version は導入時に Modrinth の配布ページで確かめて書く（下の version は調べた時点の目安）。
+mc_version: "26.3"
 profiles:
   base:        # 計測・撮影の基盤
+    mc_version: "26.3"
     loader: fabric
-    mods: []   # 候補: carpet, flashback, iris, distant_horizons, worldedit
-  create:      # Create を使う回だけ
-    loader: TBD
-    mods: []
+    mods:
+      - {name: Fabric API,        version: TBD,              source: "https://modrinth.com/mod/fabric-api",        use: 他のmodの前提}
+      - {name: Carpet,            version: "26.3",           source: "https://modrinth.com/mod/carpet",            use: 偽プレイヤー・計測補助}
+      - {name: Flashback,         version: "0.43.6（要確認）", source: "https://modrinth.com/mod/flashback",         use: 撮影（半自動）。26.3 対応は転載サイトで確認しただけ}
+      - {name: Iris,              version: TBD,              source: "https://modrinth.com/mod/iris",              use: シェーダー（撮影の画質）}
+      - {name: Distant Horizons,  version: "3.3.x-26.3",     source: "https://modrinth.com/mod/distanthorizons",   use: 遠景（撮影の画質）}
+    notes:
+      - "計測（E001 など、バニラ物理の回）はmodなしのバニラサーバで行う"
+      - "WorldEdit の 26.3 対応は未確認。構造物の配置はバニラの構造ブロックで代わりにできる"
+      - "1.21.11 以降、ゲームルール名は snake_case（例: doDaylightCycle → advance_time）。古い名前は使えない"
+      - "26.4 は Vulkan が既定になる予定で、Iris は Vulkan 未対応。26.4 へ上げるのはmodが追いついてから"
+  create:      # Create を使う回だけ（別インスタンス）
+    mc_version: "1.21.1"
+    loader: neoforge
+    mods:
+      - {name: Create, version: "6.0.10（2026-04 時点）", source: "https://modrinth.com/mod/create", use: 物理系の題材}
+    notes:
+      - "Create は 26.x 未対応（公式Wikiでは 26.1 へ移植中）。対応したら base と同じ版に寄せる"
+      - "バージョンが違うので、base で測った物理の値をこの構成に流用しない"

@@ -1,0 +1,11 @@
+id: EPxxx
+title: ''
+series: ''        # A/B/C/D（themes/backlog.yaml の系統）
+theme: ''         # themes/backlog.yaml の id
+experiment: ''    # experiments/Exxx_名前（design 工程で中身を作る）
+mc_version: TBD
+approvals:        # 関門の承認。python -m orchestra approve で書く
+  theme: null
+  design: null
+  publish: null
+steps: {}         # orchestra が書く。手で書き換えない

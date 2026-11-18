@@ -3,9 +3,13 @@
 物理は lab/models/mc_constants.yaml の「予想値」で動かしている。**これで出た数字は実測ではない。**
 本物との違い: 当たり判定・衝突の細部・跳ね返り・ダメージ・AIは再現しない。地面は y = ground の平面だけ。
 本物と同じく、`tick step 1` の1tickは非同期に進む（応答を返したあと、次のコマンドを数回受け取ってから進む）。
+止めていないとき（tick unfreeze 後）は、コマンドを realtime_cmds_per_tick 回受け取るごとに1tick進む（通常速度の代わり）。
+NoAI:1b の生物は動かさない（審査者の記憶による予想【未確認】。E001 で実測する）。
+着地した落下ブロックは、その位置にブロックとして残る（`execute if block` と `fill ... air` に応える）。
 """
 from __future__ import annotations
 
+import math
 import re
 import socket
 import struct
@@ -17,30 +21,38 @@ _SUMMON = re.compile(r"^summon (\S+) (\S+) (\S+) (\S+)\s*(\{.*\})?$")
 _TAGS = re.compile(r'Tags:\[([^\]]*)\]')
 _DATA = re.compile(r"^data get entity @e\[tag=([\w]+),limit=1\] (\w+)$")
 _KILL = re.compile(r"^kill @e\[tag=([\w]+)\]$")
+_BLOCKNAME = re.compile(r'BlockState:\{Name:"(?:minecraft:)?(\w+)"')
+_IFBLOCK = re.compile(r"^execute if block (-?\d+) (-?\d+) (-?\d+) (#?)(?:minecraft:)?(\w+)$")
+_FILL = re.compile(r"^fill (-?\d+) (-?\d+) (-?\d+) (-?\d+) (-?\d+) (-?\d+) (?:minecraft:)?air$")
+_TAG_MEMBERS = {"anvil": {"anvil", "chipped_anvil", "damaged_anvil"}}
 
 
 class World:
-    def __init__(self, ground: float, step_delay_cmds: int = 2):
+    def __init__(self, ground: float, step_delay_cmds: int = 2, realtime_cmds_per_tick: int = 8):
         self.ground = ground
         self.consts = mc.load_constants()["types"]
         self.entities: list[dict] = []
+        self.blocks: dict[tuple[int, int, int], str] = {}
         self.frozen = False
         self.gametime = 1000
         self.pending_steps = 0
         self.step_delay = step_delay_cmds
         self._countdown = 0
+        self.realtime_cmds_per_tick = realtime_cmds_per_tick
+        self._rt_count = 0
 
     def _tick(self) -> None:
         self.gametime += 1
         alive = []
         for e in self.entities:
             c = self.consts.get(e["type"], {"g": 0.08, "d": 0.02, "order": "move_then_accel"})
-            if not e["on_ground"]:
+            if not e["on_ground"] and not e["noai"]:
                 y, v = mc.step(e["y"], e["vy"], c["g"], c["d"], c["order"])
                 if y <= self.ground:
                     y, v = self.ground, 0.0
                     e["on_ground"] = 1
                     if e["type"] == "falling_block":   # 着地するとブロックになって消える
+                        self.blocks[(math.floor(e["x"]), int(self.ground), math.floor(e["z"]))] = e["block"]
                         continue
                 e["y"], e["vy"] = y, v
             alive.append(e)
@@ -54,6 +66,11 @@ class World:
                 while self.pending_steps:
                     self._tick()
                     self.pending_steps -= 1
+        if not self.frozen:
+            self._rt_count += 1
+            if self._rt_count >= self.realtime_cmds_per_tick:
+                self._rt_count = 0
+                self._tick()
         if cmd == "tick freeze":
             self.frozen = True
             return "The game is frozen"
@@ -70,9 +87,26 @@ class World:
         if m := _SUMMON.match(cmd):
             typ, x, y, z, nbt = m.groups()
             tags = [t.strip().strip('"') for t in _TAGS.search(nbt or "").group(1).split(",")] if nbt and _TAGS.search(nbt) else []
+            bm = _BLOCKNAME.search(nbt or "")
             self.entities.append({"type": typ.split(":")[-1], "x": float(x), "y": float(y), "z": float(z),
-                                  "vy": 0.0, "on_ground": 0, "tags": tags})
-            return "Summoned new entity"
+                                  "vy": 0.0, "on_ground": 0, "tags": tags, "noai": "NoAI:1b" in (nbt or ""),
+                                  "block": bm.group(1) if bm else None})
+            return f"Summoned new {typ.split(':')[-1].replace('_', ' ').title()}"
+        if m := _IFBLOCK.match(cmd):
+            x, y, z, is_tag, name = m.groups()
+            have = self.blocks.get((int(x), int(y), int(z)))
+            ok = have is not None and (have in _TAG_MEMBERS.get(name, {name}) if is_tag else have == name)
+            return "Test passed" if ok else "Test failed"
+        if m := _FILL.match(cmd):
+            x1, y1, z1, x2, y2, z2 = map(int, m.groups())
+            hit = [k for k in self.blocks if min(x1, x2) <= k[0] <= max(x1, x2) and min(y1, y2) <= k[1] <= max(y1, y2)
+                   and min(z1, z2) <= k[2] <= max(z1, z2)]
+            for k in hit:
+                del self.blocks[k]
+            return f"Successfully filled {len(hit)} block(s)" if hit else "No blocks were filled"
+        if cmd.startswith("gamerule "):
+            _, name, value = cmd.split()
+            return f"Gamerule {name} is now set to: {value}"
         if m := _KILL.match(cmd):
             n = len(self.entities)
             self.entities = [e for e in self.entities if m.group(1) not in e["tags"]]

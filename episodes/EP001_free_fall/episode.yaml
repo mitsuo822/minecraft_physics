@@ -1,0 +1,42 @@
+id: EP001
+title: MCの重力は地球の何倍？
+series: A
+theme: T01
+experiment: experiments/E001_free_fall
+mc_version: '26.3'
+approvals:
+  theme:
+    by: 和田
+    at: '2026-11-18T20:28:25+09:00'
+  design:
+    by: 和田
+    at: '2026-11-18T23:29:20+09:00'
+  publish: null
+steps:
+  research:
+    status: done
+    started: '2026-11-18T20:28:47+09:00'
+    ended: '2026-11-18T20:30:35+09:00'
+  design:
+    status: done
+    started: '2026-11-18T21:32:12+09:00'
+    ended: '2026-11-18T21:43:17+09:00'
+  design_review:
+    status: done
+    started: '2026-11-18T21:43:17+09:00'
+    ended: '2026-11-18T21:50:53+09:00'
+    verdict: 条件付き合格
+  measure:
+    status: pending
+  script:
+    status: pending
+  check:
+    status: pending
+  final_review:
+    status: pending
+  build:
+    status: pending
+  publish_prep:
+    status: pending
+  qc:
+    status: pending

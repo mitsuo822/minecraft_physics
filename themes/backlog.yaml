@@ -1,5 +1,5 @@
 # テーマ候補。採点は 1〜5 の仮の値（主観）。P5 で採点を自動化する。
-# 系統: A=MCは現実と同じ？ / B=名実験をMCで再現 / C=MCでしかできない極端実験
+# 系統: A=MCは現実と同じ？ / B=名実験をMCで再現 / C=MCでしかできない極端実験 / D=現実の最先端技術をMCで解説（光電融合シリーズ）
 # 採点の軸: surprise=意外性, visual=映え, edu=教養度, feasible=実現しやすさ
 # status: idea → selected(関門1) → designed(関門2) → measured → published
 
@@ -21,3 +21,9 @@
 - {id: T16, type: C, title: "砂には“安息角”がない: MCの粉体",              surprise: 4, visual: 4, edu: 4, feasible: 5, status: idea}
 - {id: T17, type: C, title: "もしMCの重力が現実と同じだったら（自作mod）",   surprise: 4, visual: 4, edu: 5, feasible: 3, status: idea, note: "T01 の続編。重力の値を変えるmodを作る"}
 - {id: T18, type: C, title: "1億ブロックの水が流れきるまで何秒？",          surprise: 3, visual: 5, edu: 3, feasible: 3, status: idea}
+# 系統D: 光電融合シリーズ。学ぶ順＝動画の順。計測より計算と解説が中心（measure は skip でよい）
+- {id: T19, type: D, title: "速くするほど、銅線は近くしか届かない",           surprise: 4, visual: 4, edu: 5, feasible: 4, status: idea, experiment: E101, note: "初版は誤解させる作りだった（knowledge/表現/誤解の台帳.md M1〜M4）。素材は experiments/E101_copper_loss/legacy/"}
+- {id: T20, type: D, title: "光をオン・オフするしくみ: 干渉とマッハツェンダー変調器", surprise: 3, visual: 4, edu: 5, feasible: 3, status: idea}
+- {id: T21, type: D, title: "半導体で光と電気を変換する",                     surprise: 3, visual: 3, edu: 5, feasible: 3, status: idea}
+- {id: T22, type: D, title: "高速な電気回路はどこで限界になるか",             surprise: 3, visual: 3, edu: 5, feasible: 3, status: idea}
+- {id: T23, type: D, title: "変換器をチップの横に置く: CPO",                   surprise: 4, visual: 4, edu: 5, feasible: 3, status: idea, note: "T19〜T22 の答え合わせ。勤務先の事業領域と重なるので公開前に開示ルールを確認"}

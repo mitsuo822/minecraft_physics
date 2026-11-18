@@ -93,7 +93,8 @@ def plot_run(run_dir: str | Path, repeat: int = 0) -> list[Path]:
     ax.plot(t_real, h_real, linestyle=(0, (5, 4)), linewidth=2, color=NEUTRAL, label="現実（真空）の予想")
     end_real = next((i for i, h in enumerate(h_real) if h <= 0), len(h_real) - 1)
     labels = [(t_real[end_real], h_real[end_real], "現実（真空）", NEUTRAL)]
-    for i, (tid, t) in enumerate(result["targets"].items()):
+    shown = [(tid, t) for tid, t in result["targets"].items() if tid not in set(result.get("separate_ids", []))]
+    for i, (tid, t) in enumerate(shown):   # 別の問い（NoAI の豚）は比較のグラフに入れない（summary.md の別の節）
         color = SERIES[i % len(SERIES)]
         mine = [r for r in rows if r["target"] == tid and r["exists"] and r["on_ground"] == 0]
         if not mine:
@@ -122,7 +123,7 @@ def plot_run(run_dir: str | Path, repeat: int = 0) -> list[Path]:
     fig, ax = plt.subplots(figsize=(9, 5.2), dpi=150, facecolor=SURFACE)
     vmax = 0.0
     labels = []
-    for i, (tid, t) in enumerate(result["targets"].items()):
+    for i, (tid, t) in enumerate(shown):
         color = SERIES[i % len(SERIES)]
         mine = [r for r in rows if r["target"] == tid and r["exists"] and r["on_ground"] == 0]
         if not mine:
@@ -138,7 +139,8 @@ def plot_run(run_dir: str | Path, repeat: int = 0) -> list[Path]:
             ax.axhline(term, color=color, linewidth=1, linestyle=(0, (2, 3)), alpha=0.7)
     t_end = max(float(r["t_sec"]) for r in theory)
     ax.plot([0, t_end], [0, 9.80665 * t_end], linestyle=(0, (5, 4)), linewidth=2, color=NEUTRAL, label="現実（真空）")
-    _style(ax, f"{result['experiment']}: 落下の速さ（点線は当てはめた終端速度）", "時間（秒）", "下向きの速さ（m/s）")
+    _style(ax, f"{result['experiment']}: 落下の速さ（線は実測。点線は当てはめた g, d から出した終端速度＝計算値）",
+           "時間（秒）", "下向きの速さ（m/s）")
     ax.set_ylim(0, vmax * 1.2 if vmax else 1)
     ax.set_xlim(right=ax.get_xlim()[1] * 1.2)
     _place_labels(fig, ax, labels)

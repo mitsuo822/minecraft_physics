@@ -1,65 +1,152 @@
 # E001: 自由落下 — MCの重力は地球の何倍？ 重いものは先に落ちる？
-# 状態: 雛形（未実行）。コマンドの書式・座標は P1 で実機確認する。
+# 状態: 設計済み・未実行（2026-11-18、physics-modeler。design_review 2回目の条件 C1〜C4 と止めない指摘 1〜3 を反映）。
+# コマンドの書式・座標は実機で確かめる。送ったコマンドの応答は run フォルダの commands.jsonl に全部残る。
+# 予想値は yaml に書かない。`python -m lab.models.e001_predictions` で出す（model.md に貼ってある）。
 id: E001
 title: 自由落下と終端速度
-mc_version: "TBD"        # P0 で決定
-profile: base            # mc/mods.yaml の構成名
+mc_version: "26.3"       # 2026-11-18 決定（mc/mods.yaml、episode.yaml）。Java版バニラサーバで計測する
+profile: base            # mc/mods.yaml の構成名。計測はmodなしのバニラサーバ（mods.yaml の notes）
 
-question: "金床と豚とアイテムを同時に落としたら、どれが先に地面に着く？"
+question: "金床と豚と鉄インゴットを同じ高さから同時に落としたら、どれが先に地面に着く？"
 
 hypotheses:
   - id: real_physics
-    text: "現実（真空）では質量によらず同時に落ちる。空気中でも、この3つなら差は小さい"
+    text: "現実の真空中では、質量によらず同時に着く。空気中では形と重さ（m/A と抗力係数）で差が出るので同時とは限らない（256 m なら重くて小さい物が先に着きうる）"
+    confidence: 未確認        # 式は力学の標準形。出典ページ未取得（model.md）
   - id: naive
-    text: "重い金床が先に落ちる（よくある誤解）"
+    text: "重い金床が先に着く（よくある誤解。真空では誤り）"
   - id: mc_guess
-    text: "MCではエンティティの種類ごとに重力と空気抵抗の値が違うので、質量ではなく種類で差が出る"
-    confidence: 未確認   # knowledge/mechanics/重力と空気抵抗.md を参照
+    text: >-
+      MCの落下の計算には質量の入力がなく、エンティティの種類ごとの定数（g, d, 処理順）で決まる。
+      予想: 同じ種類の中では、重さの印象が違っても y(t) が tick ごとに一致する
+      （analysis.groups の3組: 落下ブロック＝金床と砂、アイテム＝金床・鉄インゴット・羽根、生物＝豚・牛・アーマースタンド）。
+      種類の間では、生物が先、落下ブロックとアイテムは同時。
+    confidence: 二次          # Minecraft Wiki "Entity" Motion 節（research.md §2）。Wiki の値は版の表記なし。26.3 の値かは実測で確かめる
+  - id: noai
+    text: >-
+      別の問い（「重さか種類か」の比較には入れない）: NoAI を付けた豚は移動の処理が止まり、空中に浮いたまま落ちない。
+    confidence: 未確認        # 審査者の記憶（地図製作でよく知られた挙動）と mc/server/README.md の注意書き。出典なし
+
+# 結論の範囲: 言えるのは「mc_version 26.3 で、analysis.groups に並べた対象について」まで。
+# 「種類で決まる」は、groups の3組がすべて tick ごとに一致したときだけ言う。
+# 「生物は」は、豚・牛・アーマースタンドの3つが一致したときに「試した生物では」と限って言う。
+# NoAI の豚は groups に入れない。浮いても落ちても、groups の結論には影響しない（C2）。
 
 theory:
-  real: lab/models/free_fall_real.py   # g=9.8 m/s^2、空気抵抗あり/なし
-  mc: lab/models/free_fall_mc.py       # v <- (v - g_tick) * (1 - drag) の漸化式（順序は要確認）
+  real:
+    model: lab/models/free_fall_real.py   # 真空 y=y0-gt²/2、2乗抵抗 v=vt·tanh(gt/vt)
+    confidence: 未確認                    # 式の出典ページ未取得。g=9.80665 も一次資料未取得
+  mc:
+    model: lab/models/free_fall_mc.py     # 1tickごとの漸化式。生物 move_then_accel、アイテム・落下ブロック accel_then_move
+    constants: lab/models/mc_constants.yaml
+    confidence: 二次
+  predictions: lab/models/e001_predictions.py   # 着地tick・到達する最大の速さ・地球比の予想を出す
 
 world:
   type: flat
   seed: 1
-  gamerules: {doDaylightCycle: false, doWeatherCycle: false, randomTickSpeed: 0, doMobSpawning: false}
+  # 1.21.11 以降のゲームルール名（snake_case）。mc/mods.yaml の notes に doDaylightCycle → advance_time の記載【二次】。
+  # 残り3つの新しい名前は【未確認・記憶】。名前が違えばコマンドが失敗し、checks の setup_ok で結論が止まる（応答は commands.jsonl）
+  gamerules: {advance_time: false, advance_weather: false, random_tick_speed: 0, spawn_mobs: false}
   time: noon
 
 setup:
-  origin: [0, -60, 0]       # スーパーフラットの既定では、草ブロックの上面が y=-60（未確認）
-  forceload: [[-16, -16], [16, 16]]   # プレイヤーがいなくてもエンティティが動くように
-  prepare:                  # 毎回の前後に実行（前回の金床などを消す）
-    - "fill -4 -60 -4 12 -50 4 air"
+  origin: [0, -60, 0]       # スーパーフラット既定の草ブロック上面 y=-60【未確認】。checks の ground_y で確かめる
+  # 座標はすべて origin 基準（procedure の at、shots の pos / look_at）。prepare・forceload・procedure の cmd だけ絶対座標
+  forceload: [[-16, -16], [48, 16]]   # プレイヤーがいなくてもエンティティが動くように（x=0〜32 に9体並ぶ）
+  prepare:                  # 毎回の前後に実行（前回着地した金床・砂のブロックを消す）
+    - "fill -4 -60 -4 40 -50 4 air"
   entities:
-    - {id: anvil, label: 金床,         summon: "falling_block", nbt: 'BlockState:{Name:"minecraft:anvil"},Time:1'}
-    - {id: pig,   label: 豚,           summon: "pig",           nbt: 'Invulnerable:1b'}
-    - {id: item,  label: 鉄インゴット, summon: "item",          nbt: 'Item:{id:"minecraft:iron_ingot",count:1},PickupDelay:32767'}
-  # 注意【未確認】: アイテムのNBTの書式（count の小文字など）はバージョンで違う。
-  # 豚に NoAI を付けると重力も止まるかもしれないので付けていない。
+    # Motion を 0 と明示して、召喚時の初速のばらつき（アイテムの乱数の初速など【未確認】）を消す
+    # 並び順 = x 方向の位置（4 ブロックずつ。当たり判定が重ならないように）。順番を変えたら procedure の cmd の座標も直す
+    # アイテムのNBTは 1.20.5 以降の書式（id と小文字の count）。26.3 はこれに当たる【二次】。召喚の失敗は setup_ok で見る
+    # --- 落下ブロック（同じ種類で重さの印象が違う組）
+    - {id: anvil,       label: 金床,               summon: "falling_block", nbt: 'BlockState:{Name:"minecraft:anvil"},Time:1,Motion:[0.0d,0.0d,0.0d]'}
+    - {id: sand,        label: 砂,                 summon: "falling_block", nbt: 'BlockState:{Name:"minecraft:sand"},Time:1,Motion:[0.0d,0.0d,0.0d]'}
+    # --- アイテム（同じ種類で重さの印象が違う組）
+    - {id: anvil_item,  label: 金床（アイテム）,   summon: "item",          nbt: 'Item:{id:"minecraft:anvil",count:1},PickupDelay:32767,Motion:[0.0d,0.0d,0.0d]'}
+    - {id: item,        label: 鉄インゴット,       summon: "item",          nbt: 'Item:{id:"minecraft:iron_ingot",count:1},PickupDelay:32767,Motion:[0.0d,0.0d,0.0d]'}
+    - {id: feather,     label: 羽根（アイテム）,   summon: "item",          nbt: 'Item:{id:"minecraft:feather",count:1},PickupDelay:32767,Motion:[0.0d,0.0d,0.0d]'}
+    # --- 生物（体格の違う組）
+    - {id: pig,         label: 豚,                 summon: "pig",           nbt: 'Invulnerable:1b,Motion:[0.0d,0.0d,0.0d]'}
+    # --- 別の問い（C2）: NoAI で落下が止まるか。groups に入れない。落下の予想は出さない（predict: false）
+    - {id: pig_noai,    label: 豚（NoAI）,         summon: "pig",           nbt: 'Invulnerable:1b,NoAI:1b,Motion:[0.0d,0.0d,0.0d]', predict: false}
+    - {id: cow,         label: 牛,                 summon: "cow",           nbt: 'Invulnerable:1b,Motion:[0.0d,0.0d,0.0d]'}
+    - {id: armor_stand, label: アーマースタンド,   summon: "armor_stand",   nbt: 'Invulnerable:1b,Motion:[0.0d,0.0d,0.0d]'}
+  # ニワトリは羽ばたいて落下が遅くなるはずなので使わない【未確認】。
+  # Invulnerable は落下ダメージで死なない・壊れないため（落下の速さへの影響はないはず【未確認】）。
+  # 生物は豚と牛（四つ足の家畜）とアーマースタンドだけ。台本で「生物は」と広げたくなったら、別系統の生物を足して測り直す。
 
 # tick は「止めた状態で召喚した直後」を 0 とする。runner が tick freeze / step を自分で行うので、
 # ここには tick freeze / unfreeze を書かない。
 procedure:
-  - {tick: 0, spawn: [anvil, pig, item], at: [0, 256, 0], spacing: [4, 0, 0]}
+  - {tick: 0, spawn: [anvil, sand, anvil_item, item, feather, pig, pig_noai, cow, armor_stand], at: [0, 256, 0], spacing: [4, 0, 0]}
+  # 金床・砂が「着地してブロックになった」のか「時間切れで消えた」のかを、置かれたブロックで直接確かめる。
+  # 予想の着地（model.md）より後で、落下ブロックの時間切れ（600 tick【二次】）より前に1回だけ実行する。
+  # 金床は着地で傷んだ金床（chipped / damaged）になりうる【未確認】ので、金床3種のタグ #minecraft:anvil で確かめる（C3）。
+  # 応答（Test passed / Test failed）は commands.jsonl に残り、checks の block_placed が読む。
+  # 座標は絶対: x = origin.x + 4×並び順、y = origin.y
+  - {tick: 300, cmd: "execute if block 0 -60 0 #minecraft:anvil", check: anvil}
+  - {tick: 300, cmd: "execute if block 4 -60 0 minecraft:sand",   check: sand}
 
 measure:
-  targets: [anvil, pig, item]
+  targets: [anvil, sand, anvil_item, item, feather, pig, pig_noai, cow, armor_stand]
   fields: [Pos, Motion, OnGround]
-  until: {all_on_ground: true, max_ticks: 1200}
+  # 落下ブロックは空中 600 tick で消える【二次】。予想の着地は 600 tick よりずっと前なので、
+  # 金床・砂が 600 tick 前後で消えたら「着地」ではなく「時間切れ」として扱う（checks の block_placed）。
+  # NoAI の豚は浮いたままの可能性があるので、終了条件の「全対象が着地」から外す（C2。外さないと毎回 max_ticks まで走る）。
+  until: {all_on_ground: true, max_ticks: 1200, not_required_to_land: [pig_noai]}
   repeats: 3
+  # 止めない指摘1: 通常速度（tick step を使わない）でも着地 tick が同じかを、毎回の実行の最後に1回確かめる。
+  # 方法: 止めた状態で召喚してゲーム時刻 G0 を読み、tick unfreeze してから RCON で状態を繰り返し問い合わせる。
+  #   1回の問い合わせを「ゲーム時刻 A → 状態 → ゲーム時刻 B」で挟む。空中なら着地 tick > A − G0、着地済みなら着地 tick ≤ B − G0。
+  #   この幅（下限〜上限）に tick step での着地 tick が入れば一致とする。幅は RCON の速さで決まり、記録される（realtime.csv）。
+  #   許容差を後から決めない。幅（候補になる tick の数 = 上限 − 下限 + 1）が 3 を超えたら「判定できない」（不合格）とする。
+  #   前提【未確認】: 止めている間は召喚した対象の物理が動かず、tick unfreeze 後の1tickごとにゲーム時刻が1進む。
+  realtime_check: {max_ticks: 400, max_window_ticks: 3}
 
 analysis:
+  # 同じ種類で y(t) と Motion.y(t) を tick ごとに比べる組（lab/analyze.py が読む）。
+  # 「完全に一致」は 1e-9 ブロック以内（応答の小数の読み取りの丸めだけを許す）。
+  groups:
+    - {name: 落下ブロック, members: [anvil, sand]}
+    - {name: アイテム,     members: [anvil_item, item, feather]}
+    - {name: 生物,         members: [pig, cow, armor_stand]}
+  # 種類の間で y(t) が tick ごとに一致するかを見る組（「落下ブロックとアイテムは同時」）
+  across:
+    - {name: 落下ブロックとアイテム, members: [anvil, anvil_item]}
+  # groups に入れない別の問い。落ちたかどうか（y が召喚した高さから動いたか）と、落ちた場合は ref と y(t) が一致するかを出す
+  separate:
+    - {id: pig_noai, question: "NoAI の豚は落ちるか", ref: pig}
+  checks:   # 結論の前に確かめること。auto: true は lab/analyze.py が判定する。1つでも「不合格」なら結論を出さない
+    - {id: server_version, auto: true, text: "計測したサーバの起動ログの版（meta.json の server_version）が mc_version と同じ（審査3回目 K1）"}
+    - {id: setup_ok,      auto: true, text: "setup・召喚・procedure の各コマンドが成功した（ゲームルール名・NBT の書式が版に合っている）。後片付けの「対象がない」は失敗に数えない"}
+    - {id: spawned,       auto: true, text: "t=0 で全対象が存在する（召喚の失敗を「着地/消滅」と取り違えない）"}
+    - {id: t0_state,      auto: true, text: "t=0 の Motion.y が 0、y が召喚した高さ（召喚 tick に物理が動いていない）"}
+    - {id: deterministic, auto: true, text: "3回の繰り返しで、各対象の着地tickと y(t) が完全に一致する（決定的であること）"}
+    - {id: horizontal,    auto: true, warn_only: [pig, cow], text: "空中で水平方向の位置が変わらない。AI のある生物（豚・牛）だけは動いても「注意」とし、縦の比較は続ける（その旨を結論に書く）"}
+    - {id: landing_gap,   auto: true, text: "金床・砂: 消滅直前の tick の (y − 地面) が、その tick の Motion.y から出る次の1tickの移動距離（落下ブロックは |Motion.y − g|）以下。つまり次の tick で地面に届く位置で消えた"}
+    - {id: block_placed,  auto: true, text: "金床・砂: 消滅 tick が tick 300 より前で、tick 300 の execute if block が両方 Test passed（ブロックとして着地した）"}
+    - {id: ground_y,      auto: true, text: "着地した対象（アイテム・生物）の着地時の y が setup.origin の y と一致（地面の高さの前提）"}
+    - {id: realtime,      auto: true, text: "通常速度での着地 tick の幅（measure.realtime_check）に、tick step での着地 tick が入る（撮影は通常速度なので、ここが違うと映像と計測が別物になる）"}
   compare:
-    - "各対象の y(t) と vy(t) を、MCモデル・現実モデルと重ねる"
-    - "終端速度（vy の収束値）を m/s に換算して、現実の人のスカイダイビング（約55 m/s【未確認】）と比べる"
-    - "初速0からの最初の数tickの加速度を m/s^2 に換算し、地球の g の何倍かを出す"
-  conclusion_template: "MCでは{要因}によって{結果}。現実との違いは{理由}"
+    - "groups の各組で、空中の y(t) と Motion.y(t) が tick ごとに一致するか。着地tickだけでは比べない（金床は消滅、アイテムは OnGround と判定方法が違うため）"
+    - "across の組で、空中の y(t) が tick ごとに一致するかで「落下ブロックとアイテムは同時」を判定する"
+    - "当てはめ（lab/models/free_fall_mc.fit）の g・d・順序を、mc_constants.yaml の値と比べる（相対誤差 1% 以内で予想どおりとする。完全一致は求めない: 抵抗の係数が単精度なら下の桁がずれうる【未確認】）。g だけが予想の 1/(1−d) 倍で d が合うときは、処理順「抵抗→加速」の読み（Fit.g_if_drag_then_accel）が予想と合うかを見る"
+    - "1tick目の落下量【実測】（生物は0、アイテム・落下ブロックは g の予想）で処理順を直接確かめる"
+    - "終端速度は測れない（どの対象も着地までに終端に届かない。届く割合は model.md の予想表）。出すのは「到達した最大の速さ【実測】」（着地直前の Motion.y と、1tickごとの Pos.y の差の両方）と、その終端（計算値）に対する割合。終端速度は「当てはめた g, d からの計算値」としてだけ出す。summary.md は列名で【実測】と（計算値）を分ける"
+    - "着地tickの順番と値【実測】を予想（計算値）と比べる。現実の真空中の落下時間（同じ高さを m として、計算値）を参考に並べる"
+    - "地球比は ①当てはめた g パラメータ ②1tick目の Motion の変化 g(1-d)（【実測】の差分から直接） ③連続時間の等価加速度（当てはめからの終端÷時定数）の3つを出し、どれで言うかを台本に渡す。どれも「1ブロック=1 m、20 tick/s」の前提つきの計算値"
+    - "separate: NoAI の豚が落ちたか。結果は【MCの仕様】として別に報告し、groups の結論に混ぜない"
+  conclusion_template: "MC（{mc_version}）で試した{対象}では、{要因}によって{結果}。現実との違いは{理由}"
 
+# 座標は origin 基準（setup の注記）。9体は x=0〜32 に並ぶので、横から撮るときは z 方向から見る。
+# 再生速度（speed）がショットで違う。画面に毎ショット再生速度を出す。落ちる速さを比べる場面は同じ倍率のショットだけでつなぐ。
+# NoAI の豚が浮いた場合、比較のショットでは画角から外すか、【MCの仕様】と表示して別の場面にする（C2・誤解の候補 11）。
 shots:
-  - {name: wide_side, aspect: "16:9", camera: {pos: [30, 128, 0], look_at: [0, 128, 0]}, speed: 1.0}
-  - {name: follow_down, aspect: "16:9", camera: {follow: pig, offset: [6, 2, 6]}, speed: 0.25}
-  - {name: landing_close, aspect: "16:9", camera: {pos: [6, 2, 6], look_at: [0, 0, 0]}, speed: 0.1}
-  - {name: short_vertical, aspect: "9:16", camera: {pos: [12, 40, 0], look_at: [0, 20, 0]}, speed: 0.25}
+  - {name: wide_side, aspect: "16:9", camera: {pos: [16, 128, -60], look_at: [16, 128, 0]}, speed: 1.0}   # 画角は実機で調整
+  - {name: follow_down, aspect: "16:9", camera: {follow: pig, offset: [6, 2, -6]}, speed: 0.25}
+  - {name: landing_close, aspect: "16:9", camera: {pos: [16, 2, -10], look_at: [16, 0, 0]}, speed: 0.1}
+  - {name: short_vertical, aspect: "9:16", camera: {pos: [16, 40, -14], look_at: [16, 20, 0]}, speed: 0.25}
 
 approval: null   # 関門2: {by: ..., at: ...}

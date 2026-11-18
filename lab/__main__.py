@@ -24,7 +24,7 @@ from pathlib import Path
 from .analyze import analyze
 from .plot import plot_run
 from .rcon import Rcon
-from .runner import Experiment, Runner, expand_step, setup_commands
+from .runner import Experiment, Runner, cleanup_commands, expand_step, setup_commands, read_server_version
 
 
 def _post(run_dir: Path) -> None:
@@ -37,7 +37,7 @@ def _post(run_dir: Path) -> None:
 def cmd_run(a: argparse.Namespace) -> int:
     exp = Experiment.load(a.experiment)
     if a.dry_run:
-        for c in setup_commands(exp):
+        for c in setup_commands(exp) + cleanup_commands(exp):
             print(c)
         for step in exp.raw.get("procedure", []):
             for c in expand_step(exp, step):
@@ -48,15 +48,19 @@ def cmd_run(a: argparse.Namespace) -> int:
         from .sim.fake_server import FakeRconServer
         with FakeRconServer("test", ground=exp.origin[1]) as srv, Rcon(srv.host, srv.port, "test") as conn:
             print("※ 模擬サーバで実行します。数字は実測ではありません。")
-            run_dir = Runner(exp, conn, log=print).run(out_root or Path(a.fake_out), mc_version="fake")
+            run_dir = Runner(exp, conn, log=print).run(out_root or Path(a.fake_out), mc_version="fake",
+                                                     server_version={"server_version": "fake",
+                                                                     "server_version_source": "模擬サーバ"})
     else:
         password = a.password or os.environ.get("MC_RCON_PASSWORD")
         if not password:
             print("RCONのパスワードを MC_RCON_PASSWORD か --password で指定してください", file=sys.stderr)
             return 2
+        sv = read_server_version(a.server_log)
+        print(f"サーバの版: {sv.get('server_version') or '不明'}（{sv.get('server_version_line') or sv['server_version_source']}）")
         with Rcon(a.host, a.port, password) as conn:
             run_dir = Runner(exp, conn, log=print).run(out_root, mc_version=a.mc_version,
-                                                       unfreeze=not a.keep_frozen)
+                                                       unfreeze=not a.keep_frozen, server_version=sv)
     print(f"計測結果: {run_dir}")
     _post(run_dir)
     return 0
@@ -76,6 +80,8 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--port", type=int, default=25575)
     r.add_argument("--password")
     r.add_argument("--mc-version", help="サーバのMCバージョン（記録用）")
+    r.add_argument("--server-log", default="mc/server/logs/latest.log",
+                   help="サーバの起動ログ。ここから実際の版を読んで meta.json に残す")
     r.add_argument("--out", help="結果の出力先（既定: 実験のディレクトリの results/）")
     r.add_argument("--keep-frozen", action="store_true", help="終わったあとも tick freeze のままにする")
     r.add_argument("--dry-run", action="store_true")

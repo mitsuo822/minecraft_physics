@@ -13,10 +13,11 @@ dependencies = ["pyyaml>=6", "matplotlib>=3.7"]
 dev = ["pytest>=7"]
 
 [tool.setuptools]
-packages = ["lab", "lab.models", "lab.sim"]
+packages = ["lab", "lab.models", "lab.sim", "orchestra"]
 
 [tool.setuptools.package-data]
 "lab.models" = ["*.yaml"]
+"orchestra" = ["*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

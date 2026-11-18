@@ -1,17 +1,21 @@
 # MCのエンティティの落下に関する定数の「予想値」。
-# 出典: knowledge/mechanics/重力と空気抵抗.md。すべて【未確認】（記憶にもとづく）。
-# 実測で確かめたら、knowledge 側を【実測】に更新し、ここも合わせる。
+# 出典: Minecraft Wiki "Entity" Motion 節 https://minecraft.wiki/w/Entity （2026-11-18 取得、ページにバージョン表記なし）
+#       knowledge/mechanics/重力と空気抵抗.md、episodes/EP001_free_fall/research.md §2
+# 確度は【二次】（ソースコードは未読）。E001 で実測したら knowledge 側を【実測】に更新し、ここも合わせる。
 #
 # order:
 #   move_then_accel : 位置を今の速度で動かしてから、v <- (v - g)(1 - d)      （生物）
 #   accel_then_move : v' = v - g、位置を v' で動かし、v <- v'(1 - d)        （アイテム・落下するブロック）
-mc_version: unknown
-confidence: 未確認
+#
+# mc_version: 実験で使う版（2026-11-18 決定）。値そのものは Wiki の版表記なしの記載で、26.3 の値だと確かめたわけではない。
+mc_version: "26.3"
+confidence: 二次
 types:
   pig:           {g: 0.08, d: 0.02, order: move_then_accel, group: 生物}
+  cow:           {g: 0.08, d: 0.02, order: move_then_accel, group: 生物}   # Wiki は「生物」でまとめて記載。牛個別の記載は見ていない
   armor_stand:   {g: 0.08, d: 0.02, order: move_then_accel, group: 生物}
   item:          {g: 0.04, d: 0.02, order: accel_then_move, group: アイテム}
   falling_block: {g: 0.04, d: 0.02, order: accel_then_move, group: 落下するブロック}
   tnt:           {g: 0.04, d: 0.02, order: accel_then_move, group: 着火したTNT}
-  snowball:      {g: 0.03, d: 0.01, order: unknown, group: 投げたもの}
+  snowball:      {g: 0.03, d: 0.01, order: unknown, group: 投げたもの}   # 1.21.2 以降は加速→抵抗→位置【二次】。このモデルの2通りに無い
   arrow:         {g: 0.05, d: 0.01, order: unknown, group: 矢}

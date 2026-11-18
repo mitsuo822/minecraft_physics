@@ -6,3 +6,10 @@
 - 新しくわかったことは `knowledge/` に追記する。動画1本の制作で得た知見も、その動画のディレクトリではなく `knowledge/` に戻す。
 - 実験の手順・計測・撮影は `experiments/*/experiment.yaml` が正本。台本や撮影指示を別の場所に二重に書かない。
 - チャンネルを問わない動画制作の知見は movie リポジトリに書く。
+
+## 制作の進め方（オーケストレーション）
+
+- 1本の動画は `python -m orchestra run <回>` で進める。工程の順番は `orchestra/pipeline.yaml`、各回の状態は `episodes/<回>/episode.yaml` にある。詳しくは `docs/オーケストレーション.md`。
+- 各工程の担当は `.claude/agents/`。担当は自分の出力ファイル以外を書き換えない。他の工程の誤りを見つけたら報告にとどめる。
+- 関門（theme / design / publish）の承認は人だけが行う。エージェントは episode.yaml の approvals と steps を書き換えない。
+- 表現のルールは `docs/表現ルール.md`、過去の失敗は `knowledge/表現/誤解の台帳.md`。

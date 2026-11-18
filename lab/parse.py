@@ -25,6 +25,28 @@ def is_no_entity(resp: str) -> bool:
     return "No entity was found" in resp or "Found no elements" in resp
 
 
+# コマンドが失敗したときの応答に出る文字列【未確認・記憶。Java版、英語ロケール】。合わない応答が出たらここに足す
+_ERROR_MARKS = ("<--[HERE]", "Unknown or incomplete command", "Incorrect argument", "Unknown game rule",
+                "Unknown block", "Unknown item", "Unknown entity", "Invalid", "Unable to", "Expected ",
+                "Can't ", "Cannot ", "Failed to")
+# 後片付けで「対象がない」ときの応答。後片付けでは失敗に数えない
+BENIGN_EMPTY = ("No entity was found", "No blocks were filled")
+
+
+def is_command_error(resp: str) -> bool:
+    """コマンドの応答が失敗を示すか。execute if の "Test failed" は判定の結果なので失敗に数えない。"""
+    return any(m in resp for m in _ERROR_MARKS)
+
+
+def execute_test_result(resp: str) -> bool | None:
+    """execute if ... の応答: Test passed → True、Test failed → False、どちらでもない → None。"""
+    if "Test passed" in resp:
+        return True
+    if "Test failed" in resp:
+        return False
+    return None
+
+
 def _payload(resp: str) -> str:
     if "entity data:" not in resp:
         raise ParseError(f"エンティティのデータではない応答です: {resp!r}")
