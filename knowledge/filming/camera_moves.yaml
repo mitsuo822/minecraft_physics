@@ -1,0 +1,498 @@
+# カメラワークの種類の目録（機械可読）
+#
+# 状態: 文献調査のみ（2026-11-19）。MC内での実測は0件。P2で試したら how の confidence を「実測」に上げる。
+# 対象: Java版。modの対応バージョンは 撮影ツール.md、出典は sources.yaml（source はその id）。
+# 仕組みの説明は カメラワーク.md（refs の CW-nn はその項目番号）。
+#
+# 項目の意味
+#   id            他のファイルから参照する名前（変えない）
+#   name / aka    日本語名 / 別名・英語名（検索用）
+#   group         fixed=固定 / rotate=向きだけ変える / move=位置を動かす / lens=画角 / time=時間 / edit=構成 / texture=質感
+#   what          何をするか
+#   effect        見る人への効果
+#   use_when / avoid_when   使いどころ / 避ける場面
+#   params        このショットを決めるのに必要な量（experiment.yaml の shots に書くことになる量）
+#   how           道具ごとの作り方。confidence は 一次 / 二次 / 未確認（意味は CLAUDE.md）
+#   pitfalls      つまずき
+#   physics_use   このチャンネル（物理の実験）での使いどころ（提案）
+#   measurement   true = 計測ショット（数字の根拠として見せる画）に使える / false = 演出向き
+#
+# 確度の注意
+#   what / effect / use_when / avoid_when / physics_use は、一般的な映像の用語と推論で書いた【未確認】。
+#   出典で確認できたのは how の各行だけ。
+#   YouTubeの動画は題名・概要欄・チャプターしか読めていない（字幕と映像は未確認）。
+
+meta:
+  surveyed_at: "2026-11-19"
+  mc_edition: java
+  mc_version: "未決定（P0）。根拠にした各modの対応は 撮影ツール.md"
+  measured_in_mc: false
+
+moves:
+
+  # ---------- fixed: カメラを動かさない ----------
+
+  - id: establishing_wide
+    name: 固定の引き（全景）
+    aka: [establishing shot, wide shot, ロングショット]
+    group: fixed
+    what: カメラを固定し、装置や現象の全体が入る距離から撮る。
+    effect: 何がどこにあって、これから何が起きるのかが一目でわかる。
+    use_when: [場面の最初, 装置の紹介, 規模を見せたいとき]
+    avoid_when: [被写体が小さくて点にしか見えないとき]
+    params: [pos, look_at, fov, duration_s]
+    how:
+      - {tool: flashback, do: "カメラのキーフレームを1つだけ置く（動かさない）", confidence: 未確認, source: flashback_modrinth}
+      - {tool: replaymod, do: "Position Keyframe を同じ位置に2つ置く", confidence: 未確認, source: replaymod_docs}
+      - {tool: vanilla, do: "スペクテイターモードで位置を決め、F1でHUDを消して録画する", confidence: 二次, source: wiki_controls}
+    pitfalls:
+      - "離れすぎるとエンティティが描画されない（CW-29）"
+      - "必要な距離は d = 高さ ÷ (2·tan(FOV/2))。FOV 70 なら 高さ ÷ 1.40（CW-24）"
+    physics_use: 「予想」の区間で装置を見せる。実験の最初の1カット。
+    measurement: false
+    refs: [CW-24, CW-29]
+
+  - id: static_side
+    name: 真横の固定（計測ショット）
+    aka: [side view, profile shot, 正面図, 正投影]
+    group: fixed
+    what: 動きの面に対して真横にカメラを固定する。被写体は視線に垂直な1つの面に並べる。できれば正投影、だめなら低いFOVで遠くから。
+    effect: 画面上の距離と速さが、実際の距離と速さに比例して見える。グラフや目盛りと対応が取れる。
+    use_when: [速さや距離を比べる, 軌道の形を見せる, グラフを重ねる]
+    avoid_when: [迫力を出したいとき（平板に見える）]
+    params: [pos, look_at, fov または projection, scale_reference（目盛りの置き場所）, speed]
+    how:
+      - {tool: flashback, do: "投影を Orthographic にする（0.40.0〜、MC 26.1 以降向け）", confidence: 一次, source: flashback_changelog, note: "画面の縦が何ブロックに当たるかの指定方法は未確認"}
+      - {tool: any, do: "低いFOV（30など）で遠くから撮り、正投影に近づける", confidence: 未確認, source: null, note: "幾何からの推論。CW-28"}
+    pitfalls:
+      - "被写体を視線の方向に並べると重なる。視線と直角に並べる（CW-26）"
+      - "目盛りを被写体と違う奥行きに置くと縮尺がずれる（CW-26）"
+      - "低いFOVで離れるほど、エンティティの描画距離に近づく（CW-29）"
+    physics_use: 計測ショットの基本形。自由落下の比較、放物線、摩擦の滑走距離。
+    measurement: true
+    refs: [CW-07, CW-24, CW-26, CW-27, CW-28]
+
+  - id: top_down
+    name: 真上からの固定
+    aka: [overhead, bird's-eye view, 俯瞰, 平面図]
+    group: fixed
+    what: カメラを真上に固定して真下を向く。
+    effect: 水平面内の動き（滑る、広がる、曲がる）が地図のように見える。
+    use_when: [水平方向の移動や広がりを比べる]
+    avoid_when: [高さ方向の動きが主役のとき]
+    params: [pos, fov または projection, 画面の上をどの方角にするか]
+    how:
+      - {tool: flashback, do: "真下を向けたカメラのキーフレーム。正投影と組み合わせる", confidence: 未確認, source: flashback_changelog}
+    pitfalls:
+      - "真下（pitch 90°）付近は向きの補間が乱れた不具合の履歴がある。固定ならよいが、動かすなら89°程度にする（CW-13）"
+    physics_use: 氷の上の滑走、水の広がり、爆風の届く範囲。
+    measurement: true
+    refs: [CW-13, CW-26]
+
+  - id: static_close
+    name: 固定の寄り
+    aka: [close-up, insert, クローズアップ]
+    group: fixed
+    what: 出来事が起きる1点の近くにカメラを固定して待つ。
+    effect: 瞬間の細部が見える。スローと組み合わせると強い。
+    use_when: [着地, 衝突, 点火, 作動の瞬間]
+    avoid_when: [どこで起きるかが毎回ずれる現象]
+    params: [pos, look_at, fov, speed]
+    how:
+      - {tool: flashback, do: "固定のカメラ＋Speedキーフレームでスロー", confidence: 一次, source: flashback_changelog, note: "Speedキーフレームがあることまでが一次"}
+      - {tool: replaymod, do: "固定のPosition Keyframe＋Time Keyframeの間隔でスロー", confidence: 一次, source: replaymod_docs}
+    pitfalls:
+      - "近いほど、被写体が画面を横切る時間が短い。スローの倍率とセットで決める"
+    physics_use: 着地の瞬間の順番を見せる（E001 の landing_close）。
+    measurement: false
+    refs: [CW-16]
+
+  - id: pov
+    name: 主観（乗り移り）
+    aka: [POV, first-person, spectate, スペクテイター視点]
+    group: fixed
+    what: 被写体そのものの視点で撮る。
+    effect: 自分が落ちる・飛ぶ感覚になる。速さが体感として伝わる。
+    use_when: [長い落下や飛行, フックの一撃]
+    avoid_when: [何が起きているかを説明したいとき（状況がわからなくなる）]
+    params: [target（乗り移る相手）, fov]
+    how:
+      - {tool: replaymod, do: "相手を右クリックして観戦し、Spectator Keyframe を同じ相手で2つ以上置く", confidence: 一次, source: replaymod_docs, note: "説明は「living entity」。落下ブロックやアイテムに使えるかは未確認"}
+      - {tool: vanilla, do: "スペクテイターモードで攻撃ボタン、または /spectate <target>", confidence: 二次, source: wiki_spectator}
+      - {tool: flashback, do: "プレイヤーを観戦する（一人称の更新を細かくする設定がある）", confidence: 一次, source: flashback_changelog, note: "0.4.0, 0.7.0。プレイヤー以外に使えるかは未確認"}
+    pitfalls:
+      - "一部の生物は、視点に入ると専用の画面効果がかかる（Wiki）"
+    physics_use: 「高度256から落ちる豚の視点」。演出専用。
+    measurement: false
+    refs: [CW-22]
+
+  # ---------- rotate: 位置は固定で向きだけ変える ----------
+
+  - id: pan_tilt
+    name: パン／ティルト
+    aka: [pan, tilt, 首振り]
+    group: rotate
+    what: カメラの位置を変えずに、左右（パン）か上下（ティルト）に向きを変える。
+    effect: 視線を誘導する。広い範囲を順に見せる。
+    use_when: [装置の端から端までを見せる, 上から下へ規模を見せる]
+    avoid_when: [計測ショット（画面上の速さが変わる）]
+    params: [pos, look_at_from, look_at_to, duration_s, ease]
+    how:
+      - {tool: replaymod, do: "同じ位置で向きだけ違うPosition Keyframeを2つ置く", confidence: 未確認, source: replaymod_docs}
+      - {tool: vanilla, do: "Cinematic Camera（マウスのなめらか化）を入れて手で回す", confidence: 二次, source: wiki_controls}
+    pitfalls:
+      - "向きの変化が大きいと遠回りすることがある（CW-13）"
+    physics_use: 高い塔を下から上へ見せて「これだけの高さから落とす」と示す。
+    measurement: false
+    refs: [CW-13]
+
+  - id: track_look
+    name: 向きで追う（位置固定の追尾）
+    aka: [tracking pan, look-at, target, Track Entity]
+    group: rotate
+    what: カメラの位置は固定し、動く被写体を画面の中央に入れ続けるように向きだけを変える。
+    effect: 被写体を見失わない。背景が流れるので速さも感じる。
+    use_when: [1つの被写体を最初から最後まで見せる]
+    avoid_when: [計測ショット, 被写体がカメラのすぐ横を高速で通る配置]
+    params: [pos, target, smoothing]
+    how:
+      - {tool: flashback, do: "Track Entity キーフレーム（0.32.0〜）", confidence: 一次, source: flashback_changelog, note: "向きだけ追うのか位置も追うのかは未確認。作者の解説動画 yt_2adv42iyTC8"}
+      - {tool: cmdcam, do: "/cam target で注視する相手を指定", confidence: 一次, source: cmdcam_modrinth}
+      - {tool: cinecam, do: "ポイントの Track にエンティティを指定", confidence: 一次, source: cinecam_modrinth}
+    pitfalls:
+      - "なめらかさを上げるほど、速い被写体から遅れる（CW-23）"
+      - "近くを高速で通ると、必要な回転が速すぎて画が流れる。最大の角速度は 速さ ÷ 距離（ラジアン/秒）。例: 秒速78ブロック（生物の終端速度とされる値。未確認）を距離30で追うと毎秒約150°"
+    physics_use: 落下する1体を横から追う。フックや演出向き。
+    measurement: false
+    refs: [CW-22, CW-23]
+
+  - id: roll
+    name: ロール（傾き）
+    aka: [dutch angle, camera roll, 斜め構図]
+    group: rotate
+    what: 視線を軸にカメラを傾ける。
+    effect: 不安定さ、異常さ、スピード感。
+    use_when: [「ありえない結果」を強調する一瞬]
+    avoid_when: [説明の場面, 計測ショット（水平がわからなくなる）]
+    params: [roll_deg]
+    how:
+      - {tool: replaymod, do: "Jで時計回り、Lで反時計回り、Kで戻す。Ctrlで微調整。Position Keyframeに保存される", confidence: 一次, source: replaymod_docs}
+      - {tool: flashback, do: "ロールのキー割り当て（0.40.0〜、既定は未割り当て）", confidence: 一次, source: flashback_changelog}
+      - {tool: cmdcam, do: "Gで左、Jで右、Hで戻す。/cam add の roll", confidence: 一次, source: cmdcam_modrinth}
+    pitfalls:
+      - "多用すると見づらい"
+    physics_use: ほぼ使わない。使うならオチの一瞬。
+    measurement: false
+    refs: [CW-05]
+
+  # ---------- move: カメラの位置を動かす ----------
+
+  - id: dolly
+    name: 前後移動（寄る・引く）
+    aka: [dolly in, dolly out, push in, pull back, ドリー]
+    group: move
+    what: 向きを保ったまま、視線の方向にカメラを前後させる。
+    effect: 寄ると注目と緊張、引くと全体像と解放。ズーム（FOVの変化）と違い、遠近感が変わる。
+    use_when: [注目させたい物に寄る, 結果の後に引いて全体を見せる]
+    avoid_when: [計測ショット]
+    params: [pos_from, pos_to, look_at, duration_s, ease]
+    how:
+      - {tool: replaymod, do: "始点と終点にPosition Keyframe。2点なら直線補間でよい", confidence: 一次, source: replaymod_docs}
+      - {tool: flashback, do: "カメラのキーフレームを2つ。補間の種類を選ぶ", confidence: 一次, source: flashback_changelog}
+    pitfalls:
+      - "止まって始まり止まって終わるなら ease_in_out（CW-11）"
+    physics_use: 結果が出た後、着地点から引いて3体の位置関係を見せる。
+    measurement: false
+    refs: [CW-10, CW-11]
+
+  - id: truck
+    name: 横移動
+    aka: [truck, lateral tracking, slider, スライド]
+    group: move
+    what: 向きを保ったまま、視線と直角の方向にカメラを平行移動する。
+    effect: 手前と奥のずれ（視差）で奥行きが伝わる。並んだ物を順に見せられる。
+    use_when: [横に並べた装置を端から見せる]
+    avoid_when: [並びが短くて固定で足りるとき]
+    params: [pos_from, pos_to, facing, duration_s, ease]
+    how:
+      - {tool: replaymod, do: "向きが同じPosition Keyframeを2つ。直線補間", confidence: 未確認, source: replaymod_docs}
+      - {tool: cmdcam, do: "/cam add で2点。distance_timing で等速", confidence: 一次, source: cmdcam_modrinth}
+    pitfalls:
+      - "速さがむらになりやすい（CW-10）"
+    physics_use: 条件を変えた装置を何台も並べた比較（摩擦の違う床など）を端から端まで見せる。
+    measurement: false
+    refs: [CW-10]
+
+  - id: crane_reveal
+    name: 上下移動と開示（クレーン）
+    aka: [crane, pedestal, jib, reveal, リビール]
+    group: move
+    what: カメラを上（または下）に動かしながら、隠れていた全体を見せていく。向きの変化を伴うことが多い。
+    effect: 規模の大きさが伝わる。「実はこれだけあった」という驚き。
+    use_when: [巨大な装置, 高い塔, オチで規模を明かす]
+    avoid_when: [小さい装置]
+    params: [pos_from, pos_to, look_at, duration_s, ease]
+    how:
+      - {tool: flashback, do: "低い位置と高い位置にカメラのキーフレーム", confidence: 未確認, source: flashback_changelog}
+      - {tool: cinemalya, do: "launch の arc_height・arc_side で弧を描く移動", confidence: 一次, source: cinemalya_modrinth}
+    pitfalls:
+      - "上がりきった位置で被写体が描画距離の外に出ないか確かめる（CW-29）"
+    physics_use: 極端な実験（系統C）で、装置の規模を明かす。
+    measurement: false
+    refs: [CW-29]
+
+  - id: follow
+    name: 追従（被写体と一緒に動く）
+    aka: [follow shot, tracking shot, chase cam, 並走]
+    group: move
+    what: 被写体との位置関係（オフセット）を保ったまま、カメラが一緒に動く。
+    effect: 被写体は画面の中で止まって見え、背景と他の物が動く。相対的な速さの違いが見える。
+    use_when: [長い距離を移動する被写体, 2つの物の速さの差を見せる]
+    avoid_when: [被写体そのものの速さを画面上の動きで読ませたいとき（止まって見えるため）]
+    params: [target, offset, look_at（被写体か、進行方向か）, smoothing, speed]
+    how:
+      - {tool: cmdcam, do: "/cam follow で位置を追う相手を指定。pos step 1 で遅れなし", confidence: 一次, source: cmdcam_modrinth}
+      - {tool: replaymod, do: "題名「Make the Camera Follow Anything」の解説動画がある", confidence: 二次, source: yt_30_o6SfiEhk, note: "題名のみ。方法は未確認"}
+      - {tool: flashback, do: "Track Entity キーフレーム", confidence: 一次, source: flashback_changelog, note: "位置まで追うかは未確認"}
+    pitfalls:
+      - "なめらかにした追従は遅れる。遅れが見かけの速さを変える（CW-23）"
+      - "背景に何もないと、動いていることが伝わらない。目盛りの柱や壁を背景に置く"
+    physics_use: 落下する豚に付いて撮り、金床が上へ離れていく（＝遅れていく）のを見せる。E001 の follow_down。
+    measurement: false
+    refs: [CW-22, CW-23]
+
+  - id: orbit
+    name: 周回
+    aka: [orbit, arc shot, 回り込み]
+    group: move
+    what: 被写体を中心に、カメラが円弧を描いて回る。被写体は画面の中央に保つ。
+    effect: 形と配置が立体的に伝わる。
+    use_when: [装置の紹介, 時間を止めた瞬間を見せる（freeze_orbit）]
+    avoid_when: [左右の位置関係を保って説明したいとき（向きが変わると混乱する）]
+    params: [center, radius, height, start_deg, sweep_deg, duration_s]
+    how:
+      - {tool: flashback, do: "orbit のキーフレーム／カメラ", confidence: 一次, source: flashback_changelog, note: "0.30.0「orbit keyframe」、0.31.0「orbit camera」と名前が出る。操作方法は未確認。日本語の解説 yt_nRSEtXeu5vo"}
+      - {tool: replaymod, do: "円周上に数点のPosition Keyframeを置き、スプライン補間", confidence: 未確認, source: replaymod_docs}
+      - {tool: cmdcam, do: "/cam interpolation circular と /cam target の組み合わせ", confidence: 一次, source: cmdcam_modrinth, note: "補間の選択肢に circular があることまでが一次。円弧になるかは未確認"}
+    pitfalls:
+      - "手で置いた点でスプラインを作ると円にならず、速さもむらになる（CW-10, CW-12）"
+      - "180°以上回すと向きの補間が遠回りすることがある（CW-13）"
+    physics_use: 「予想」の区間で装置を一周して見せる。90°程度の回り込みで足りることが多い。
+    measurement: false
+    refs: [CW-10, CW-12, CW-13]
+
+  - id: flythrough
+    name: 経路飛行（フライスルー）
+    aka: [flythrough, flyby, camera path, 空撮]
+    group: move
+    what: 3つ以上のキーフレームをなめらかな曲線でつなぎ、空間の中を飛ぶ。
+    effect: 空間の広がり。解説動画が「シネマティック」と呼ぶ映像の中心。
+    use_when: [オープニング, 大きな建造物の紹介]
+    avoid_when: [短い説明カット（長くなる）]
+    params: [keyframes（位置・向き・時刻の列）, interpolation, ease]
+    how:
+      - {tool: replaymod, do: "Position Keyframeを順に置く。既定の3次スプラインで全点を通る。Hで経路を確認", confidence: 一次, source: replaymod_docs}
+      - {tool: flashback, do: "カメラのキーフレーム＋Smooth／Hermite補間。経路は3Dで表示される", confidence: 一次, source: flashback_changelog}
+      - {tool: cmdcam, do: "Pで点を追加、Uで再生。既定はエルミート補間、既定の長さは10秒", confidence: 一次, source: cmdcam_modrinth}
+      - {tool: cinemalya, do: "launch_path に waypoints を渡す。3点以上は Catmull-Rom", confidence: 一次, source: cinemalya_modrinth}
+    pitfalls:
+      - "点が近い・多いと膨らみやループが出る（CW-12）"
+    physics_use: シリーズの冒頭や、装置が大きい回の導入。
+    measurement: false
+    refs: [CW-09, CW-10, CW-12]
+
+  # ---------- lens: 画角 ----------
+
+  - id: zoom
+    name: ズーム（FOVの変化）
+    aka: [zoom in, zoom out, FOV keyframe]
+    group: lens
+    what: カメラの位置を変えずにFOVを変える。
+    effect: 注目を集める。位置を動かさないので、遠近感は変わらない。
+    use_when: [引きの画のまま1点に注目させる]
+    avoid_when: [計測ショットの途中（縮尺が変わる）]
+    params: [fov_from, fov_to, duration_s, ease]
+    how:
+      - {tool: flashback, do: "FOVのキーフレーム／FOVの上書き", confidence: 一次, source: flashback_modrinth, note: "「override FOV」は公式の説明。FOVキーフレームの存在は flashplus_modrinth の記述から"}
+      - {tool: cmdcam, do: "Vで寄る、Nで引く、Bで戻す。点ごとに fov を持てる", confidence: 一次, source: cmdcam_modrinth}
+      - {tool: cinecam, do: "ポイントごとにFOV（1〜179°）", confidence: 一次, source: cinecam_modrinth}
+    pitfalls:
+      - "MCのFOVは縦の視野角。縦動画では横がかなり狭い（CW-06, CW-25）"
+    physics_use: 着地点に目を向けさせる。編集側のズーム（movie）で代用できる場面も多い。
+    measurement: false
+    refs: [CW-06, CW-24, CW-25]
+
+  - id: dolly_zoom
+    name: ドリーズーム
+    aka: [vertigo effect, Hitchcock zoom, めまいショット]
+    group: lens
+    what: カメラを前後に動かしながら、被写体の大きさが変わらないようにFOVを逆向きに変える。
+    effect: 被写体はそのままで背景だけが伸び縮みする。異常さ、衝撃。
+    use_when: [「現実とまったく違う結果」が出た瞬間の強調]
+    avoid_when: [説明の場面]
+    params: [pos_from, pos_to, subject_height, duration_s]
+    how:
+      - {tool: any, do: "距離 d のとき FOV = 2·atan(被写体の高さ ÷ (2·d)) になるよう、位置とFOVのキーフレームを同時に置く", confidence: 未確認, source: null, note: "幾何からの計算。高さ10の被写体なら d=10 で53°、d=20 で28°、d=40 で14°"}
+    pitfalls:
+      - "FOVの設定範囲（バニラは30〜110）に収まる距離にする（CW-06）"
+      - "位置とFOVを別々に線形補間すると、途中で被写体の大きさがずれる"
+    physics_use: 使うとしてもシリーズに数回。
+    measurement: false
+    refs: [CW-06, CW-24]
+
+  # ---------- time: 時間を操作する ----------
+
+  - id: slow_motion
+    name: スローモーション
+    aka: [slow-mo, スロー]
+    group: time
+    what: 世界の時間を動画の時間より遅く進める。
+    effect: 一瞬の出来事が目で追える。
+    use_when: [着地, 衝突, 爆発, 順番が問題になる瞬間]
+    avoid_when: [何も起きていない区間（間延びする）]
+    params: [speed（世界の時間 ÷ 動画の時間）, 区間]
+    how:
+      - {tool: replaymod, do: "Time Keyframe の間隔を広げる。再生速度は0.1〜8倍", confidence: 一次, source: replaymod_docs}
+      - {tool: flashback, do: "Speedキーフレーム", confidence: 一次, source: flashback_changelog}
+      - {tool: vanilla, do: "/tick rate <1.0〜10000>（20が等速。5なら0.25倍）", confidence: 二次, source: wiki_tick_cmd, note: "Java 1.20.3〜"}
+    pitfalls:
+      - "スローで長く映るのはtick間の補間で、物理そのものは20tick/秒の刻み（CW-30）"
+      - "倍率を画面に出さないと、速さの印象を誤らせる"
+    physics_use: 着地の順番。倍率は 0.5・0.25・0.1 のようなきりのよい値にして字幕で示す。
+    measurement: true
+    refs: [CW-16, CW-20, CW-30]
+
+  - id: speed_ramp
+    name: 速度の切り替え（スピードランプ）
+    aka: [speed ramp, 緩急]
+    group: time
+    what: 等速で進め、見せ場の直前でスローに落とし、過ぎたら等速に戻す。
+    effect: 長い待ち時間を飛ばしつつ、瞬間だけをじっくり見せる。
+    use_when: [落下のように「待ち」が長く「瞬間」が短い現象]
+    avoid_when: [現象全体の時間の長さを感じさせたいとき]
+    params: [区間ごとの speed, 切り替えの時刻]
+    how:
+      - {tool: flashback, do: "Speedキーフレームを区間ごとに置く。0.33.0以降はカメラの動きが速度変更の影響を受けない", confidence: 一次, source: flashback_changelog}
+      - {tool: replaymod, do: "Time Keyframe の間隔を区間ごとに変える", confidence: 一次, source: replaymod_docs, note: "速度の変わり目は自動ではなめらかにならない、という報告（二次、web_replaymod_forum_search）"}
+    pitfalls:
+      - "計測の根拠にする区間では速度を変えない"
+    physics_use: フックで「落とす → 落下は早送り → 着地だけスロー」。
+    measurement: false
+    refs: [CW-16, CW-19]
+
+  - id: freeze_orbit
+    name: 時間停止とカメラ移動
+    aka: [bullet time, frozen moment, freeze frame]
+    group: time
+    what: 世界の時間を止め、その間にカメラだけを動かす（回り込む、寄る）。
+    effect: 一瞬の位置関係を、立体的にじっくり見せられる。
+    use_when: [着地の直前, 軌道の頂点, 図やグラフを重ねて説明する]
+    avoid_when: [テンポを上げたい区間]
+    params: [freeze_at（止める時刻・tick）, 停止中のカメラの動き, duration_s]
+    how:
+      - {tool: replaymod, do: "同じ時刻のTime Keyframeを2つ置くと、その間は世界が止まる。Position Keyframeは通常どおり", confidence: 一次, source: replaymod_docs}
+      - {tool: flashback, do: "Freezeキーフレーム（0.14.0〜）", confidence: 一次, source: flashback_changelog}
+      - {tool: vanilla, do: "/tick freeze。プレイヤーは動けるので、カメラ役が動いて録画する", confidence: 二次, source: wiki_tick_cmd, note: "録画しながら使えるかは未確認（CW-20）"}
+    pitfalls:
+      - "止める時刻をtick単位で指定できると、計測データと対応が取れる"
+    physics_use: 「金床がまだここにいるとき、豚はもう地面」という瞬間を止めて、高さの差に数字を重ねる。
+    measurement: true
+    refs: [CW-17, CW-20]
+
+  - id: timelapse
+    name: タイムラプス
+    aka: [time-lapse, 早送り, 微速度撮影]
+    group: time
+    what: 長い時間を大きく早送りする。カメラは固定か、ゆっくり動かす。
+    effect: 作業や変化の全体が短時間で伝わる。
+    use_when: [装置の組み立て, 長時間かかる現象]
+    avoid_when: [速さそのものが主題の現象]
+    params: [実時間の長さ, 動画の長さ, カメラの動き]
+    how:
+      - {tool: flashback, do: "Timelapseキーフレーム", confidence: 一次, source: flashback_changelog, note: "0.2.0〜。使い方の解説動画 yt_TPAueZIblZE, yt_peczNONskb8"}
+      - {tool: replaymod, do: "離れた時刻のTime Keyframeを短い間隔で置く", confidence: 一次, source: replaymod_docs}
+      - {tool: vanilla, do: "/tick sprint で一気に進める（録画向きかは未確認）", confidence: 二次, source: wiki_tick_cmd}
+    pitfalls:
+      - "Flashbackでは、手ぶれ（camera shake）の速さはSpeed・Timelapseの影響を受けない（0.13.0）"
+    physics_use: 実験装置を建てる過程を数秒で見せる。
+    measurement: false
+    refs: [CW-21]
+
+  # ---------- edit: 構成 ----------
+
+  - id: multi_angle
+    name: 同じ現象の多視点
+    aka: [multi-angle, coverage, 別アングル]
+    group: edit
+    what: 1回の現象を、位置の違う複数のカメラで撮り、つないで見せる。
+    effect: 1回見ただけではわからないことを、角度を変えて確かめられる。
+    use_when: [実験の本番]
+    avoid_when: [なし（基本の撮り方）]
+    params: [ショットの一覧, 各ショットの対象区間]
+    how:
+      - {tool: flashback, do: "1つのリプレイから、scene switcher で複数のショットを作る（0.13.0〜）", confidence: 一次, source: flashback_changelog}
+      - {tool: replaymod, do: "キーフレームの組をKeyframe Repository（Xキー）に名前を付けて保存し、切り替える", confidence: 一次, source: replaymod_docs}
+      - {tool: freecam, do: "三脚モード（F4＋数字キー）で複数の視点を置いて切り替える", confidence: 一次, source: freecam_modrinth, note: "リプレイではなく、プレイ中の画面録画向け"}
+    pitfalls:
+      - "ショットをまたいで左右の位置関係が入れ替わると混乱する。カメラは被写体の列の同じ側に置く"
+    physics_use: 計測ショット1つ＋演出ショット数個、を基本にする。
+    measurement: false
+    refs: [CW-02, CW-04, CW-14]
+
+  - id: cut
+    name: カット（一瞬で切り替える）
+    aka: [hard cut, instant cut]
+    group: edit
+    what: カメラを動かさずに、次の位置へ一瞬で切り替える。
+    effect: テンポが上がる。移動の時間を省ける。
+    use_when: [ショートのテンポ, 別アングルへの切り替え]
+    avoid_when: [位置関係を連続して見せたいとき]
+    params: [切り替えの時刻, 次のショット]
+    how:
+      - {tool: flashback, do: "ショットごとに別々に書き出す。または補間をHoldにする", confidence: 二次, source: web_flashback_hold_search}
+      - {tool: cinecam, do: "移動の種類をCUTにする", confidence: 一次, source: cinecam_modrinth}
+      - {tool: movie, do: "ショットを別ファイルで書き出し、編集でつなぐ", confidence: 未確認, source: null}
+    pitfalls:
+      - "同じ被写体を似た角度・似た大きさのままカットすると、画が飛んで見える"
+    physics_use: ショート（ドパガキ編集）の基本。長尺でも別アングルへの切り替えに使う。
+    measurement: false
+    refs: [CW-14]
+
+  # ---------- texture: 質感 ----------
+
+  - id: camera_shake
+    name: 手ぶれ・振動
+    aka: [camera shake, screen shake, 画面揺れ]
+    group: texture
+    what: カメラに小さな揺れを加える。
+    effect: 衝撃、重さ、臨場感。
+    use_when: [着地や爆発の瞬間]
+    avoid_when: [計測ショット, 数字や字幕を読ませる区間]
+    params: [強さ, 長さ]
+    how:
+      - {tool: flashback, do: "camera shake の機能がある", confidence: 一次, source: flashback_changelog, note: "0.13.0 に名前が出るだけで、操作方法は未確認"}
+      - {tool: movie, do: "編集側で画面を揺らす", confidence: 未確認, source: null}
+    pitfalls:
+      - "実際には揺れていないものを揺らす演出なので、物理の説明と混ぜない"
+    physics_use: 金床の着地などの演出。編集側で足すほうが、同じ素材を計測にも使える。
+    measurement: false
+    refs: []
+
+  - id: manual_smooth
+    name: 手で操作するなめらかな視点
+    aka: [cinematic camera, smooth camera, mouse smoothing]
+    group: texture
+    what: マウスの動きをなめらかにする機能を入れて、人が手でカメラを振る。
+    effect: 手持ちカメラのような自然な動き。
+    use_when: [リプレイを使わない簡単な撮影, 実況に近い場面]
+    avoid_when: [撮り直して同じ動きを再現したいとき]
+    params: []
+    how:
+      - {tool: vanilla, do: "操作設定の Toggle Cinematic Camera（既定は未割り当て）を入れる", confidence: 二次, source: wiki_controls}
+      - {tool: camera_utils, do: "なめらかさの詳細設定、カメラの切り離し、三人称の距離の変更", confidence: 一次, source: camera_utils_modrinth}
+      - {tool: replaymod, do: "リプレイの中を飛ぶ速さはマウスホイールで変えられる", confidence: 一次, source: replaymod_docs}
+    pitfalls:
+      - "再現性がない。実験をコードで定義するこのリポジトリの方針とは合わない"
+    physics_use: 基本は使わない。
+    measurement: false
+    refs: []

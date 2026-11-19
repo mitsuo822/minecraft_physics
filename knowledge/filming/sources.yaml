@@ -1,0 +1,1153 @@
+# 出典の一覧（カメラワークの調査、2026-11-19）
+#
+# 他のファイルは、ここの id で出典を指す。
+#   kind        official_doc=公式ドキュメント / mod_page=作者が書いた配布ページ / changelog=作者が書いた変更履歴 /
+#               wiki=Minecraft Wiki / web_search=Web検索の要約 / youtube=YouTubeの動画
+#   confidence  その出典から得た事実に付ける確度の上限（一次 / 二次）。意味は CLAUDE.md
+#   read        どこまで読んだか
+#     youtube の場合  page  = 動画ページの題名・投稿者・公開日・概要欄・チャプターを読んだ
+#                     title = 題名と投稿者だけ確認した（概要欄は未読）
+#     どの動画も、字幕（発話内容）と映像は確認できていない。
+#   tool        動画が扱う道具。flashback / replaymod / cmdcam / cinemalya / vanilla（Java版のコマンド・データパック）/
+#               bedrock_camera（統合版の /camera）/ bedrock_addon / other_mod / unknown / live_action（実写）
+#   topic       動画の主題（題名・概要欄・チャプターから付けた注記）
+#   views       2026-11-19 時点の再生数
+
+meta:
+  surveyed_at: "2026-11-19"
+  youtube_total: 67
+  youtube_read_page: 9
+  youtube_read_title_only: 58
+  youtube_by_tool: {flashback: 15, replaymod: 19, cmdcam: 1, cinemalya: 1, vanilla: 9, bedrock_camera: 6, bedrock_addon: 4, other_mod: 5, unknown: 5, live_action: 2}
+  transcripts_read: 0
+  videos_watched: 0
+  note: "YouTubeの字幕の取得はbot判定で止められた。動画ページの取得も低速（約100〜200秒に1本）に制限された"
+
+sources:
+
+  # ---------- 公式資料（一次） ----------
+  - id: replaymod_docs
+    kind: official_doc
+    confidence: 一次
+    url: https://www.replaymod.com/docs/
+    title: "Replay Mod Documentation"
+    read: "1〜5章のうち、記録・移動・時間・カメラパス・書き出し・FAQ・互換性を全文"
+    notes: "ReplayModの公式ドキュメント。キーフレーム、補間、Time Keyframe、書き出しの一次資料"
+    accessed: "2026-11-19"
+
+  - id: replaymod_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/replaymod
+    title: "ReplayMod（Modrinth）"
+    read: "説明文と登録情報（対応バージョン・ローダー・ライセンス）"
+    notes: "Fabric・Forge、1.8〜26.3、GPL-3.0-or-later"
+    accessed: "2026-11-19"
+
+  - id: flashback_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/flashback
+    title: "Flashback（Modrinth）"
+    read: "説明文、ギャラリーの説明、登録情報"
+    notes: "作者 Moulberry。Fabric、1.21〜1.21.11・26.1〜26.3、All Rights Reserved。説明文は短い"
+    accessed: "2026-11-19"
+
+  - id: flashback_changelog
+    kind: changelog
+    confidence: 一次
+    url: https://modrinth.com/mod/flashback/version/0.33.0
+    title: "Flashback 各バージョンの変更履歴（Modrinth）"
+    read: "0.2.0〜0.43.1 のうち取得できた39バージョン分（URLの末尾を版番号に変える）"
+    notes: "Flashbackの機能を知るための主な一次資料。機能の名前と追加された版がわかる。操作方法は書かれていない"
+    accessed: "2026-11-19"
+
+  - id: flashback_extras_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/flashback-extras
+    title: "Flashback Extras（Modrinth）"
+    read: "説明文と登録情報"
+    notes: "Flashbackの補助mod。書き出しプリセット、縦動画の枠の表示"
+    accessed: "2026-11-19"
+
+  - id: flashplus_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/flashplus
+    title: "FlashPlus（Modrinth）"
+    read: "説明文と登録情報"
+    notes: "Flashbackの補助mod。カメラパスの書き出し（FOVキーフレームを含む）"
+    accessed: "2026-11-19"
+
+  - id: flashbackinstantrecord_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/flashbackinstantrecord
+    title: "Flashback Instant Record（Modrinth）"
+    read: "説明文と登録情報"
+    notes: "Flashbackの補助mod。記録の開始・停止をキーや出来事で行う"
+    accessed: "2026-11-19"
+
+  - id: cmdcam_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/cmdcam
+    title: "CMDCam（Modrinth）"
+    read: "説明文（コマンド一覧）と登録情報"
+    notes: "作者 CreativeMD。Forge・NeoForge、1.18.2〜26.3、LGPL-2.1-only。コマンドの書式の一次資料"
+    accessed: "2026-11-19"
+
+  - id: cinemalya_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/datapack/cinemalya
+    title: "Cinemalya（Modrinth）"
+    read: "説明文の全文と登録情報"
+    notes: "作者 Stoupy。データパック、26.2〜26.3、MIT。item_display を観戦させる方式と、回転の刻みの回避策の説明"
+    accessed: "2026-11-19"
+
+  - id: cinecam_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/cinecam
+    title: "CineCam（Modrinth）"
+    read: "説明文と登録情報"
+    notes: "Fabric・Forge、26.1.2。ポイント編集、追尾、CUT／SMOOTH／LINEAR／SPLINE"
+    accessed: "2026-11-19"
+
+  - id: frametica_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/frametica
+    title: "Frametica（Modrinth）"
+    read: "説明文の前半と登録情報"
+    notes: "Forge、1.19.2・1.20.1。コマンドでウェイポイントを置くカットシーンmod"
+    accessed: "2026-11-19"
+
+  - id: freecam_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/freecam
+    title: "Freecam（Modrinth）"
+    read: "説明文の前半と登録情報"
+    notes: "Fabric・Forge・NeoForge、1.16.2〜26.3、MIT。カメラをプレイヤーから切り離す。三脚モード"
+    accessed: "2026-11-19"
+
+  - id: camera_utils_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/mod/camera-utils
+    title: "Camera Utils（Modrinth）"
+    read: "説明文と登録情報"
+    notes: "Fabric・Quilt、1.19〜26.3。ズーム、カメラの切り離し、三人称の距離"
+    accessed: "2026-11-19"
+
+  # ---------- Minecraft Wiki（二次） ----------
+  - id: wiki_tick_cmd
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Commands/tick
+    title: "Minecraft Wiki: /tick"
+    read: "構文・引数・履歴"
+    notes: "Java 1.20.3（23w43a）で追加"
+    accessed: "2026-11-19"
+
+  - id: wiki_display
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Display
+    title: "Minecraft Wiki: Display"
+    read: "補間の節と履歴"
+    notes: "teleport_duration は 1.20.2（23w31a）"
+    accessed: "2026-11-19"
+
+  - id: wiki_camera_cmd
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Commands/camera
+    title: "Minecraft Wiki: /camera"
+    read: "構文・引数・例・履歴"
+    notes: "統合版のみ。イージング32種類"
+    accessed: "2026-11-19"
+
+  - id: wiki_options
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Options
+    title: "Minecraft Wiki: Options"
+    read: "FOV、Entity Distance、View Bobbing、FOV Effects の項"
+    notes: "FOVは縦の視野角。横の視野角の表あり"
+    accessed: "2026-11-19"
+
+  - id: wiki_controls
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Controls
+    title: "Minecraft Wiki: Controls"
+    read: "F1、F5、Toggle Cinematic Camera の項"
+    accessed: "2026-11-19"
+
+  - id: wiki_spectator
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Spectator
+    title: "Minecraft Wiki: Spectator"
+    read: "移動と、エンティティの視点に入る節"
+    accessed: "2026-11-19"
+
+  - id: wiki_spectate
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Commands/spectate
+    title: "Minecraft Wiki: /spectate"
+    read: "構文"
+    accessed: "2026-11-19"
+
+  - id: wiki_rotate
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Commands/rotate
+    title: "Minecraft Wiki: /rotate"
+    read: "構文と履歴"
+    notes: "Java 1.21.2（24w40a）で追加"
+    accessed: "2026-11-19"
+
+  - id: wiki_third_person
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Third-person_view
+    title: "Minecraft Wiki: Third-person view"
+    read: "使い方の節"
+    notes: "カメラは既定で4ブロック後ろ。ブロックにぶつかる"
+    accessed: "2026-11-19"
+
+  - id: wiki_attribute
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Attribute
+    title: "Minecraft Wiki: Attribute"
+    read: "camera_distance の項と履歴"
+    notes: "camera_distance は 1.21.6（25w15a）で追加"
+    accessed: "2026-11-19"
+
+  # ---------- Web検索の要約（二次。元のページは読めていない） ----------
+  - id: web_pmc_cinematic_blog
+    kind: web_search
+    confidence: 二次
+    query: "マイクラ シネマティック 撮り方 カメラワーク Replay Mod コツ"
+    result_urls:
+      - https://www.planetminecraft.com/blog/an-epic-minecraft-cinematic---and-a-tutorial-on-how-to-do-one-like-it/
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "Replay Modは実時間ではなく後から描いて書き出すので高性能なPCが要らない、シェーダーで見栄えが上がる、という説明"
+    accessed: "2026-11-19"
+
+  - id: web_replaymod_forum_search
+    kind: web_search
+    confidence: 二次
+    query: "Minecraft ReplayMod smooth camera path tips keyframe spacing constant speed jerky rotation"
+    result_urls:
+      - https://www.replaymod.com/forum/thread/2266
+      - https://www.replaymod.com/forum/thread/2002
+      - https://www.replaymod.com/forum/thread/1978
+      - https://www.replaymod.com/forum/thread/181
+      - https://www.replaymod.com/forum/thread/713
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "ReplayModフォーラムの古いスレッド（2015〜2017年ごろ）。点が近いとループや揺れが出る、最初と最後にTime Keyframeを置けば等速、速度の変わり目は自動でなめらかにならない、など。2026-11-19 時点でスレッドのページは404"
+    accessed: "2026-11-19"
+
+  - id: web_flashback_hold_search
+    kind: web_search
+    confidence: 二次
+    query: "Flashback mod Minecraft tutorial cinematic camera keyframes interpolation export"
+    result_urls:
+      - https://modrinth.com/modpack/5zkDfS7I
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "Flashbackで瞬間的なカットにするには補間をHoldにするか別々に書き出す、という説明"
+    accessed: "2026-11-19"
+
+  - id: web_fov_tips_search
+    kind: web_search
+    confidence: 二次
+    query: "Minecraft build showcase cinematic tips composition lighting time of day FOV"
+    result_urls:
+      - https://youtubesummary.com/summary/Zy3RUHYpT4I
+      - https://www.planetminecraft.com/blog/tips-to-improve-your-screenshots-4075113/
+      - https://texture-packs.com/guides/how-to-take-better-minecraft-screenshots
+      - https://www.mcmiddleearth.com/community/threads/screenshot-guides.6041
+      - https://screenrant.com/minecraft-tips-tricks-taking-perfect-picture-guide/
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "FOVを30や55以下に下げる、View BobbingとFOV Effectsを切る、真昼を避けて朝夕の光で撮る、ゆっくりなめらかに動かす、被写体を中央に置かない、などの助言。どのページがどれを言っているかは確かめていない"
+    accessed: "2026-11-19"
+
+  - id: web_display_camera_search
+    kind: web_search
+    confidence: 二次
+    query: "Minecraft Java smooth camera path vanilla datapack display entity teleport_duration spectate cutscene"
+    result_urls:
+      - https://www.minecraftmaps.com/tools/camera-path-generator
+      - https://modrinth.com/project/1PdRcarb
+      - https://bugs-legacy.mojang.com/browse/MC-272599
+      - https://bugs-legacy.mojang.com/browse/MC-279534
+      - https://bugs.mojang.com/browse/MC-276459
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "displayエンティティをカメラ役にする方式の事例と、teleport_duration の不具合報告（1区間59tickまで、値が大きいと等速にならない、など）"
+    accessed: "2026-11-19"
+
+  - id: web_cmdcam_search
+    kind: web_search
+    confidence: 二次
+    query: "CMDCam mod Minecraft commands interpolation hermite outside mode follow target"
+    result_urls:
+      - https://modrinth.com/mod/cmdcam-fabric
+      - https://www.curseforge.com/minecraft/mc-mods/cmdcam
+    read: "検索ツールが返した要約だけ。元のページは未読"
+    notes: "CMDCamの非公式のFabric移植があるという情報"
+    accessed: "2026-11-19"
+
+  # ---------- YouTube（二次） ----------
+  # --- tool: flashback ---
+  - id: yt_8NA1PN0DUZQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=8NA1PN0DUZQ
+    title: "How to Make Cinematic Shots in Minecraft! (Flashback Mod)"
+    channel: "NickBinStudios"
+    lang: en
+    tool: flashback
+    topic: "設定、記録、エディタ、編集ソフトでの仕上げ"
+    read: page
+    published: "2025-02-18"
+    views: 1660
+    chapters:
+      - "0:00 Intro"
+      - "0:40 Flashback Settings"
+      - "1:41 Recording World"
+      - "4:05 Replay Editor"
+      - "11:08 Adobe Premiere Pro"
+      - "13:18 Outro"
+    notes: "概要欄: Flashbackで記録し、ゲーム内で編集する。最後の章は編集ソフト（Adobe Premiere Pro）での仕上げ"
+
+  - id: yt_KVqOTtCLff8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=KVqOTtCLff8
+    title: "A Guide to Minecraft’s Best Cinematic Mod | Flashback Tutorial"
+    channel: "Opticality"
+    lang: en
+    tool: flashback
+    topic: "全般"
+    read: page
+    published: "2024-10-18"
+    views: 370680
+    chapters:
+      - "0:00 Intro"
+      - "0:21 Recording"
+      - "1:16 Interface"
+      - "2:12 Settings"
+      - "5:23 Timeline"
+      - "5:55 Camera"
+      - "8:11 FOV"
+      - "8:45 Timelapse"
+      - "9:33 Speed"
+      - "10:35 Time of Day"
+      - "11:03 Rendering"
+      - "11:30 Outro"
+    notes: "チャプターが Recording／Interface／Settings／Timeline／Camera／FOV／Timelapse／Speed／Time of Day／Rendering。Flashbackのキーフレームの種類の並びがわかる"
+
+  - id: yt_LGX5Fov3tcc
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=LGX5Fov3tcc
+    title: "Everything you need to know about MINECRAFT Flashback Mod"
+    channel: "PUNtoofa"
+    lang: en
+    tool: flashback
+    topic: "全般"
+    read: page
+    published: "2026-03-29"
+    views: 9666
+    chapters:
+      - "0:00 Getting Started with Flashback Mod"
+      - "0:53 Mastering the Timeline and Keyframes"
+      - "5:07 Advanced Audio Management Techniques"
+      - "6:42 Hidden Features and Pro Tips"
+    notes: "概要欄の話題: グリーンスクリーン、Simple Voice Chatとの併用、プレイヤーやモブを消す、主観での書き出し、音声と見た目の設定、スキンの変更、エンティティの追跡"
+
+  - id: yt_S9MruT8QCsk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=S9MruT8QCsk
+    title: "【Java版26.2 最新版対応】マイクラ撮影MOD Flashbackの導入方法と使い方！初心者向けに解説 #録画  #マイクラ #Flashback"
+    channel: "KENOVA研究所 | 世界を知る・学ぶ・つくる"
+    lang: ja
+    tool: flashback
+    topic: "導入から、記録、自由カメラ、書き出し範囲、表示の調整、キーフレームまで"
+    read: page
+    published: "2026-07-26"
+    views: 562
+    chapters:
+      - "1:25 第1章 ダウンロードする3つのファイル"
+      - "2:49 第5章 Fabricをインストールする"
+      - "3:43 第6章 FlashbackとFabric APIをmodsフォルダーへ入れる"
+      - "4:34 第7章 Fabric版のMinecraftを起動する"
+      - "5:07 第8章 テスト用ワールドを作成する"
+      - "5:32 第9章 Flashbackのインストールを確認する"
+      - "6:05 第10章 プレイを録画する"
+      - "7:24 第11章 録画したリプレイを開く"
+      - "8:13 第12章 リプレイを再生して基本操作を確認する"
+      - "9:27 第13章 自由カメラを操作する"
+      - "10:58 第14章 開始位置と終了位置を指定して動画を書き出す"
+      - "12:31 第15章 映像に表示する内容を調整する"
+      - "14:29 第16章 キーフレームでカメラを動かす"
+      - "16:44 第17章 完成したカメラワークを動画として書き出す"
+      - "17:35 まとめ"
+    notes: "概要欄は英語への自動翻訳で読んだ。使用環境は MC 26.2・Flashback 0.41.1・Fabric Loader 0.19.3・Fabric API 0.155.2+26.2。書き出し範囲はIキーとOキーで指定する、名札やパーティクルの表示を変える、記録後に天気を変える、キーフレームでなめらかなカメラワークを作る、とある"
+
+  - id: yt_XPBwuC97_-w
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=XPBwuC97_-w
+    title: "This Mod is Changing Minecraft Videos Forever"
+    channel: "Mogswamp"
+    lang: en
+    tool: flashback
+    topic: "Flashbackの紹介、ReplayModとの違い、作者へのインタビュー。Flashbackの配布ページに埋め込まれている動画"
+    read: page
+    published: "2024-08-21"
+    views: 1053358
+    chapters:
+      - "0:00 Introduction to flashback"
+      - "0:20 UI and core features"
+      - "3:19 Advanced editing tools"
+      - "5:04 Sponsor message"
+      - "6:07 Flashback vs replay mod"
+      - "8:48 Technical differences"
+      - "10:05 Visuals and rapid updates"
+      - "11:55 Axiom mod experience"
+      - "13:38 Developer interview"
+      - "15:21 Supporting creators"
+    notes: "Flashbackの配布ページが紹介している動画。チャプターに ReplayMod との比較、技術的な違い、作者へのインタビューがある"
+
+  - id: yt_eSXIrF3KmlM
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=eSXIrF3KmlM
+    title: "How To Use Flashback Mod | (Minecraft Flashback Mod Tutorial)"
+    channel: "ReytGood"
+    lang: en
+    tool: flashback
+    topic: "記録、エディタ、カメラのキーフレーム、アニメーションのトラック、シェーダー、書き出し"
+    read: page
+    published: "2026-07-03"
+    views: 51275
+    chapters:
+      - "0:00 Recording basics"
+      - "1:07 Editor interface and navigation"
+      - "3:06 Advanced camera keyframing"
+      - "4:55 Advanced animation tracks"
+      - "7:06 Shaders and visual settings"
+      - "8:33 Exporting and final steps"
+    notes: "概要欄: 記録の方法、カメラのキーフレーム、描画と書き出しの設定、なめらかに見せるコツ、Replay Modから乗り換える人が多い理由、を扱うとある"
+
+  - id: yt_nRSEtXeu5vo
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=nRSEtXeu5vo
+    title: "【マイクラ】flashback modのカメラ軌道について解説【マインクラフト｜minecraft｜フラッシュバックMOD｜モッド】"
+    channel: "korenaga nagao"
+    lang: ja
+    tool: flashback
+    topic: "Camera と Camera orbit のキーフレーム"
+    read: page
+    published: "2025-02-19"
+    views: 1103
+    chapters:
+      - "0:00 導入"
+      - "0:18 Camera"
+      - "6:35 Camera orbit"
+      - "11:22 おまけ"
+      - "13:00 おわり"
+    notes: "チャプターは Camera（0:18〜）と Camera orbit（6:35〜）。VOICEVOX（ずんだもん、四国めたん）の解説動画"
+
+  - id: yt_1qlsGg1kXyM
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=1qlsGg1kXyM
+    title: "Flashback 0.33.0"
+    channel: "Moulberry"
+    lang: en
+    tool: flashback
+    topic: "0.33.0 の紹介（作者）"
+    read: title
+
+  - id: yt_2adv42iyTC8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=2adv42iyTC8
+    title: "Flashback Track Entity Keyframe Tutorial"
+    channel: "Moulberry"
+    lang: en
+    tool: flashback
+    topic: "Track Entity キーフレーム（作者による解説）"
+    read: title
+
+  - id: yt_TPAueZIblZE
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=TPAueZIblZE
+    title: "How to make timelapses in the Flashback Mod (No BS)"
+    channel: "RedLife"
+    lang: en
+    tool: flashback
+    topic: "タイムラプス"
+    read: title
+
+  - id: yt_Z1zt-1gbleA
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Z1zt-1gbleA
+    title: "How to use the Flashback mod - In depth Tutorial"
+    channel: "MC. ivan"
+    lang: en
+    tool: flashback
+    topic: "全般（詳細）"
+    read: title
+
+  - id: yt_peczNONskb8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=peczNONskb8
+    title: "How to Make a Minecraft Timelapse in Under 3 Minutes (Flashback Mod)"
+    channel: "she1"
+    lang: en
+    tool: flashback
+    topic: "タイムラプス"
+    read: title
+
+  - id: yt_uoRJoQ144io
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=uoRJoQ144io
+    title: "Flashback Tutorial: Orbit #minecraft #minecraftshorts #minecraftmods"
+    channel: "MaezrielMC"
+    lang: en
+    tool: flashback
+    topic: "Orbit（ショート）"
+    read: title
+
+  - id: yt_vWFhfDVUk_4
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=vWFhfDVUk_4
+    title: "Flashback Mod Tutorial (NO BS)"
+    channel: "RedLife"
+    lang: en
+    tool: flashback
+    topic: "全般"
+    read: title
+
+  - id: yt_vo1fh3_zJ9I
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=vo1fh3_zJ9I
+    title: "How to Make Cinematic Minecraft Shots (Flashback Mod)"
+    channel: "Champlify"
+    lang: en
+    tool: flashback
+    topic: "シネマティックなショット（ショート）"
+    read: title
+
+  # --- tool: replaymod ---
+  - id: yt_P1bGz5ykIFE
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=P1bGz5ykIFE
+    title: "Mastering the Minecraft ReplayMod - Part 1: Interpolation and Smooth Paths"
+    channel: "slicedlime"
+    lang: en
+    tool: replaymod
+    topic: "なめらかな経路と補間（6回シリーズの第1回）"
+    read: page
+    published: "2016-12-28"
+    views: 20320
+    chapters:
+      - "0:00 Introduction to series"
+      - "2:16 Planning the camera path"
+      - "7:24 Overcoming playback delays"
+      - "13:31 Understanding interpolation"
+      - "17:56 Advanced rendering strategy"
+      - "21:06 Editing and final assembly"
+    notes: "概要欄にシリーズ全6回の内容。第2回=タイムラインの再利用、第3回=リプレイをまたいだ再利用、第4回=タイムラインを別の場所へ移す（プレイヤーを中心に固定し、周りの環境が移り変わる）、第5・6回=グリーンスクリーン。基本操作は別の入門動画を前提にしている"
+
+  - id: yt_0dR_pClhot8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=0dR_pClhot8
+    title: "Kamerafahrten in Minecraft erstellen | Replay Mod Tutorial"
+    channel: "PashyGuy"
+    lang: de
+    tool: replaymod
+    topic: "カメラの移動（ドイツ語）"
+    read: title
+
+  - id: yt_0pZ8MaWH-PQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=0pZ8MaWH-PQ
+    title: "Minecraft: Create INSANE Reversed Build Timelapses (Replay Mod Tutorial)"
+    channel: "VanderzoneMC"
+    lang: en
+    tool: replaymod
+    topic: "逆再生の建築タイムラプス"
+    read: title
+
+  - id: yt_2hrQFT6oVBc
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=2hrQFT6oVBc
+    title: "How to make Minecraft Build Animation Timelapse Videos| Full Tutorial"
+    channel: "Burtocu"
+    lang: en
+    tool: replaymod
+    topic: "建築アニメーションのタイムラプス"
+    read: title
+
+  - id: yt_30_o6SfiEhk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=30_o6SfiEhk
+    title: "Replay Mod Tutorial: Make the Camera Follow Anything"
+    channel: "Another Distraction"
+    lang: en
+    tool: replaymod
+    topic: "カメラを何にでも追従させる"
+    read: title
+
+  - id: yt_54tUjmU_a2A
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=54tUjmU_a2A
+    title: "Quick & Easy Timelapse with Replay Mod! [Minecraft Tutorial]"
+    channel: "SickSid"
+    lang: en
+    tool: replaymod
+    topic: "タイムラプス"
+    read: title
+
+  - id: yt_6eSSxpRg07E
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=6eSSxpRg07E
+    title: "Minecraft Replay Mod Tutorial 🔥 Make INSANE Cinematic Shots in 5 Minutes!"
+    channel: "God bhaiya Gaming"
+    lang: en
+    tool: replaymod
+    topic: "シネマティックなショット"
+    read: title
+
+  - id: yt_8jGU0m57Ca0
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=8jGU0m57Ca0
+    title: "Minecraft Tutorial: How to Easily USE & EDIT Replay Mod Footage"
+    channel: "Dewlan"
+    lang: en
+    tool: replaymod
+    topic: "素材の使い方と編集"
+    read: title
+
+  - id: yt_997ySD0sVC4
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=997ySD0sVC4
+    title: "Replay Mod Tutorial | Create Complex Shots"
+    channel: "Cortezerino"
+    lang: en
+    tool: replaymod
+    topic: "複雑なショット"
+    read: title
+
+  - id: yt_9jl7ebacnTQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=9jl7ebacnTQ
+    title: "How to use ReplayMod in Minecraft | Timelapses and Cinematics"
+    channel: "DaPuffin"
+    lang: en
+    tool: replaymod
+    topic: "タイムラプスとシネマティック"
+    read: title
+
+  - id: yt_GLlykl11Og4
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=GLlykl11Og4
+    title: "Replay Mod Tutorial 2025 – Complete Beginner Guide HOW TO DO TIMELAPSE"
+    channel: "FixLabUS"
+    lang: en
+    tool: replaymod
+    topic: "初心者向け全般、タイムラプス"
+    read: title
+
+  - id: yt_Lg3PK0zuglY
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Lg3PK0zuglY
+    title: "How to Make a Minecraft Build Timelapse Using Replay Mod 1.18.2 - Tutorial"
+    channel: "Jeroo"
+    lang: en
+    tool: replaymod
+    topic: "建築タイムラプス（1.18.2）"
+    read: title
+
+  - id: yt_NaCNpdQGIWw
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=NaCNpdQGIWw
+    title: "【Minecraft MOD解説】低スペPCでも高画質でヌルヌルな動画を録画！『ReplayMOD』を徹底解説【1.19対応】"
+    channel: "Mister-β Channel"
+    lang: ja
+    tool: replaymod
+    topic: "導入と使い方（1.19）"
+    read: title
+
+  - id: yt_PEazXIwkx1w
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=PEazXIwkx1w
+    title: "Minecraft Replay Mod 1.20 : Cinematic Videos Made Easy - How to Download & Use"
+    channel: "Zeabruse "
+    lang: en
+    tool: replaymod
+    topic: "導入と使い方（1.20）"
+    read: title
+
+  - id: yt_e51Fxoyd7Sc
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=e51Fxoyd7Sc
+    title: "Mastering the Minecraft ReplayMod - Part 3: Moving Timelines Between Replays"
+    channel: "slicedlime"
+    lang: en
+    tool: replaymod
+    topic: "タイムラインを別のリプレイへ移す（同シリーズの第3回）"
+    read: title
+
+  - id: yt_mqWLuCfeCOU
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=mqWLuCfeCOU
+    title: "Best Cinematic Mod for Minecraft 26.2! 🎥 Ultra Smooth Gameplay + Replay Mod Tutorial"
+    channel: "A.B ROX GAMING 2.0"
+    lang: en
+    tool: replaymod
+    topic: "導入と使い方（26.2）"
+    read: title
+
+  - id: yt_oMIT55DF4AQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=oMIT55DF4AQ
+    title: "【マイクラ Java版26.2対応】Replay Modの入れ方と使い方！初心者向けに導入から基本操作まで解説 #Minecraft #ReplayMod #マイクラJava版"
+    channel: "KENOVA研究所 | 世界を知る・学ぶ・つくる"
+    lang: ja
+    tool: replaymod
+    topic: "導入と基本操作（26.2）"
+    read: title
+
+  - id: yt_oQOC1hXnOxE
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=oQOC1hXnOxE
+    title: "How to Make INSANE Cinematic Minecraft Videos (Replay Mod Guide)"
+    channel: "Kevvlo"
+    lang: en
+    tool: replaymod
+    topic: "シネマティック全般"
+    read: title
+
+  - id: yt_s3YcqBcKoV8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=s3YcqBcKoV8
+    title: "How To Make CINEMATIC SHOTS in Minecraft! 🎥 | Replay Mod Tutorial"
+    channel: "zenoxgaming"
+    lang: en
+    tool: replaymod
+    topic: "シネマティックなショット"
+    read: title
+
+  # --- tool: cmdcam ---
+  - id: yt_ePVbfjxMOHo
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=ePVbfjxMOHo
+    title: "【マイクラ】カメラMOD『CMDCam』のカメラパスの補間方法解説【日本語化リソースパック配布】"
+    channel: "Mine-Tech / MOD解説と日本語化"
+    lang: ja
+    tool: cmdcam
+    topic: "カメラパスの補間方法"
+    read: page
+    published: "2024-04-13"
+    views: 5024
+    notes: "概要欄: Forge向けのCMDCamの補間方法を解説。使い方とコマンドの詳細は投稿者のブログ（mine-blog.tech）にあるとのこと。VOICEVOXとゆっくりMovieMaker4の解説動画"
+
+  # --- tool: cinemalya ---
+  - id: yt_FtVcRR-iO80
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=FtVcRR-iO80
+    title: "Cinemalya | A Minecraft datapack library for flying players through cinematic camera moves"
+    channel: "Stoupy"
+    lang: en
+    tool: cinemalya
+    topic: "データパック Cinemalya の紹介（作者）"
+    read: title
+
+  # --- tool: vanilla ---
+  - id: yt_5GNSdAobcj8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=5GNSdAobcj8
+    title: "Smooth Animations/Cut Scenes in Vanilla Minecraft"
+    channel: "Jackson Mazer"
+    lang: en
+    tool: vanilla
+    topic: "バニラでのなめらかなアニメーションとカットシーン"
+    read: title
+
+  - id: yt_FDM2UO4EOPM
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=FDM2UO4EOPM
+    title: "Minecraft Java 1.17.1 How To Enable Cinematic Camera Mode Minecraft Java Tutorial"
+    channel: "GamerPotion"
+    lang: en
+    tool: vanilla
+    topic: "Cinematic Camera の有効化（1.17.1）"
+    read: title
+
+  - id: yt_STaEfUoygig
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=STaEfUoygig
+    title: "Smooth Cutscene Cameras with 1 Command in Minecraft"
+    channel: "Cloud Wolf"
+    lang: en
+    tool: vanilla
+    topic: "item_display を使ったなめらかなカットシーンのカメラ"
+    read: title
+
+  - id: yt_SltN9j4gDek
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=SltN9j4gDek
+    title: "Cutscenes in Minecraft 1.18 | Datapack"
+    channel: "JDoinkus"
+    lang: en
+    tool: vanilla
+    topic: "データパックでのカットシーン（1.18）"
+    read: title
+
+  - id: yt_TGu31ioaklY
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=TGu31ioaklY
+    title: "How To Use Tick Freeze in Minecraft🥶"
+    channel: "Mr.Pupu."
+    lang: en
+    tool: vanilla
+    topic: "/tick freeze"
+    read: title
+
+  - id: yt_UVWo7gbeCYg
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=UVWo7gbeCYg
+    title: "How to freeze and slow down time in Minecraft"
+    channel: "Da Command Block"
+    lang: en
+    tool: vanilla
+    topic: "時間を止める・遅くする"
+    read: title
+
+  - id: yt_jBBVCpig6HU
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=jBBVCpig6HU
+    title: "📷 Cinematic Camera Framework | Vanilla Mapmaking Camera Tool 📷"
+    channel: "Skyblock Squad"
+    lang: en
+    tool: vanilla
+    topic: "データパックのカメラ用フレームワーク"
+    read: title
+
+  - id: yt_riVGIH9msCA
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=riVGIH9msCA
+    title: "Minecraft has Built-In Slow Motion Now"
+    channel: "Knarfy"
+    lang: en
+    tool: vanilla
+    topic: "/tick によるスローモーション"
+    read: title
+
+  - id: yt_zyUkWkC4Kuc
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=zyUkWkC4Kuc
+    title: "This New Minecraft Feature Lets You Play In Slow Motion"
+    channel: "Not_OOF"
+    lang: en
+    tool: vanilla
+    topic: "/tick によるスローモーション"
+    read: title
+
+  # --- tool: bedrock_camera ---
+  - id: yt_0PGw2hzQAII
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=0PGw2hzQAII
+    title: "NEW Camera Command (Minecraft Bedrock Experimental Camera Features)"
+    channel: "Arctic Shark Games"
+    lang: en
+    tool: bedrock_camera
+    topic: "/camera コマンド（実験的機能のころ）"
+    read: title
+
+  - id: yt_1MAX5E2TPyY
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=1MAX5E2TPyY
+    title: "How to use /camera command in Minecraft Bedrock | Tutorial"
+    channel: "Mine&Build"
+    lang: en
+    tool: bedrock_camera
+    topic: "/camera コマンド"
+    read: title
+
+  - id: yt_4d33JJmLUSY
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=4d33JJmLUSY
+    title: "Minecraft Bedrock Camera Command: Cinematic Tutorial"
+    channel: "Smell of Curry"
+    lang: en
+    tool: bedrock_camera
+    topic: "/camera コマンド"
+    read: title
+
+  - id: yt_8EKDwvU9-QI
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=8EKDwvU9-QI
+    title: "How to Use All 32 Ease Types! - Minecraft Bedrock Commands Tutorial Series"
+    channel: "Glossy Pigeon"
+    lang: en
+    tool: bedrock_camera
+    topic: "イージング32種類"
+    read: title
+
+  - id: yt_8tL6zEO4H40
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=8tL6zEO4H40
+    title: "【新コマンド】ver1.20.30で開放された『camera』コマンドの使い方解説！統合版で待望のカメラ操作が実装！！【マイクラ統合版】【ゆっくり実況】"
+    channel: "所長 / Shotyou"
+    lang: ja
+    tool: bedrock_camera
+    topic: "/camera コマンドの使い方（1.20.30）"
+    read: title
+
+  - id: yt_GnYrZlBCyWg
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=GnYrZlBCyWg
+    title: "The new Minecraft CAMERA Command is AMAZING! Full Tutorial"
+    channel: "TheRedEngineer"
+    lang: en
+    tool: bedrock_camera
+    topic: "/camera コマンドの全般"
+    read: title
+
+  # --- tool: bedrock_addon ---
+  - id: yt_HeWynDtGJnY
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=HeWynDtGJnY
+    title: "How to CREATE EPIC CINEMATIC SHOTS in Minecraft! - MCPE Cinematic Videos Tutorial (Minecraft PE)"
+    channel: "Yallay"
+    lang: en
+    tool: bedrock_addon
+    topic: "携帯版のシネマティック"
+    read: title
+
+  - id: yt_IP1J0U_PABU
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=IP1J0U_PABU
+    title: "【マイクラ】映画撮影や動画撮影に便利なReplay Modアドオンを紹介【アドオン】【ゆっくり実況】"
+    channel: "かげくん / KageKun"
+    lang: ja
+    tool: bedrock_addon
+    topic: "統合版のリプレイ系アドオン"
+    read: title
+
+  - id: yt_LIWOinP_cT0
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=LIWOinP_cT0
+    title: "🔥Replay Mod in Minecraft PE 😍 1.21! (Cinematic Camera Tutorial)"
+    channel: "NotThunder"
+    lang: en
+    tool: bedrock_addon
+    topic: "携帯版のリプレイ"
+    read: title
+
+  - id: yt_ylgF43M9cxo
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=ylgF43M9cxo
+    title: "映画風に録画！マイクラ統合版(BE)のreplay modの使い方をテンポよく解説してみた"
+    channel: "たけばみ | マイクラ統合版でアドオンとか導入解説"
+    lang: ja
+    tool: bedrock_addon
+    topic: "統合版のリプレイ系アドオン"
+    read: title
+
+  # --- tool: other_mod ---
+  - id: yt_A6svTpEiEWo
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=A6svTpEiEWo
+    title: "The BEST Camera Perspective Mod for Cinematic & Smooth Minecraft Videos ! "
+    channel: "RP PLAYZ"
+    lang: en
+    tool: other_mod
+    topic: "視点を変えるmod"
+    read: title
+
+  - id: yt_CEphmIioblk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=CEphmIioblk
+    title: "Better Third Person Mod in Minecraft (Cinematic Camera Angles)"
+    channel: "ChronoFury"
+    lang: en
+    tool: other_mod
+    topic: "Better Third Person"
+    read: title
+
+  - id: yt_MA58NBuIyQ8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=MA58NBuIyQ8
+    title: "Minecraft Machinima Tutorial - Using the Cinematic Zoom"
+    channel: "Stingray Productions"
+    lang: en
+    tool: other_mod
+    topic: "OptiFineのズーム"
+    read: title
+
+  - id: yt_QSq7ANOfVFM
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=QSq7ANOfVFM
+    title: "How to create great Minecraft Cinematics with Camera Studio!"
+    channel: "ServerMiner"
+    lang: en
+    tool: other_mod
+    topic: "Camera Studio"
+    read: title
+
+  - id: yt_Zy3RUHYpT4I
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Zy3RUHYpT4I
+    title: "10 Mods Every Minecraft Creator NEEDS"
+    channel: "4YAY"
+    lang: en
+    tool: other_mod
+    topic: "動画制作者向けのmod10選"
+    read: title
+
+  # --- tool: unknown ---
+  - id: yt_5QOUXOg-unQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=5QOUXOg-unQ
+    title: "The BEST Way to Make Cinematic Shots in Minecraft"
+    channel: "Nijit Gaming"
+    lang: en
+    tool: unknown
+    topic: "シネマティックなショットの作り方"
+    read: title
+
+  - id: yt_Xm2rdDMfnuQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Xm2rdDMfnuQ
+    title: "Minecraft AFK Cinematic Mode Tutorial 🎬 | Smooth Camera + Pro Shots (Full Guide)"
+    channel: "Naam Hai Gamerz"
+    lang: en
+    tool: unknown
+    topic: "「AFK Cinematic Mode」"
+    read: title
+
+  - id: yt_c6osfIMNxVk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=c6osfIMNxVk
+    title: "Minecraft in Cinematic Mode 🎬 | Real Cinematic Shots (4K 60FPS)"
+    channel: "Kadri Gamer"
+    lang: en
+    tool: unknown
+    topic: "シネマティックな映像の例"
+    read: title
+
+  - id: yt_kuYvx3oxFE4
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=kuYvx3oxFE4
+    title: "Create Cinematics In Minecraft"
+    channel: "Diamondxr"
+    lang: en
+    tool: unknown
+    topic: "シネマティック全般"
+    read: title
+
+  - id: yt_qVpJ01eNq1A
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=qVpJ01eNq1A
+    title: "How I Make CINEMATIC Shots in Minecraft"
+    channel: "JS Plays"
+    lang: en
+    tool: unknown
+    topic: "シネマティックなショットの作り方"
+    read: title
+
+  # --- tool: live_action ---
+  - id: yt_JvnvnmPsrAE
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=JvnvnmPsrAE
+    title: "【完全保存版】絶対に覚えたいシネマティックなショット20選"
+    channel: "Yuichi Ishida"
+    lang: ja
+    tool: live_action
+    topic: "実写のショット20選（マイクラではない）"
+    read: title
+
+  - id: yt_Ksn9JVw6bK0
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Ksn9JVw6bK0
+    title: "【神回】シネマティックなカメラワーク６選 | 動画撮影がもっと楽しくなる何度でも見たい映画のようなカメラワーク。"
+    channel: "Yuichi Ishida"
+    lang: ja
+    tool: live_action
+    topic: "実写のカメラワーク6選（マイクラではない）"
+    read: title
