@@ -7,16 +7,16 @@
 
 ## 要点
 - MiniHUD はクライアント専用で、MaLiLib が必要。「mini F3」の情報行と、明るさ・スライムチャンク・構造物の範囲などのオーバーレイを描く。ライセンス LGPL-3.0-only。【一次】[S1]
-- MiniHUD の速度の行は3種類（合計、軸ごと、水平と垂直）で、単位を m/s・km/h・mph・fps・mach・c から選べる。いずれもプレイヤー自身の速度で、他のエンティティの速度ではない。【一次】[S2]
-- MiniHUD のサーバ TPS の行は、Carpet のサーバのときだけ正確で、それ以外はクライアント側の推定。TPS の行には Frozen・Sprinting の表示もある。【一次】[S2]
+- MiniHUD の速度の行は3種類（合計、軸ごと、水平と垂直）で、単位を m/s・km/h・mph・fps・mach・c から選べる。3つとも説明はプレイヤー自身の速度。ほかに乗っている馬の速さ（m/s）を出す `infoHorseSpeed` があるが、言語ファイルにはそれ以外のエンティティ（矢・TNT など）の速度を出す行は見当たらない。【一次】[S2]
+- MiniHUD のサーバ TPS の行は、Carpet のサーバで TPS 表示の Carpet ルールが有効なときだけ正確で、それ以外はクライアント側の推定（20 未満しか検出できない）。TPS の行には Frozen・Sprinting の表示もある。【一次】[S2]
 - バニラの F3 デバッグ画面は 28 の要素に分かれ、F3+F6 のデバッグオプションで要素ごとに OFF / In Overlay / Always を選べる（1.21.9 で導入。Always は F3 を開かなくても常に表示）。【二次】[S7]
 - **Java 26.3 でバニラの F3 に `player_speed`（プレイヤーの速さ、単位は blocks/tick）が追加された**。【二次】[S7]
 - デバッグレンダラーは15種類。当たり判定（F3+B）、チャンク境界（F3+G）に加えて、1.21.11 から衝突箱・水位・ブロックの光・空の光・足場ブロックなどの表示もデバッグオプションから切り替えられる。【二次】[S8]
-- F3+B の当たり判定の表示は見た目のモデルに対する箱で、実際の当たり判定とずれることがある。【二次】[S8]
-- Tweakeroo はクライアント側の小さな機能の集まりで、フリーカメラ・ズーム・ガンマの上書きなどを含む。サーバによっては不正とみなされる。ライセンス LGPL-3.0-only。【一次】[S3]
+- F3+B の当たり判定の表示は見た目のモデルに対する箱で、実際の当たり判定とずれることがある（Java Edition、記事の取得時点）。【二次】[S8]
+- Tweakeroo はクライアント側の小さな機能の集まりで、人気の機能にフリーカメラ・ガンマの上書きなどが挙がり、1.13.2〜1.20.4 版の機能一覧にはズームもある。サーバによっては不正とみなされる。ライセンス LGPL-3.0-only。【一次】[S3]
 - Litematica は設計図（schematic）の mod。1.21.3 以降はシェーダーと一緒だと描画が正しく動かないので、使うときはシェーダーを切る。【一次】[S4]
 - Servux はサーバ側の mod で、MiniHUD に構造物の範囲などを送る。シングルプレイやクライアントには不要。【一次】[S5]
-- WorldEdit は Java 版専用のワールド編集ツールで、Fabric・NeoForge・Bukkit 系に対応。ライセンス GPL-3.0-only。【一次】[S6]
+- WorldEdit は Java 版専用のワールド編集ツールで、説明文では NeoForge・Fabric・Bukkit 系（Spigot・Paper）に対応（Modrinth のプラットフォーム欄には Forge・Folia・Quilt も載る）。ライセンス GPL-3.0-only。【一次】[S6]
 
 ## 詳細
 
@@ -42,6 +42,7 @@
 | `infoSpeed` | 「Show the player's current moving speed」 | 【一次】[S2] |
 | `infoSpeedAxis` | 「Show the player's current moving speed per axis」 | 【一次】[S2] |
 | `infoSpeedHV` | 水平（xz）と垂直（y）に分けた速さ | 【一次】[S2] |
+| `infoHorseSpeed` | 乗っている馬の速さ（m/s）。書式は `%s Speed: §b%.3f§r m/s` | 【一次】[S2] |
 | `infoDistance` | 基準点からの距離。基準点はホットキー `setDistanceReferencePoint` でプレイヤーの今の位置を記録する | 【一次】[S2] |
 | `infoRotationYaw`、`infoRotationPitch`、`infoFacing` | 向き | 【一次】[S2] |
 | `infoLightLevel` | 「Show the current light level」 | 【一次】[S2] |
@@ -53,7 +54,7 @@
 - サーバ TPS の行の説明。【一次】[S2]
 > 「Note: This is only accurate when running a Carpet server」[S2]
 > 「Otherwise it is estimated on the client side」[S2]
-- TPS の行の表示文字列に「[§b§lFrozen§r]」「[§d§lSprinting§r]」がある（/tick の停止・早送りの状態を示すと考えられるが、表示条件のソースは未読）。【一次】[S2]
+- TPS の行の表示文字列に「[§b§lFrozen§r]」「[§d§lSprinting§r]」がある。どの条件で表示されるかは、ソースを読んでいないため未確認。【一次】[S2]
 
 **オーバーレイ（ワールドに描く表示）**。【一次】[S1][S2]
 - 明るさ（Light Level）、ブロックの格子（Block Grid）、スライムチャンク、リージョンファイルの境界、構造物の範囲などのオーバーレイがある。【一次】[S2]
@@ -129,7 +130,7 @@
 ### Servux
 > 「Servux itself is never needed on the clients or in single player. It's only needed/useful on the server side in multiplayer.」[S5]
 - LAN で開くホストのクライアントに入れると、接続した他のプレイヤーにも効く。【一次】[S5]
-- ページの説明（0.1.x 時点）では、機能は MiniHUD への構造物の範囲の送信だけとされる。一方、MiniHUD の言語ファイルには Servux と組み合わせると見ているエンティティの情報が増えるとあり、機能はページの説明より増えている可能性がある。【一次】[S5][S2]
+- ページの説明（0.1.x 時点）では、機能は MiniHUD への構造物の範囲の送信だけとされる。【一次】[S5]　一方、MiniHUD の言語ファイルには Servux の「Entity Data Sync」「HUD Data Sync」の通信を使う設定があり、Servux と組み合わせると見ているエンティティの情報が増えるとある。【一次】[S2]
 - 互換性欄は 1.14.4〜26.3、Fabric、環境は「専用サーバーのみ」の表示、ライセンス LGPL-3.0-only。【一次】[S5]
 
 ### WorldEdit（装置作り）
@@ -147,17 +148,18 @@
 > ※この節は上の事実から導いた提案で、事実ではない。
 
 - **基盤のバージョンが 26.3 以降なら、プレイヤーの座標と速さはバニラの F3 だけで出せる**。必要な要素だけを Always にして、ほかは OFF にした表示を撮影用に作る。速さの単位は blocks/tick なので、字幕で換算を添える。（根拠: [S7]）
-- 視聴者に m/s や km/h で速さを見せたいときは MiniHUD の `infoSpeedAxis` / `infoSpeedHV` を使う。ただし**プレイヤー自身の速さしか出ない**ので、矢や TNT などの速さは Carpet の `/log` か Scarpet で取る。（根拠: [S2]、[Carpet.md](Carpet.md)）
+- 視聴者に m/s や km/h で速さを見せたいときは MiniHUD の `infoSpeedAxis` / `infoSpeedHV` を使う。ただし**プレイヤー自身（と乗っている馬）の速さしか出ない**ので、矢や TNT などの速さは Carpet の `/log` か Scarpet で取る。（根拠: [S2]、[Carpet.md](Carpet.md)）
 - 画面に出す値は計測値ではなく見せるための表示として扱い、計測の正本は `experiment.yaml` の手順で取った CSV にする（MiniHUD の座標は小数1〜4桁で表示され、F3+B の箱は見た目のモデル基準でずれうるため）。（根拠: [S2][S8]）
 - 光（T08）は `visualize_block_light_levels` / `visualize_sky_light_levels`、水（T06・T18）は `visualize_water_levels`、摩擦（T04）は `visualize_entity_supporting_block` で、数値をワールドに重ねた画が撮れるか試す（1.21.11 以降）。（根拠: [S8]）
 - 実験装置は Litematica か WorldEdit で保存して置き直す。Litematica は**シェーダーを切って配置し、置き終えてからシェーダーを入れて撮る**。（根拠: [S4][S6]）
 - ローカルの専用サーバを使う構成（[../../docs/MC実行基盤.md](../../docs/MC実行基盤.md)）なので、MiniHUD の構造物表示やエンティティ情報が要る回だけ、サーバ側に Servux を入れる。（根拠: [S1][S5]）
-- サーバの TPS を画面に出すなら、MiniHUD の値は Carpet のサーバのときだけ正確なので、Carpet を入れた構成で使う。（根拠: [S2]）
+- サーバの TPS を画面に出すなら、MiniHUD の値は Carpet のサーバで TPS 表示のルールが有効なときだけ正確なので、Carpet を入れた構成で使い、どのルールかを先に確かめる。（根拠: [S2]）
 
 ## わかっていないこと・要確認
 - MiniHUD の速度の行が、何から速度を計算しているか（位置の差か、motion か）と、/tick freeze 中にどう表示されるか。ソースは未読。
 - MiniHUD の言語ファイルを読んだ sakura-ryoko/minihud の既定ブランチが、どの MC バージョン向けか。Modrinth の MiniHUD がどのリポジトリから配布されているか。
 - MiniHUD の TPS の行の注にある「TPS display carpet rule」[S2] がどの Carpet ルールを指すか（master の CarpetSettings に該当する名前は見当たらなかった）。
+- MiniHUD の TPS の行の Frozen・Sprinting が、バニラの /tick freeze・/tick sprint の状態を示すのか（表示条件のソースは未読）。
 - バニラ F3 の `player_speed` が、プレイヤー以外（乗り物に乗っているとき等）でどの速さを出すか。座標の小数の桁数。
 - デバッグレンダラーの表示や F3 の Always の表示が、Flashback / Replay Mod の録画に入るか（クライアントの画面表示なので入らない可能性があるが未確認）。
 - Servux の現在の機能一覧（Modrinth の説明は 0.1.x 時点のまま）。

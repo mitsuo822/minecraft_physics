@@ -6,17 +6,17 @@
 > 関連: [計測と可視化のmod.md](計測と可視化のmod.md), [バージョン対応表.md](バージョン対応表.md), [../filming/時間制御とスロー.md](../filming/時間制御とスロー.md), [../filming/ワールド内の演出.md](../filming/ワールド内の演出.md), [../rights/mod・シェーダーの利用条件.md](../rights/mod・シェーダーの利用条件.md), [../mechanics/投射物.md](../mechanics/投射物.md), [../mechanics/爆発.md](../mechanics/爆発.md)
 
 ## 要点
-- Carpet は Fabric 専用の mod で、ライセンスは MIT。Modrinth の互換性欄は Java Edition 1.14.4〜26.3（2026-11-19 取得）。【一次】[S1]
+- Carpet の Modrinth のプラットフォーム欄は Fabric だけで、ライセンスは MIT。Modrinth の互換性欄は Java Edition 1.14.4〜26.3（2026-11-19 取得）。【一次】[S1]
 - GitHub の master ブランチは `minecraft_version=26.4-snapshot-8`、`mod_version = 26.4-beta-6`（2026-11-19 取得）。mod の版番号が MC のバージョンと同じ 26.4 で始まる。【一次】[S3]
-- master の CarpetServer が登録するコマンドは profile / counter / log / spawn / player / info / distance / perimeterinfo / draw / script / MobAI（track）などで、**Carpet 独自の /tick は登録されていない**。一方、Modrinth の説明文と GitHub Wiki には古い `/tick warp` 等の説明が残っている。【一次】[S4][S1]／Wiki【二次】[S6]
+- master の CarpetServer が登録するコマンドは profile / counter / log / spawn / player / info / distance / perimeterinfo / draw / script / MobAI などで、**Carpet 独自の /tick は登録されていない**（MobAI が `/track` であることはルール `commandTrackAI` の説明による）。一方、Modrinth の説明文と GitHub Wiki には古い `/tick warp` 等の説明が残っている。【一次】[S4][S5][S1]／Wiki【二次】[S6]
 - `/player` で偽プレイヤーを出し、use（右クリック）・attack・jump などを once / continuous / interval（tick 間隔）で実行させられる。出現位置・向き・ディメンション・ゲームモードも指定できる。【一次】[S8]
-- use を止めたときと、interval の実行していない tick では `releaseUsingItem` が呼ばれる。弓の引き時間を tick 単位で決められる可能性がある（要実測）。【一次】[S9]
-- `/log projectiles`・`/log fallingBlocks` は、対象の寿命が終わったときに 1tick ごとの位置と motion（速度）をチャットに出す。記録されるのは、生成された時点で購読者がオンラインにいたものだけ。【一次】[S11]
+- use を止めたときと、interval の実行していない tick では `releaseUsingItem`（手に持ったアイテムの使用をやめる処理）が呼ばれる。ソースのコメントは弓に触れている。【一次】[S9]
+- `/log projectiles`・`/log fallingBlocks` は、対象の寿命が終わったときに 1tick ごとの位置と motion（速度）をチャットに出す。記録されるのは、ログ用のヘルパーが作られた時点で購読者がオンラインにいたものだけ（ヘルパーが作られるタイミングは未確認）。【一次】[S11]／1tick ごとの説明は Wiki【二次】[S6]
 - `/log explosions full` は爆発ごとに威力・ブロックへの影響・巻き込んだエンティティの位置と速度変化 `dV` を出す。Wiki のコマンド一覧には載っていない。【一次】[S10][S13]
 - TNT の着火時のランダムな初速を消す・水平角を固定する・爆発の乱数範囲を固定するルールがある（`tntPrimerMomentumRemoved`、`hardcodeTNTangle`、`tntRandomRange`）。【一次】[S5]
-- 内蔵のスクリプト言語 Scarpet で、毎 tick の処理（`__on_tick`、エンティティの `on_tick` / `on_move`）と、位置・motion の取得と、ワールドの scripts フォルダへのファイル書き出し（json / text など）ができる。組み合わせれば RCON の往復なしに毎 tick の値をファイルに残せる（組み合わせた動作は未実測）。【一次】[S14]
+- 内蔵のスクリプト言語 Scarpet で、毎 tick の処理（`__on_tick`、エンティティの `on_tick` / `on_move`）と、位置・motion の取得と、ワールドの scripts フォルダへのファイル書き出し（json / text など）ができる。【一次】[S14]
 - Scarpet の `draw_shape` で線・箱・球・円柱・多角形・文字ラベルをワールドに描ける。Carpet の入ったクライアントで正しく描かれ、入っていないクライアントにはダストパーティクルで送られる。【一次】[S14]
-- 拡張 mod として carpet-extra、quick-carpet、Carpet TIS Addition（LGPL-3.0-only）などがある。【一次】[S2][S16]
+- 拡張 mod として carpet-extra、Carpet TIS Addition（LGPL-3.0-only）などがある。スナップショット向けの最小版として quick-carpet もある。【一次】[S2][S16]
 
 ## 詳細
 
@@ -84,7 +84,7 @@ master の PlayerCommand で登録されているサブコマンド。【一次�
 | `hotbar <1-9>`、`mount`、`mount anything`、`dismount`、`kill`、`shadow`、`stop` | その他 | 【一次】[S8] |
 
 - `shadow` は自分を偽プレイヤーに置き換えるもので、Wiki では「This only works on servers ( not single player)」とされる。【二次】[S6]
-- 移動入力は、しゃがみ中は 0.3、それ以外は 1.0 を前後・左右の入力値に掛けてプレイヤーに渡す（実プレイヤーのキー入力に相当する値）。【一次】[S9]
+- 移動入力は、しゃがみ中は 0.3、それ以外は 1.0 を前後・左右の入力値に掛けて、プレイヤーの移動入力（`zza`・`xxa`）に入れる。【一次】[S9]
 - 動作の実行: `once` は1回で終わり、`continuous` は毎 tick 続け、`interval N` は N tick ごとに実行する。【一次】[S9]
 - use の動作では、実行しない tick（interval の合間）と `stop` のときに、手に持ったアイテムの使用をやめる処理（`releaseUsingItem`）が呼ばれる。ソースのコメントは弓に触れている。【一次】[S9]
 > 「need to allow entity to tick, otherwise won't have effect (bow)」[S9]
@@ -112,8 +112,8 @@ master の LoggerRegistry に登録されているロガー。【一次】[S10]�
 > 「A generic log helper for logging the trajectory of things like blocks and throwables.」[S11]
 - 1tick ごとに位置（x, y, z）と motion（速度ベクトル）を記録し、寿命の終わりにまとめて出力する。【一次】[S11]
 - brief: 1tick を1つの記号で並べ（1行に最大20tick）、記号にマウスを乗せると Tick 番号・x・y・z・mx・my・mz が `%f`（小数6桁）で出る。【一次】[S11]
-- full: 1tick を1行で `tick: N pos (x, y, z) mot (mx, my, mz)` の形で出す（数値の書式は Messenger.dblt）。【一次】[S11]
-- 記録するかどうかはヘルパーが作られた時点（対象の生成時）に、ロガーの購読者がオンラインにいるかで決まる。発射してから購読しても、その投射物は記録されない。【一次】[S11]
+- full: 1tick を1行で、`tick: N pos` の後に位置、`mot` の後に motion を出す（位置と motion の書式は Messenger.dblt で、括弧や桁数は未読）。【一次】[S11]
+- 記録するかどうかは、ヘルパーが作られた時点（コンストラクタ）にロガーの購読者がオンラインにいるかで決まる。ヘルパーが作られた後に購読しても、その対象は記録されない。ヘルパーがエンティティの生成時に作られるかはミックスインを読んでいないため未確認。【一次】[S11]
 
 **TNT ログ**（TNTLogHelper）。【一次】[S12]
 > 「Runs when the TNT is primed. Expects the position and motion angle of the TNT.」[S12]
@@ -136,7 +136,7 @@ master の LoggerRegistry に登録されているロガー。【一次】[S10]�
 - GitHub Wiki には Carpet の /tick（health、entities、freeze、step、rate、warp、superHot）が載っている。【二次】[S6]
 > 「This will stop the processing of entities, world clocks, block updates, and redstone while still letting the player move freely.」[S6]
 > 「Changes the rate at which things happen in the game. The default value is 20.0.」[S6]
-- master の CarpetServer はこの TickCommand を登録していない（`/profile` は登録されている）。現在のバージョンで時間を止める・進めるのはバニラの /tick を使う前提で考える。詳しくは [../filming/時間制御とスロー.md](../filming/時間制御とスロー.md)。【一次】[S4]
+- master の CarpetServer はこの TickCommand を登録していない（`/profile` は登録されている）。【一次】[S4]　バニラの /tick を使った時間の制御は [../filming/時間制御とスロー.md](../filming/時間制御とスロー.md) に任せる。
 - `smoothClientAnimations`（既定 true）はクライアント側のルールで、説明は「smooth client animations with low tps settings」「works only in SP, and will slow down players」。【一次】[S5]
 - `/profile` は「Enables /profile command to monitor game performance」で、既定は true。【一次】[S5]
 
@@ -157,7 +157,7 @@ master の CarpetSettings の定義。【一次】[S5]
 | `pushLimit` | バニラの値 | ピストンの押せる数（1〜1024） | 装置作り | 【一次】[S5] |
 | `simulationDistance` / `viewDistance` | 0 | サーバの設定を上書き（0〜32、0は上書きしない） | 遠くの装置を動かす | 【一次】[S5] |
 | `antiCheatDisabled` | false | 速く動くプレイヤーが引き戻されない・飛行で蹴られない | 高速の撮影移動 | 【一次】[S5] |
-| `creativeNoClip`・`creativeFlySpeed`・`creativeFlyDrag` | false・1.0・0.09 | クリエイティブ飛行の壁抜け・速さ・空気抵抗（クライアント側） | 撮影の移動 | 【一次】[S5] |
+| `creativeNoClip`・`creativeFlySpeed`・`creativeFlyDrag` | false・1.0・0.09 | クリエイティブ飛行の壁抜け・速さ・空気抵抗。壁抜けはサーバではクライアントとサーバの両方での設定が必要、速さ・空気抵抗はクライアントだけの設定 | 撮影の移動 | 【一次】[S5] |
 
 > 「so behaviour of locational vanilla contraptions is not guaranteed」[S5]
 > 「With 1.0 drag, using speed of 11 seems to matching vanilla speeds.」[S5]
@@ -216,7 +216,9 @@ master の CarpetSettings の定義。【一次】[S5]
 ## わかっていないこと・要確認
 - 26.3 向けの最新リリースの版番号・公開日（Modrinth のバージョン一覧は JS で読めず、CurseForge は 403 だった）。
 - `commandTick` ルールが現在何を制御しているか。Carpet がバニラの /tick に何かを足しているか（Modrinth の説明文には `/tick warp` が残る）。
-- `/log projectiles` が対象にするエンティティの種類（矢・トライデント・雪玉・エンダーパール・花火など、どれが含まれるか）。ソースのミックスインは未読。
+- `/log projectiles` が対象にするエンティティの種類（矢・トライデント・雪玉・エンダーパール・花火など、どれが含まれるか）と、軌跡ログのヘルパーが作られるタイミング（エンティティの生成時か）。ソースのミックスインは未読。
+- `/player use continuous` → N tick 後に `stop` で、弓の引き時間を tick 単位で決められるか（`releaseUsingItem` が呼ばれることだけはソースで確認。弓の挙動は未実測）。
+- Scarpet の `__on_tick`／`on_move` と `write_file` を組み合わせて、RCON の往復なしに毎 tick の値をファイルに残せるか（個々の機能はドキュメントで確認、組み合わせは未実測）。
 - full 出力の数値の桁数（Messenger.dblt の書式）。
 - RCON（プレイヤーでない実行者）や偽プレイヤーが /log を購読できるか。
 - Scarpet の `__on_tick` がバニラの `/tick freeze` 中に動くか、`/tick step` と1対1で同期するか。
