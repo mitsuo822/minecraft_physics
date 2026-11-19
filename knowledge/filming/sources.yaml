@@ -222,6 +222,15 @@ sources:
     notes: "カメラは既定で4ブロック後ろ。ブロックにぶつかる"
     accessed: "2026-11-19"
 
+  - id: wiki_server_properties
+    kind: wiki
+    confidence: 二次
+    url: https://minecraft.wiki/w/Server.properties
+    title: "Minecraft Wiki: server.properties"
+    read: "entity-broadcast-range-percentage の項"
+    notes: "10〜1000、既定100。1.16（20w18a）で追加"
+    accessed: "2026-11-19"
+
   - id: wiki_attribute
     kind: wiki
     confidence: 二次
