@@ -17,6 +17,9 @@
 #   physics_use   このチャンネル（物理の実験）での使いどころ（提案）
 #   measurement   true = 計測ショット（数字の根拠として見せる画）に使える / false = 演出向き
 #
+# 末尾の framing_terms は、ショットの「大きさ」と「角度」の用語集（moves とは別の軸）。
+# 1つのショットは「大きさ × 角度 × 動き（moves）× 時間（moves の time）」の組み合わせで言い表せる（CW-42）。
+#
 # 確度の注意
 #   what / effect / use_when / avoid_when / physics_use は、一般的な映像の用語と推論で書いた【未確認】。
 #   出典で確認できたのは how の各行だけ。
@@ -156,7 +159,7 @@ moves:
     avoid_when: [計測ショット, 被写体がカメラのすぐ横を高速で通る配置]
     params: [pos, target, smoothing]
     how:
-      - {tool: flashback, do: "Track Entity キーフレーム（0.32.0〜）", confidence: 一次, source: flashback_changelog, note: "向きだけ追うのか位置も追うのかは未確認。作者の解説動画 yt_2adv42iyTC8"}
+      - {tool: flashback, do: "Track Entity キーフレーム（0.32.0〜）", confidence: 一次, source: flashback_changelog, note: "向きだけ追うのか位置も追うのかは未確認。作者の解説動画 yt_2adv42iyTC8 のチャプターに、体の部位の指定、遠くからのショット、パラメータのアニメーション、視点のオフセットがある（二次）"}
       - {tool: cmdcam, do: "/cam target で注視する相手を指定", confidence: 一次, source: cmdcam_modrinth}
       - {tool: cinecam, do: "ポイントの Track にエンティティを指定", confidence: 一次, source: cinecam_modrinth}
     pitfalls:
@@ -252,7 +255,7 @@ moves:
     params: [target, offset, look_at（被写体か、進行方向か）, smoothing, speed]
     how:
       - {tool: cmdcam, do: "/cam follow で位置を追う相手を指定。pos step 1 で遅れなし", confidence: 一次, source: cmdcam_modrinth}
-      - {tool: replaymod, do: "題名「Make the Camera Follow Anything」の解説動画がある", confidence: 二次, source: yt_30_o6SfiEhk, note: "題名のみ。方法は未確認"}
+      - {tool: replaymod, do: "非公式アドオン ReplayModCinematics の follow shot（プレイヤー、モブ、飛んでいる矢に追従）", confidence: 二次, source: yt_30_o6SfiEhk, note: "動画の概要欄から。Forge 1.20.1 か NeoForge 1.21.1 と ReForgedPlay が必要。ReplayMod本体の機能ではない"}
       - {tool: flashback, do: "Track Entity キーフレーム", confidence: 一次, source: flashback_changelog, note: "位置まで追うかは未確認"}
     pitfalls:
       - "なめらかにした追従は遅れる。遅れが見かけの速さを変える（CW-23）"
@@ -496,3 +499,33 @@ moves:
     physics_use: 基本は使わない。
     measurement: false
     refs: []
+
+# ---------- ショットの大きさと角度の用語 ----------
+# 用語の一覧は、実写の解説動画 yt_JvnvnmPsrAE（「シネマティックなショット20選」）のチャプターの題名から取った【二次】。
+# what と mc_use は一般的な映像の用語と推論で書いた【未確認】（動画の中身は確認できていない）。
+# move は、moves の中で対応する id（あれば）。
+
+framing_terms:
+  size:   # 被写体をどれだけ大きく映すか
+    - {term: エスタブリッシュショット, en: establishing shot, what: "場所と状況を示す、場面の最初の引きの画", mc_use: "装置とその周りの全景", move: establishing_wide}
+    - {term: ワイドショット, en: wide shot, what: "被写体の全身と周りが入る引きの画", mc_use: "現象の全体（落下の始点から終点まで）", move: establishing_wide}
+    - {term: ミディアムショット, en: medium shot, what: "被写体の半分程度が入る中間の画", mc_use: "装置の一部と、そこで動く物", move: null}
+    - {term: クローズアップショット, en: close-up, what: "被写体の一部を大きく映す寄りの画", mc_use: "着地点、作動する部品", move: static_close}
+    - {term: マクロショット, en: macro shot, what: "ごく小さい物を画面いっぱいに映す画", mc_use: "アイテム1個、ブロック1個の変化", move: static_close}
+  angle:  # カメラをどの高さ・向きに置くか
+    - {term: プロファイルショット, en: profile shot, what: "被写体を真横から映す画", mc_use: "計測ショットの基本形", move: static_side}
+    - {term: ハイアングル, en: high angle, what: "被写体を上から見下ろす画", mc_use: "装置の配置を見せる", move: null}
+    - {term: バードアイショット, en: "bird's-eye shot", what: "真上から見下ろす画", mc_use: "水平面内の動き", move: top_down}
+    - {term: ローアングルショット, en: low angle, what: "被写体を下から見上げる画", mc_use: "塔や落下物の高さ・大きさを強調する", move: null}
+    - {term: ワームズアイショット, en: "worm's-eye shot", what: "地面すれすれから真上を見上げる画", mc_use: "落ちてくる物を着地点から見上げる", move: null}
+    - {term: ダッチアングルショット, en: dutch angle, what: "カメラを傾けた画", mc_use: "ほぼ使わない", move: roll}
+  subject:  # 誰を・何をどう入れるか
+    - {term: ツーショット, en: two shot, what: "2つの被写体を1つの画面に入れる", mc_use: "比べる2つの物を並べて映す（視線と直角に並べる。CW-26）", move: static_side}
+    - {term: グループショット, en: group shot, what: "3つ以上の被写体を1つの画面に入れる", mc_use: "金床・豚・アイテムの3体を並べる", move: static_side}
+    - {term: オーバー・ザ・ショルダーショット, en: over-the-shoulder, what: "手前の人物の肩越しに奥を映す", mc_use: "プレイヤーの肩越しに装置を見る（三人称視点）", move: null}
+    - {term: リアクションショット, en: reaction shot, what: "出来事を見ている側の反応を映す", mc_use: "キャラクターの立ち絵や字幕で代用する（movie側）", move: null}
+    - {term: POV, en: point of view, what: "登場人物・被写体の視点", mc_use: "落ちる物の視点", move: pov}
+    - {term: オープンフレーム, en: open frame, what: "被写体が枠の外へ続いている構図", mc_use: "画面の外まで続く装置や落下", move: null}
+    - {term: クローズドフレーム, en: closed frame, what: "被写体が枠の中に収まっている構図", mc_use: "現象全体を1画面に収める計測ショット", move: null}
+    - {term: 象徴ショット, en: symbolic shot, what: "意味を象徴する物を映す", mc_use: "未検討", move: null}
+    - {term: 抽象ショット, en: abstract shot, what: "形や光そのものを映す", mc_use: "未検討", move: null}

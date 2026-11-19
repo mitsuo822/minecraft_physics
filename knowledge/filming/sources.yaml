@@ -16,8 +16,8 @@
 meta:
   surveyed_at: "2026-11-19"
   youtube_total: 67
-  youtube_read_page: 9
-  youtube_read_title_only: 58
+  youtube_read_page: 14
+  youtube_read_title_only: 53
   youtube_by_tool: {flashback: 15, replaymod: 19, cmdcam: 1, cinemalya: 1, vanilla: 9, bedrock_camera: 6, bedrock_addon: 4, other_mod: 5, unknown: 5, live_action: 2}
   transcripts_read: 0
   videos_watched: 0
@@ -316,6 +316,27 @@ sources:
 
   # ---------- YouTube（二次） ----------
   # --- tool: flashback ---
+  - id: yt_2adv42iyTC8
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=2adv42iyTC8
+    title: "Flashback Track Entity Keyframe Tutorial"
+    channel: "Moulberry"
+    lang: en
+    tool: flashback
+    topic: "Track Entity キーフレーム（作者による解説）"
+    read: page
+    published: "2025-05-03"
+    views: 18856
+    chapters:
+      - "0:00 Basic entity tracking"
+      - "1:07 Understanding body parts"
+      - "1:53 Setting up far shots"
+      - "3:08 Animating camera parameters"
+      - "4:45 Advanced view offsets"
+      - "7:07 Combining tracking techniques"
+    notes: "Flashbackの作者による解説。チャプター: Basic entity tracking／Understanding body parts／Setting up far shots／Animating camera parameters／Advanced view offsets／Combining tracking techniques"
+
   - id: yt_8NA1PN0DUZQ
     kind: youtube
     confidence: 二次
@@ -490,17 +511,6 @@ sources:
     topic: "0.33.0 の紹介（作者）"
     read: title
 
-  - id: yt_2adv42iyTC8
-    kind: youtube
-    confidence: 二次
-    url: https://www.youtube.com/watch?v=2adv42iyTC8
-    title: "Flashback Track Entity Keyframe Tutorial"
-    channel: "Moulberry"
-    lang: en
-    tool: flashback
-    topic: "Track Entity キーフレーム（作者による解説）"
-    read: title
-
   - id: yt_TPAueZIblZE
     kind: youtube
     confidence: 二次
@@ -568,6 +578,56 @@ sources:
     read: title
 
   # --- tool: replaymod ---
+  - id: yt_30_o6SfiEhk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=30_o6SfiEhk
+    title: "Replay Mod Tutorial: Make the Camera Follow Anything"
+    channel: "Another Distraction"
+    lang: en
+    tool: replaymod
+    topic: "カメラを何にでも追従させる"
+    read: page
+    published: "2026-10-23"
+    views: 159
+    chapters:
+      - "0:00 Intro"
+      - "0:17 What it adds and how to install"
+      - "0:51 F7 and F8: the two keys"
+      - "1:23 Your first shot in one click"
+      - "1:58 Shot presets"
+      - "2:41 Building a manual path"
+      - "3:27 Holds, speed and easing"
+      - "3:55 Focus targets and tracking"
+      - "4:35 Follow shots"
+      - "5:17 Time keyframes and chaining"
+      - "6:01 Wrap-up"
+    notes: "題名はReplay Modだが、中身は非公式アドオン ReplayModCinematics の解説。Forge 1.20.1 か NeoForge 1.21.1 と ReForgedPlay が必要。F7で編集画面、F8で経路の生成。プリセット、手動の経路、停止・速さ・イージング、注視と追跡、追従ショット、Time Keyframe と連結"
+
+  - id: yt_NaCNpdQGIWw
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=NaCNpdQGIWw
+    title: "【Minecraft MOD解説】低スペPCでも高画質でヌルヌルな動画を録画！『ReplayMOD』を徹底解説【1.19対応】"
+    channel: "Mister-β Channel"
+    lang: ja
+    tool: replaymod
+    topic: "導入と使い方（1.19）"
+    read: page
+    published: "2022-07-31"
+    views: 34721
+    chapters:
+      - "0:00 はじめに"
+      - "0:43 MODセットアップ"
+      - "1:47 収録前の準備"
+      - "2:19 収録開始"
+      - "2:50 録画したデータを確認"
+      - "3:56 編集中の機能紹介"
+      - "4:54 動画のアングル・時間を設定"
+      - "7:24 影MODの導入"
+      - "8:20 動画としてエクスポート"
+    notes: "概要欄は英語への自動翻訳で読んだ。ReplayMod、FFmpeg、OptiFine、影MODの導入から、アングルと時間の設定、書き出しまで。影MODを入れた低スペックのPCでも滑らかな動画を保存できる、とある（MC 1.19）"
+
   - id: yt_P1bGz5ykIFE
     kind: youtube
     confidence: 二次
@@ -620,17 +680,6 @@ sources:
     lang: en
     tool: replaymod
     topic: "建築アニメーションのタイムラプス"
-    read: title
-
-  - id: yt_30_o6SfiEhk
-    kind: youtube
-    confidence: 二次
-    url: https://www.youtube.com/watch?v=30_o6SfiEhk
-    title: "Replay Mod Tutorial: Make the Camera Follow Anything"
-    channel: "Another Distraction"
-    lang: en
-    tool: replaymod
-    topic: "カメラを何にでも追従させる"
     read: title
 
   - id: yt_54tUjmU_a2A
@@ -708,17 +757,6 @@ sources:
     lang: en
     tool: replaymod
     topic: "建築タイムラプス（1.18.2）"
-    read: title
-
-  - id: yt_NaCNpdQGIWw
-    kind: youtube
-    confidence: 二次
-    url: https://www.youtube.com/watch?v=NaCNpdQGIWw
-    title: "【Minecraft MOD解説】低スペPCでも高画質でヌルヌルな動画を録画！『ReplayMOD』を徹底解説【1.19対応】"
-    channel: "Mister-β Channel"
-    lang: ja
-    tool: replaymod
-    topic: "導入と使い方（1.19）"
     read: title
 
   - id: yt_PEazXIwkx1w
@@ -1148,7 +1186,39 @@ sources:
     lang: ja
     tool: live_action
     topic: "実写のショット20選（マイクラではない）"
-    read: title
+    read: page
+    published: "2026-05-21"
+    views: 68888
+    chapters:
+      - "0:00 オープニング"
+      - "0:58 エスタブリッシュショット"
+      - "1:39 ワイドショット"
+      - "2:29 ミディアムショット"
+      - "3:15 スクショタイム1"
+      - "3:23 クローズアップショット"
+      - "4:12 マクロショット"
+      - "5:28 プロファイルショット"
+      - "6:09 スクショタイム2"
+      - "6:16 ハイアングル"
+      - "7:12 バードアイショット"
+      - "8:01 ローアングルショット"
+      - "8:42 ワームズアイショット"
+      - "9:09 ダッチアングルショット"
+      - "9:30 スクショタイム3"
+      - "9:37 オーバー・ザ・ショルダーショット"
+      - "10:20 リアクションショット"
+      - "11:08 ツーショット"
+      - "11:34 グループショット"
+      - "12:14 オープンフレーム"
+      - "12:51 クローズドフレーム"
+      - "13:36 スクショタイム4"
+      - "13:43 POV"
+      - "14:19 象徴ショット"
+      - "15:24 抽象ショット"
+      - "16:21 スクショタイム5"
+      - "16:29 最後に"
+      - "16:38 大切なのは…"
+    notes: "実写の撮影の解説。チャプターが20種類のショットの名前になっている（camera_moves.yaml の framing_terms の元）"
 
   - id: yt_Ksn9JVw6bK0
     kind: youtube
@@ -1159,4 +1229,17 @@ sources:
     lang: ja
     tool: live_action
     topic: "実写のカメラワーク6選（マイクラではない）"
-    read: title
+    read: page
+    published: "2021-11-01"
+    views: 105257
+    chapters:
+      - "0:00 先頭"
+      - "1:09 被写体に合わせてカメラを動かす事"
+      - "1:28 自然な動きに見える"
+      - "2:27 シーン切替の橋渡しを被写体がする事で切替がより自然に見える"
+      - "3:17 前景とメイン被写体の対比で立体感を感じられる"
+      - "3:43 動きのない場所でも動きが生まれる"
+      - "4:40 奥に向かって動くものも意識する"
+      - "6:49 プレも映像表現のひとつとして計算して作る"
+      - "8:40 基本のカメラワークをおさえましょう!"
+    notes: "実写の撮影の解説。チャプターの題名から、被写体に合わせて動かす、被写体を場面転換の橋渡しにする、前景との対比で立体感を出す、動きのない場所に動きを作る、奥に向かう動き、ブレを表現として使う、の6つとみられる。概要欄は英語への自動翻訳で読んだ"
