@@ -15,10 +15,10 @@
 
 meta:
   surveyed_at: "2026-11-19"
-  youtube_total: 67
+  youtube_total: 75
   youtube_read_page: 14
-  youtube_read_title_only: 53
-  youtube_by_tool: {flashback: 15, replaymod: 19, cmdcam: 1, cinemalya: 1, vanilla: 9, bedrock_camera: 6, bedrock_addon: 4, other_mod: 5, unknown: 5, live_action: 2}
+  youtube_read_title_only: 61
+  youtube_by_tool: {flashback: 16, replaymod: 22, cmdcam: 3, cinemalya: 1, vanilla: 9, bedrock_camera: 6, bedrock_addon: 4, other_mod: 7, unknown: 5, live_action: 2}
   transcripts_read: 0
   videos_watched: 0
   note: "YouTubeの字幕の取得はbot判定で止められた。動画ページの取得も低速（約100〜200秒に1本）に制限された"
@@ -143,6 +143,24 @@ sources:
     notes: "Fabric・Quilt、1.19〜26.3。ズーム、カメラの切り離し、三人称の距離"
     accessed: "2026-11-19"
 
+  - id: cutscene_maker_pro_modrinth
+    kind: mod_page
+    confidence: 一次
+    url: https://modrinth.com/datapack/cutscene-maker-pro
+    title: "Cutscene Maker Pro（Modrinth）"
+    read: "説明文のうち、カメラの仕組み・注意・FAQ"
+    notes: "データパック、26.3、MIT。item_display を観戦させる方式。1区間59tickまで、allow-flight=true が必要、という作者の説明"
+    accessed: "2026-11-19"
+
+  - id: director_modrinth
+    kind: mod_page
+    confidence: 二次
+    url: https://modrinth.com/modpack/5zkDfS7I
+    title: "DIRECTOR（Modrinth。撮影用のmodpack）"
+    read: "説明文の全文と登録情報"
+    notes: "Flashbackを中心にした撮影用modpack（Fabric、1.19.2・1.20.1・26.2、MIT）。Flashbackの作者ではない第三者の説明なので、Flashbackについての記述は二次。Holdでカット、収録中はシェーダーを切る、Carpetの偽プレイヤーを役者にするスクリプト"
+    accessed: "2026-11-19"
+
   # ---------- Minecraft Wiki（二次） ----------
   - id: wiki_tick_cmd
     kind: wiki
@@ -265,16 +283,6 @@ sources:
     notes: "ReplayModフォーラムの古いスレッド（2015〜2017年ごろ）。点が近いとループや揺れが出る、最初と最後にTime Keyframeを置けば等速、速度の変わり目は自動でなめらかにならない、など。2026-11-19 時点でスレッドのページは404"
     accessed: "2026-11-19"
 
-  - id: web_flashback_hold_search
-    kind: web_search
-    confidence: 二次
-    query: "Flashback mod Minecraft tutorial cinematic camera keyframes interpolation export"
-    result_urls:
-      - https://modrinth.com/modpack/5zkDfS7I
-    read: "検索ツールが返した要約だけ。元のページは未読"
-    notes: "Flashbackで瞬間的なカットにするには補間をHoldにするか別々に書き出す、という説明"
-    accessed: "2026-11-19"
-
   - id: web_fov_tips_search
     kind: web_search
     confidence: 二次
@@ -300,7 +308,7 @@ sources:
       - https://bugs-legacy.mojang.com/browse/MC-279534
       - https://bugs.mojang.com/browse/MC-276459
     read: "検索ツールが返した要約だけ。元のページは未読"
-    notes: "displayエンティティをカメラ役にする方式の事例と、teleport_duration の不具合報告（1区間59tickまで、値が大きいと等速にならない、など）"
+    notes: "displayエンティティをカメラ役にする方式の事例と、teleport_duration の不具合報告（値が大きいと等速にならない、など）。1区間59tickまで、という点は cutscene_maker_pro_modrinth で直接読めた"
     accessed: "2026-11-19"
 
   - id: web_cmdcam_search
@@ -511,6 +519,17 @@ sources:
     topic: "0.33.0 の紹介（作者）"
     read: title
 
+  - id: yt_Li5Q1k-nRQU
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=Li5Q1k-nRQU
+    title: "revolutionizing mcyt pt 3 mp4"
+    channel: "RedDev"
+    lang: en
+    tool: flashback
+    topic: "FlashPlus（カメラパスの書き出し）の説明。FlashPlusの配布ページが紹介しているショート"
+    read: title
+
   - id: yt_TPAueZIblZE
     kind: youtube
     confidence: 二次
@@ -682,6 +701,17 @@ sources:
     topic: "建築アニメーションのタイムラプス"
     read: title
 
+  - id: yt_30doTx2S1JM
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=30doTx2S1JM
+    title: "Mastering the Minecraft ReplayMod - Part 5: Green Screen Transitions"
+    channel: "slicedlime"
+    lang: en
+    tool: replaymod
+    topic: "グリーンスクリーンでの場面転換（slicedlimeのシリーズ第5回）"
+    read: title
+
   - id: yt_54tUjmU_a2A
     kind: youtube
     confidence: 二次
@@ -702,6 +732,17 @@ sources:
     lang: en
     tool: replaymod
     topic: "シネマティックなショット"
+    read: title
+
+  - id: yt_6rI9YOhOmgQ
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=6rI9YOhOmgQ
+    title: "How to Use Replay Mod (for experts)"
+    channel: "Slip"
+    lang: en
+    tool: replaymod
+    topic: "上級者向けの使い方"
     read: title
 
   - id: yt_8jGU0m57Ca0
@@ -792,6 +833,17 @@ sources:
     topic: "導入と使い方（26.2）"
     read: title
 
+  - id: yt_nslxv9O11gk
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=nslxv9O11gk
+    title: "Replay Mod Tutorials: Position Keyframes and Time Keyframes | Episode 2"
+    channel: "Kingelffe"
+    lang: en
+    tool: replaymod
+    topic: "Position Keyframe と Time Keyframe"
+    read: title
+
   - id: yt_oMIT55DF4AQ
     kind: youtube
     confidence: 二次
@@ -839,6 +891,28 @@ sources:
     published: "2024-04-13"
     views: 5024
     notes: "概要欄: Forge向けのCMDCamの補間方法を解説。使い方とコマンドの詳細は投稿者のブログ（mine-blog.tech）にあるとのこと。VOICEVOXとゆっくりMovieMaker4の解説動画"
+
+  - id: yt_2rZTYJEZ55g
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=2rZTYJEZ55g
+    title: "CMDCam Trailer"
+    channel: "CreativeMD"
+    lang: en
+    tool: cmdcam
+    topic: "CMDCamの予告編（作者。配布ページに埋め込まれている）"
+    read: title
+
+  - id: yt_nzdKVZWpcog
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=nzdKVZWpcog
+    title: "Mod Deep Dives - CMDCam"
+    channel: "Worldbuilder"
+    lang: en
+    tool: cmdcam
+    topic: "CMDCamの詳しい紹介（配布ページに埋め込まれている）"
+    read: title
 
   # --- tool: cinemalya ---
   - id: yt_FtVcRR-iO80
@@ -1065,6 +1139,17 @@ sources:
     read: title
 
   # --- tool: other_mod ---
+  - id: yt_7WHX27DOCoU
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=7WHX27DOCoU
+    title: "Made with DIRECTOR | 1"
+    channel: "Sosin"
+    lang: en
+    tool: other_mod
+    topic: "撮影用modpack「DIRECTOR」の配布ページに埋め込まれている動画"
+    read: title
+
   - id: yt_A6svTpEiEWo
     kind: youtube
     confidence: 二次
@@ -1118,6 +1203,17 @@ sources:
     lang: en
     tool: other_mod
     topic: "動画制作者向けのmod10選"
+    read: title
+
+  - id: yt_wdZBAJXdq84
+    kind: youtube
+    confidence: 二次
+    url: https://www.youtube.com/watch?v=wdZBAJXdq84
+    title: "Made with DIRECTOR | 2"
+    channel: "Sosin"
+    lang: en
+    tool: other_mod
+    topic: "撮影用modpack「DIRECTOR」の配布ページに埋め込まれている動画"
     read: title
 
   # --- tool: unknown ---

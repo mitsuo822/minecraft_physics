@@ -452,7 +452,7 @@ moves:
     avoid_when: [位置関係を連続して見せたいとき]
     params: [切り替えの時刻, 次のショット]
     how:
-      - {tool: flashback, do: "ショットごとに別々に書き出す。または補間をHoldにする", confidence: 二次, source: web_flashback_hold_search}
+      - {tool: flashback, do: "ショットごとに別々に書き出す。または補間をHoldにする", confidence: 二次, source: director_modrinth, note: "Flashbackの作者ではない第三者（撮影用modpack）の説明"}
       - {tool: cinecam, do: "移動の種類をCUTにする", confidence: 一次, source: cinecam_modrinth}
       - {tool: movie, do: "ショットを別ファイルで書き出し、編集でつなぐ", confidence: 未確認, source: null}
     pitfalls:

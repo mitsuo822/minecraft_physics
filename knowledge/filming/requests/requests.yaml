@@ -1,0 +1,382 @@
+# 取得依頼（カメラワーク調査の続き）— 正本
+#
+# 2026-11-19 の調査で、クラウドのセッションからは読めなかったものの一覧。
+# 人が手元のPCで保存し、あとでAIが読んで knowledge/filming/ を更新する。
+#
+# 人が開くのは 取得依頼.html（このファイルから build.py で作る生成物。直接は編集しない）。
+#   作り直し: python knowledge/filming/requests/build.py
+#
+# 保存先はすべて meta.save_root からの相対パス。media/ は .gitignore 済みなので、
+# 保存したものはリポジトリに入らない（動画・字幕は他人の著作物なので、入れない）。
+#
+# 項目の意味
+#   tier      A = 最優先 / B = できれば / C = 余裕があれば
+#   want      動画で欲しいもの。subs=字幕 / info=概要欄とチャプター / video=映像
+#             動画は tier で決まる: A=[subs, info, video]、B と C=[subs, info]
+#   look_for  その資料から知りたいこと（AIが読むときの着眼点）
+#   resolves  解決したい未確認事項。CW-nn は カメラワーク.md の項目、tools-7 は 撮影ツール.md の §7
+#   status    requested=依頼中 / saved=保存済み / used=知見に反映済み（AIが更新する）
+
+meta:
+  created_at: "2026-11-19"
+  save_root: media/research/camera
+  tiers:
+    A: {label: 最優先, want: [subs, info, video]}
+    B: {label: できれば, want: [subs, info]}
+    C: {label: 余裕があれば, want: [subs, info]}
+  layout:
+    youtube: "youtube/<動画ID>/<動画ID>.info.json、<動画ID>.<言語>.vtt、<動画ID>.mp4"
+    web: "web/<名前>.pdf（または .html、.md）"
+    src: "src/<リポジトリ名>/（git clone したもの）"
+    flashback_ui: "flashback_ui/<番号>_<名前>.png"
+    notes: "notes/<名前>.md"
+
+# ---------- 動画（source は ../sources.yaml の id） ----------
+videos:
+
+  # --- A: 映像も見たい（カメラの動きそのもの、設定画面の項目） ---
+  - {source: yt_2adv42iyTC8, tier: A, status: requested, resolves: [CW-22],
+     look_for: "Track Entity が被写体の位置まで追うのか、向きだけか。体の部位の指定、視点のオフセット、遠くからのショットの設定項目"}
+  - {source: yt_nRSEtXeu5vo, tier: A, status: requested, resolves: [CW-09, CW-12],
+     look_for: "Camera と Camera orbit のキーフレームの設定項目（中心・半径・角度など）と、補間の選び方"}
+  - {source: yt_KVqOTtCLff8, tier: A, status: requested, resolves: [CW-16, CW-21, CW-38],
+     look_for: "Camera／FOV／Timelapse／Speed／Time of Day の各キーフレームの操作と、書き出し（Rendering）の設定"}
+  - {source: yt_eSXIrF3KmlM, tier: A, status: requested, resolves: [CW-09, CW-38],
+     look_for: "「Advanced camera keyframing」（3:06〜）と「Advanced animation tracks」（4:55〜）の内容。書き出しの推奨設定（8:33〜）"}
+  - {source: yt_S9MruT8QCsk, tier: A, status: requested, resolves: [CW-34],
+     look_for: "日本語での操作の呼び名。書き出し範囲の指定（10:58〜）、表示の調整（12:31〜）、キーフレームでの移動（14:29〜）"}
+  - {source: yt_XPBwuC97_-w, tier: A, status: requested, resolves: [CW-03, CW-04],
+     look_for: "ReplayModとの技術的な違い（8:48〜）と作者へのインタビュー（13:38〜）。記録と書き出しの仕組み"}
+  - {source: yt_1qlsGg1kXyM, tier: A, status: requested, resolves: [CW-19],
+     look_for: "実時間基準の補間の実演。Block Overrides の使い方"}
+  - {source: yt_uoRJoQ144io, tier: A, status: requested, resolves: [CW-12],
+     look_for: "Orbit の作り方（短い実演）"}
+  - {source: yt_Z1zt-1gbleA, tier: A, status: requested, resolves: [tools-7],
+     look_for: "操作の全体。数値を指定してキーフレームを置けるか"}
+  - {source: yt_LGX5Fov3tcc, tier: A, status: requested, resolves: [CW-22, CW-37],
+     look_for: "グリーンスクリーン、主観での書き出し、エンティティの追跡、プレイヤーやモブを消す方法"}
+  - {source: yt_P1bGz5ykIFE, tier: A, status: requested, resolves: [CW-12, CW-13],
+     look_for: "経路の計画（2:16〜）、再生の遅れへの対処（7:24〜）、補間の理解（13:31〜）、書き出しの進め方（17:56〜）"}
+  - {source: yt_STaEfUoygig, tier: A, status: requested, resolves: [CW-31, CW-32, CW-33],
+     look_for: "item_display をカメラにするコマンドそのもの（概要欄にあれば）。なめらかさと、回転の見え方"}
+  - {source: yt_FtVcRR-iO80, tier: A, status: requested, resolves: [CW-32],
+     look_for: "データパックのカメラの実際のなめらかさ。回転の刻みが見えるか"}
+  - {source: yt_ePVbfjxMOHo, tier: A, status: requested, resolves: [CW-09],
+     look_for: "補間の種類ごとに経路がどう変わるか（映像での比較）"}
+  - {source: yt_riVGIH9msCA, tier: A, status: requested, resolves: [CW-30],
+     look_for: "/tick rate のスローで、動きがどう見えるか（tickの間がなめらかに補間されるか、カクつくか）"}
+
+  # --- B: 字幕と概要欄でよい ---
+  - {source: yt_JvnvnmPsrAE, tier: B, status: requested, resolves: [CW-42],
+     look_for: "20種類のショットそれぞれの定義と使いどころ（camera_moves.yaml の framing_terms の説明を確かめる）"}
+  - {source: yt_Ksn9JVw6bK0, tier: B, status: requested, resolves: [CW-43],
+     look_for: "6つのカメラワークの名前と、動かす理由の説明"}
+  - {source: yt_30_o6SfiEhk, tier: B, status: requested, resolves: [CW-22, CW-23],
+     look_for: "追従ショットの設定項目（オフセット、なめらかさ）"}
+  - {source: yt_jBBVCpig6HU, tier: B, status: requested, resolves: [CW-31],
+     look_for: "データパックでのカメラの作り方（方式）"}
+  - {source: yt_nzdKVZWpcog, tier: B, status: requested, resolves: [CW-22],
+     look_for: "CMDCamの操作の全体と、追従・注視の実演"}
+  - {source: yt_TPAueZIblZE, tier: B, status: requested, resolves: [CW-21],
+     look_for: "Timelapseキーフレームの使い方"}
+  - {source: yt_qVpJ01eNq1A, tier: B, status: requested, resolves: [CW-28],
+     look_for: "どの道具を使っているか。動かし方のコツ（速さ、FOV、時間帯）"}
+  - {source: yt_5QOUXOg-unQ, tier: B, status: requested, resolves: [CW-28],
+     look_for: "どの道具を使っているか。動かし方のコツ（速さ、FOV、時間帯）"}
+  - {source: yt_kuYvx3oxFE4, tier: B, status: requested, resolves: [CW-28],
+     look_for: "どの道具を使っているか。動かし方のコツ（速さ、FOV、時間帯）"}
+  - {source: yt_Zy3RUHYpT4I, tier: B, status: requested, resolves: [CW-28],
+     look_for: "FOVについての助言の内容（検索の要約では「FOV 30」）と、紹介しているmod"}
+  - {source: yt_oQOC1hXnOxE, tier: B, status: requested, resolves: [CW-10],
+     look_for: "ReplayModでの動かし方のコツ"}
+  - {source: yt_NaCNpdQGIWw, tier: B, status: requested, resolves: [CW-03],
+     look_for: "「動画のアングル・時間を設定」（4:54〜）の操作。低スペックでも滑らかに書き出せる理由の説明"}
+  - {source: yt_oMIT55DF4AQ, tier: B, status: requested, resolves: [],
+     look_for: "MC 26.2 でのReplayModの導入と基本操作"}
+  - {source: yt_e51Fxoyd7Sc, tier: B, status: requested, resolves: [tools-7],
+     look_for: "キーフレームの組を別のリプレイへ移す方法（保存形式の手がかり）"}
+  - {source: yt_30doTx2S1JM, tier: B, status: requested, resolves: [CW-37],
+     look_for: "グリーンスクリーンでの合成の手順"}
+  - {source: yt_997ySD0sVC4, tier: B, status: requested, resolves: [CW-12],
+     look_for: "複雑なショットの組み立て方"}
+  - {source: yt_6rI9YOhOmgQ, tier: B, status: requested, resolves: [],
+     look_for: "上級者向けのコツ"}
+  - {source: yt_nslxv9O11gk, tier: B, status: requested, resolves: [CW-15],
+     look_for: "Position Keyframe と Time Keyframe の関係の説明"}
+  - {source: yt_0pZ8MaWH-PQ, tier: B, status: requested, resolves: [CW-18],
+     look_for: "逆再生をどう作っているか（編集ソフトか、modの中か）"}
+  - {source: yt_zyUkWkC4Kuc, tier: B, status: requested, resolves: [CW-30],
+     look_for: "/tick でのスローの見え方"}
+  - {source: yt_vWFhfDVUk_4, tier: B, status: requested, resolves: [],
+     look_for: "Flashbackの基本操作"}
+  - {source: yt_8NA1PN0DUZQ, tier: B, status: requested, resolves: [],
+     look_for: "「Replay Editor」（4:05〜）の操作と、編集ソフトでの仕上げ（11:08〜）"}
+  - {source: yt_Li5Q1k-nRQU, tier: B, status: requested, resolves: [tools-7],
+     look_for: "FlashPlusのカメラパスの書き出しで何ができるか"}
+  - {source: yt_8jGU0m57Ca0, tier: B, status: requested, resolves: [],
+     look_for: "書き出した素材を編集でどう使うか"}
+
+  # --- C: 余裕があれば（統合版、関連が薄いもの、入門の重複） ---
+  - {source: yt_peczNONskb8, tier: C, status: requested}
+  - {source: yt_vo1fh3_zJ9I, tier: C, status: requested}
+  - {source: yt_2rZTYJEZ55g, tier: C, status: requested}
+  - {source: yt_6eSSxpRg07E, tier: C, status: requested}
+  - {source: yt_s3YcqBcKoV8, tier: C, status: requested}
+  - {source: yt_GLlykl11Og4, tier: C, status: requested}
+  - {source: yt_PEazXIwkx1w, tier: C, status: requested}
+  - {source: yt_9jl7ebacnTQ, tier: C, status: requested}
+  - {source: yt_mqWLuCfeCOU, tier: C, status: requested}
+  - {source: yt_0dR_pClhot8, tier: C, status: requested}
+  - {source: yt_2hrQFT6oVBc, tier: C, status: requested}
+  - {source: yt_54tUjmU_a2A, tier: C, status: requested}
+  - {source: yt_Lg3PK0zuglY, tier: C, status: requested}
+  - {source: yt_5GNSdAobcj8, tier: C, status: requested}
+  - {source: yt_SltN9j4gDek, tier: C, status: requested}
+  - {source: yt_FDM2UO4EOPM, tier: C, status: requested}
+  - {source: yt_UVWo7gbeCYg, tier: C, status: requested}
+  - {source: yt_TGu31ioaklY, tier: C, status: requested}
+  - {source: yt_wdZBAJXdq84, tier: C, status: requested, look_for: "Flashbackを使った完成映像の例（見るなら映像）"}
+  - {source: yt_7WHX27DOCoU, tier: C, status: requested, look_for: "Flashbackを使った完成映像の例（見るなら映像）"}
+  - {source: yt_GnYrZlBCyWg, tier: C, status: requested}
+  - {source: yt_8EKDwvU9-QI, tier: C, status: requested, look_for: "イージング32種類の動きの違い（Java版でイージングを選ぶときの参考）"}
+  - {source: yt_8tL6zEO4H40, tier: C, status: requested}
+  - {source: yt_4d33JJmLUSY, tier: C, status: requested}
+  - {source: yt_0PGw2hzQAII, tier: C, status: requested}
+  - {source: yt_1MAX5E2TPyY, tier: C, status: requested}
+  - {source: yt_ylgF43M9cxo, tier: C, status: requested}
+  - {source: yt_IP1J0U_PABU, tier: C, status: requested}
+  - {source: yt_LIWOinP_cT0, tier: C, status: requested}
+  - {source: yt_HeWynDtGJnY, tier: C, status: requested}
+  - {source: yt_QSq7ANOfVFM, tier: C, status: requested}
+  - {source: yt_CEphmIioblk, tier: C, status: requested}
+  - {source: yt_A6svTpEiEWo, tier: C, status: requested}
+  - {source: yt_MA58NBuIyQ8, tier: C, status: requested}
+  - {source: yt_Xm2rdDMfnuQ, tier: C, status: requested}
+  - {source: yt_c6osfIMNxVk, tier: C, status: requested}
+
+# ---------- 探してほしい動画（AIには特定できなかったもの） ----------
+find_videos:
+  - id: find_examples
+    tier: A
+    status: requested
+    title: "あなたが「撮り方がうまい」と思うマイクラ動画を3〜5本"
+    hint: "検証・実験・解説の動画だと特によい。競合や、目標にしたいチャンネルの動画でもよい"
+    want: "映像と字幕。あわせて、良いと思った箇所の時刻と理由を notes/examples.md に1行ずつ（下の「あなたのメモ」）"
+    look_for: "解説動画は「やり方」しか教えてくれない。どんな画を良いと感じるかは、作例と人の目でしか決まらない"
+    resolves: [CW-43]
+  - id: find_slicedlime_rest
+    tier: B
+    status: requested
+    title: "slicedlime「Mastering the Minecraft ReplayMod」の第2回・第4回・第6回"
+    hint: "チャンネル slicedlime の中で題名を検索する。第1回は yt_P1bGz5ykIFE、第3回は yt_e51Fxoyd7Sc、第5回は yt_30doTx2S1JM"
+    want: "字幕と概要欄"
+    look_for: "第4回「タイムラインを別の場所へ移す」は、カメラの経路を座標ごと動かす話。経路の保存形式の手がかりになる"
+    resolves: [tools-7]
+  - id: find_crushedpixel_basic
+    tier: C
+    status: requested
+    title: "CrushedPixel「Minecraft Replay Mod - Basic Tutorial」"
+    hint: "slicedlime のシリーズ第1回の概要欄にリンクがある"
+    want: "字幕と概要欄"
+    look_for: "ReplayModの作者側による入門。基本操作の正しい呼び名"
+    resolves: []
+
+# ---------- Webページ ----------
+web:
+  - id: web_flashback_discord
+    tier: A
+    status: requested
+    title: "Flashback 公式Discordの案内・FAQ・ピン留め"
+    url: https://discord.gg/mAYDZ9c7rD
+    save_as: web/flashback_discord.md
+    how: "該当する書き込みの文章をテキストとして貼る。日付も添える"
+    look_for: "正投影（Orthographic）の使い方。1.21.x 向けの版で正投影が使えるか。カメラのキーフレームを数値で入力できるか、外部から読み込めるか"
+    resolves: [CW-07, CW-27, tools-7]
+  - id: web_mc184359
+    tier: B
+    status: requested
+    title: "Mojangのバグ票 MC-184359（回転が粗い刻みで送られる）"
+    url: https://bugs.mojang.com/browse/MC-184359
+    save_as: web/MC-184359.pdf
+    how: "ブラウザの印刷からPDFで保存"
+    look_for: "回転が1.4°刻みになる条件、対象バージョン、修正されたかどうか"
+    resolves: [CW-32]
+  - id: web_mc278440
+    tier: B
+    status: requested
+    title: "Mojangのバグ票 MC-278440（Cinemalyaの回避策が頼っている挙動）"
+    url: https://bugs.mojang.com/browse/MC-278440
+    save_as: web/MC-278440.pdf
+    how: "ブラウザの印刷からPDFで保存"
+    look_for: "どんな挙動か。修正の予定があるか（修正されると回避策が使えなくなる）"
+    resolves: [CW-32]
+  - id: web_cmdcam_blog
+    tier: B
+    status: requested
+    title: "Mine-Tech blog のCMDCam解説記事（日本語）"
+    url: https://www.mine-blog.tech/
+    save_as: web/cmdcam_blog.pdf
+    how: "記事のURLは動画 yt_ePVbfjxMOHo の概要欄にある。ブラウザの印刷からPDFで保存"
+    look_for: "CMDCamの使い方とコマンドの日本語での説明。補間の種類ごとの違い"
+    resolves: [CW-09]
+  - id: web_mc272599
+    tier: C
+    status: requested
+    title: "Mojangのバグ票 MC-272599（teleport_duration が大きいと等速にならない）"
+    url: https://bugs.mojang.com/browse/MC-272599
+    save_as: web/MC-272599.pdf
+    how: "ブラウザの印刷からPDFで保存"
+    look_for: "起きる条件と対象バージョン"
+    resolves: [CW-33]
+  - id: web_replaymodcinematics
+    tier: C
+    status: requested
+    title: "ReplayModCinematics の配布ページ（CurseForge）"
+    url: https://moddex.gg/mod/replaymodcinematics
+    save_as: web/replaymodcinematics.pdf
+    how: "CurseForgeのURLは動画 yt_30_o6SfiEhk の概要欄にある。上のURLは紹介ページ"
+    look_for: "追従ショットと注視の仕様"
+    resolves: [CW-22]
+  - id: web_replaymod_forum_archive
+    tier: C
+    status: requested
+    title: "ReplayModフォーラムの古いスレッド（今は消えている）"
+    url: https://web.archive.org/web/2020/https://www.replaymod.com/forum/thread/2266
+    save_as: web/replaymod_forum_2266.pdf
+    how: "Wayback Machineに残っていれば。ほかに thread/2002、1978、181、713 も"
+    look_for: "経路のループや揺れの原因と対処。開発者の回答"
+    resolves: [CW-12]
+
+# ---------- ソースコード ----------
+source_code:
+  - id: src_flashback
+    tier: A
+    status: requested
+    title: "Flashback のソースコード"
+    url: https://github.com/Moulberry/Flashback
+    save_as: src/Flashback/
+    how: "git clone する。ライセンスは All Rights Reserved なので、読んで仕様を知るためだけに使い、コードは流用しない"
+    look_for: "キーフレームと編集状態の保存形式（外からカメラの経路を与えられるか）。カメラの補間の実装。正投影のパラメータ。Track Entity の仕様"
+    resolves: [tools-7, CW-07, CW-22]
+  - id: src_cinemalya
+    tier: B
+    status: requested
+    title: "Cinemalya のソース（データパック）"
+    url: https://github.com/Stoupy51/Cinemalya
+    save_as: src/Cinemalya/
+    how: "git clone する（MIT）"
+    look_for: "item_display を動かして観戦させる実装。回転の精度の回避策。自前のデータパックで同じことをする場合の手本"
+    resolves: [CW-31, CW-32]
+  - id: src_replaymod
+    tier: C
+    status: requested
+    title: "ReplayMod のソースコード"
+    url: https://github.com/ReplayMod/ReplayMod
+    save_as: src/ReplayMod/
+    how: "git clone する（GPL-3.0-or-later）"
+    look_for: "キーフレームの保存形式。スプライン補間の実装"
+    resolves: [tools-7, CW-09]
+  - id: src_cmdcam
+    tier: C
+    status: requested
+    title: "CMDCam のソースコード"
+    url: https://github.com/CreativeMD/CMDCam
+    save_as: src/CMDCam/
+    how: "git clone する（LGPL-2.1-only）"
+    look_for: "補間5種類の実装。追従のなめらかさ（step）の計算"
+    resolves: [CW-09, CW-23]
+  - id: src_flashplus_importer
+    tier: C
+    status: requested
+    title: "FlashPlus のカメラパスをBlenderに取り込むアドオン"
+    url: https://github.com/FalseMSP/RedsFlashbackImporter
+    save_as: src/RedsFlashbackImporter/
+    how: "git clone する"
+    look_for: "FlashPlusが書き出すカメラパスのファイル形式"
+    resolves: [tools-7]
+
+# ---------- 実機の画面とファイル（MCとFlashbackを入れた後） ----------
+in_game:
+  - id: ui_versions
+    tier: A
+    status: requested
+    title: "使ったバージョンのメモ"
+    save_as: flashback_ui/versions.txt
+    how: "MC、Flashback、Fabric Loader、Fabric API の版を1行ずつ書く"
+    look_for: "以下のスクリーンショットがどの版のものかを残す"
+    resolves: []
+  - id: ui_keyframe_types
+    tier: A
+    status: requested
+    title: "キーフレームを追加するメニュー"
+    save_as: flashback_ui/01_keyframe_types.png
+    how: "タイムラインでキーフレームを追加するメニューを開き、追加できる種類が全部見える状態で撮る"
+    look_for: "キーフレームの種類の正式な一覧"
+    resolves: [CW-08]
+  - id: ui_camera_keyframe_edit
+    tier: A
+    status: requested
+    title: "カメラのキーフレームの編集項目"
+    save_as: flashback_ui/02_camera_keyframe_edit.png
+    how: "カメラのキーフレームを右クリック（または編集）して、出てくる項目を撮る"
+    look_for: "座標・向き・ロール・FOVを数値で入れられるか"
+    resolves: [tools-7, CW-05]
+  - id: ui_interpolation
+    tier: A
+    status: requested
+    title: "補間の種類を選ぶメニュー"
+    save_as: flashback_ui/03_interpolation.png
+    how: "選択肢が全部見える状態で撮る"
+    look_for: "補間の種類の正式な一覧（Smooth、Linear、Hermite、Hold のほかに何があるか）"
+    resolves: [CW-09, CW-14]
+  - id: ui_export
+    tier: A
+    status: requested
+    title: "書き出し（Export）の画面"
+    save_as: flashback_ui/04_export.png
+    how: "画面全体。投影（Projection）の選択肢を開いた状態も1枚"
+    look_for: "書き出しで選べる項目。この版に正投影があるか"
+    resolves: [CW-07, CW-38]
+  - id: ui_orthographic
+    tier: B
+    status: requested
+    title: "正投影を選んだときの設定項目"
+    save_as: flashback_ui/05_orthographic.png
+    how: "正投影（Orthographic）を選ぶと出る項目を撮る。なければ「なし」と versions.txt に書く"
+    look_for: "画面に映る範囲（何ブロック分か）をどう指定するか"
+    resolves: [CW-27]
+  - id: ui_visuals
+    tier: B
+    status: requested
+    title: "Visuals の画面"
+    save_as: flashback_ui/06_visuals.png
+    how: "画面全体"
+    look_for: "表示を切り替えられる項目の一覧"
+    resolves: [CW-34, CW-35]
+  - id: ui_preferences
+    tier: C
+    status: requested
+    title: "Preferences と Advanced の画面"
+    save_as: flashback_ui/07_preferences.png
+    how: "画面全体"
+    look_for: "補間の基準（実時間／tick）や Synchronized Ticking などの設定"
+    resolves: [CW-19]
+  - id: files_replay_folder
+    tier: A
+    status: requested
+    title: "リプレイの保存フォルダの中身"
+    save_as: flashback_files/
+    how: "短いリプレイを1つ録り、保存フォルダのファイル名の一覧をテキストで保存する。次にカメラのキーフレームを2つ置いて保存し、増えた・変わったファイルを控える。小さいファイルはそのままコピーする"
+    look_for: "カメラのキーフレームがどのファイルに、どんな形式で保存されるか。experiment.yaml の shots から自動で作れるか"
+    resolves: [tools-7]
+
+# ---------- あなたのメモ ----------
+notes:
+  - id: notes_examples
+    tier: A
+    status: requested
+    title: "良いと思ったショットのメモ"
+    save_as: notes/examples.md
+    how: "1行に「動画のURLかID、時刻、何が良いか」を書く。例: <動画ID> 1:53 遠くから追う画で、被写体の速さが伝わる"
+    look_for: "このチャンネルで真似したい画の具体例。camera_moves.yaml の physics_use を、推論から実例に置き換える"
+    resolves: [CW-43]
