@@ -3,7 +3,7 @@
 > 対象: Minecraft Usage Guidelines（利用ガイドライン）と Minecraft EULA のうち、YouTube 動画の制作・収益化・チャンネル名・タイトル・サムネイル・概要欄・スポンサー・mod に関わる条文と、その改定の履歴。マイクラの音楽・効果音の扱いは [マイクラ音楽の使用](マイクラ音楽の使用.md) に分けた。
 > 使う場面: チャンネル名・タイトル・サムネイル・概要欄の定型文を決めるとき／案件（スポンサー）を受けるとき／メンバー限定などの有料機能を検討するとき／定期的に規約の改定を確認するとき。
 > 調査日: 2026-11-19 ／ mc_version: 規約そのものは MC のバージョンに依存しない（全エディション共通。2026-11-19 に読んだ版）。EULA の mod の条項は Java Edition が対象。
-> 関連: [マイクラ音楽の使用](マイクラ音楽の使用.md), [mod・シェーダーの利用条件](mod・シェーダーの利用条件.md), [引用と著作権](../../../movie/knowledge/legal/引用と著作権.md), [量産型・再利用コンテンツのポリシー](../../../movie/knowledge/youtube/量産型・再利用コンテンツのポリシー.md), [ステルスマーケティング規制](../../../movie/knowledge/legal/ステルスマーケティング規制.md), [タイトル](../../../movie/knowledge/planning/タイトル.md), [サムネイル](../../../movie/knowledge/planning/サムネイル.md), [著作権とContent_ID](../../../movie/knowledge/youtube/著作権とContent_ID.md), [新規チャンネルの立ち上げ](../../../movie/knowledge/channel/新規チャンネルの立ち上げ.md)
+> 関連: [マイクラ音楽の使用](マイクラ音楽の使用.md), [mod・シェーダーの利用条件](mod・シェーダーの利用条件.md), [引用と著作権](https://github.com/mitsuo822/movie/blob/main/knowledge/legal/引用と著作権.md), [量産型・再利用コンテンツのポリシー](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/量産型・再利用コンテンツのポリシー.md), [ステルスマーケティング規制](https://github.com/mitsuo822/movie/blob/main/knowledge/legal/ステルスマーケティング規制.md), [タイトル](https://github.com/mitsuo822/movie/blob/main/knowledge/planning/タイトル.md), [サムネイル](https://github.com/mitsuo822/movie/blob/main/knowledge/planning/サムネイル.md), [著作権とContent_ID](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/著作権とContent_ID.md), [新規チャンネルの立ち上げ](https://github.com/mitsuo822/movie/blob/main/knowledge/channel/新規チャンネルの立ち上げ.md)
 
 ## 要点
 
@@ -94,7 +94,7 @@
 > 「You create a video and distribute it through services like iTunes or Amazon Prime Video and make money by charging for viewers to watch it (we’re not cool with this)」[S1]
 （訳）動画を iTunes や Amazon Prime Video などで配信し、視聴に料金を取って収益を得る（問題あり）。
 
-- 参照: YouTube 側の、独自性の低い動画の収益化の扱いは、Mojang の独自の内容の条件とは別の文書の話で、[量産型・再利用コンテンツのポリシー](../../../movie/knowledge/youtube/量産型・再利用コンテンツのポリシー.md) で扱う。
+- 参照: YouTube 側の、独自性の低い動画の収益化の扱いは、Mojang の独自の内容の条件とは別の文書の話で、[量産型・再利用コンテンツのポリシー](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/量産型・再利用コンテンツのポリシー.md) で扱う。
 - ガイドラインの本文には、thumbnail（サムネイル）という語も AI という語も出てこない（2026-11-19 に取得した本文を検索して確認）。【一次】[S1]
 
 ### 名前の使い方（Naming guidelines）
@@ -157,7 +157,7 @@
 - これらの主体またはそれに雇われた人（原文「someone who is hired by one of them」）が、自分（顧客）のブランドや商品の宣伝のために Minecraft のワールド・mod・サーバーを作ることを望まないとし、不可の例として次の4つを挙げている: 「A mod created to allow players to play in a world with branded automobiles」（訳: ブランドの自動車がある世界で遊べる mod）、「A skin pack containing brand logos」（訳: ブランドのロゴを含むスキンパック）、「Minecraft blocks used to build a world or characters from a movie」（訳: 映画の世界やキャラクターを Minecraft のブロックで作る）、「A political campaign or rally that takes place in-game」（訳: ゲーム内で行う政治運動や集会）。【一次】[S1]
 - 動画の条件として、スポンサー表示をゲームの内容の外に置くこと、スポンサーが子ども・未成年に適していることが求められている（上の表）。【一次】[S1]
 - サーバー運営者向けの節では、サーバーを宣伝するインフルエンサー（YouTube 等）に、運営者との関係を開示させ、米国連邦取引委員会（FTC）のガイドラインに従わせることを運営者の義務としている。【一次】[S1]
-- 日本の景品表示法のステマ規制と YouTube の有料プロモーションの表示は [ステルスマーケティング規制](../../../movie/knowledge/legal/ステルスマーケティング規制.md) を参照。
+- 日本の景品表示法のステマ規制と YouTube の有料プロモーションの表示は [ステルスマーケティング規制](https://github.com/mitsuo822/movie/blob/main/knowledge/legal/ステルスマーケティング規制.md) を参照。
 
 ### mod
 
@@ -214,9 +214,9 @@
   `NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.`
   `本チャンネル・本動画は Minecraft 公式のものではなく、Mojang および Microsoft の承認を受けたものでも、関係するものでもありません。`
   あわせて、運営者と連絡先（メールアドレス等。チャットやフォーラムのリンクは不可とされている）を明記する。（根拠: [S1]）
-- **独自の内容**: このチャンネルは解説（AI音声の掛け合い）・理論・計測グラフを加えるので、ガイドラインの「own audio commentary」の例に近い形になる。素の映像だけを流すショートや、BGM を付けただけの切り抜きは作らない。YouTube 側の再利用コンテンツの扱いは movie リポジトリのファイルで確認する。（根拠: [S1]、[量産型・再利用コンテンツのポリシー](../../../movie/knowledge/youtube/量産型・再利用コンテンツのポリシー.md)）
+- **独自の内容**: このチャンネルは解説（AI音声の掛け合い）・理論・計測グラフを加えるので、ガイドラインの「own audio commentary」の例に近い形になる。素の映像だけを流すショートや、BGM を付けただけの切り抜きは作らない。YouTube 側の再利用コンテンツの扱いは movie リポジトリのファイルで確認する。（根拠: [S1]、[量産型・再利用コンテンツのポリシー](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/量産型・再利用コンテンツのポリシー.md)）
 - **有料機能**: 「All videos (in their entirety) are free to view」とあるので、MC の映像を含む動画をメンバー限定などの有料の視聴にしない。（根拠: [S1]）
-- **スポンサー案件**: スポンサー表示はゲーム映像に重ねず、ゲーム画面の外（別のカードや区間）に置く。ワールド内にスポンサーのロゴや商品をブロックで作らない。スポンサーは子ども・未成年に適したものに限る。Minecraft と無関係な商品の宣伝が目的になる案件は、Mojang・Microsoft の書面の承認なしには受けない。（根拠: [S1]、[ステルスマーケティング規制](../../../movie/knowledge/legal/ステルスマーケティング規制.md)）
+- **スポンサー案件**: スポンサー表示はゲーム映像に重ねず、ゲーム画面の外（別のカードや区間）に置く。ワールド内にスポンサーのロゴや商品をブロックで作らない。スポンサーは子ども・未成年に適したものに限る。Minecraft と無関係な商品の宣伝が目的になる案件は、Mojang・Microsoft の書面の承認なしには受けない。（根拠: [S1]、[ステルスマーケティング規制](https://github.com/mitsuo822/movie/blob/main/knowledge/legal/ステルスマーケティング規制.md)）
 - **公式の映像・画像**: 公式トレーラーや公式のマーケティング画像を動画に入れるのは、ガイドラインの動画の許可（自分がプレイ・使用している映像）の範囲に明記がないので、使わないか、書面の許可を得る。（根拠: [S1] の「If something isn't covered ... please don't do it without getting written permission from us.」）
 - **mod と配布物**: mod を使った映像を出すのは問題として書かれていない。実験のワールドやデータパックを配布する場合は、ゲーム本体の jar や mod を組み込んだゲームを同梱しない。（根拠: [S3][S1]）
 - **改定の確認**: ガイドラインは予告なく変わり、ページに改定日がない。動画を公開するたびに、確認した日付を `episodes/` の記録に残し、半年に1回程度はこのファイルの引用と本文を照合する。（根拠: [S1][S3]）
@@ -229,7 +229,7 @@
 - 動画のサムネイルについての明文の規定はない。ロゴに似せないファンメイドの Minecraft 風のフォントが、brand の定義にある fonts の利用に当たるか。
 - 免責表示（NOT AN OFFICIAL MINECRAFT ...）を YouTube の動画の概要欄に入れることが、どの程度求められているか。Essential guidelines は「all uses」に適用されると読めるが、動画について個別に述べた公式の説明は見つからなかった。
 - YouTube のメンバーシップ、Super Thanks、Super Chat などが「free to view」の条件とどう関係するか（メンバー限定動画以外の機能は、視聴への課金ではない）。公式の説明は見つからなかった。
-- Essential guidelines が brand などを害するものの例に挙げる violence が、TNT の爆発などゲーム内の表現を指すか。ガイドラインに定義はない。YouTube の広告掲載のガイドライン側の扱いは movie リポジトリの [収益化の条件](../../../movie/knowledge/youtube/収益化の条件.md) を参照。
+- Essential guidelines が brand などを害するものの例に挙げる violence が、TNT の爆発などゲーム内の表現を指すか。ガイドラインに定義はない。YouTube の広告掲載のガイドライン側の扱いは movie リポジトリの [収益化の条件](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/収益化の条件.md) を参照。
 - 公式ヘルプ（help.minecraft.net）の記事『Content Creation and Broadcasting Terms of Use and Guidelines』の本文。help.minecraft.net は本文が JavaScript で表示され、このセッションでは読めなかった。【未確認】（検索要約のみ・原文未読）検索結果の要約では、ファンアート・ロゴ・動画・スクリーンショットは Mojang Studios の Minecraft のアセットを偽って表す目的で使わなければ許容される、という趣旨の記述があるとされた [S15]。検索で見つかった URL は Zendesk 上の写しで、公式ページそのものかも確認できていない。
 - 現在の Usage Guidelines の正確な改定日。ページに改定日の表示はない [S1]。【未確認】（検索要約のみ・原文未読）第三者の規約追跡サイトが、2026-04-19 に小さな書式の変更があったと記録しているとされる [S13] が、Mojang 側の資料で確かめられていない。
 - 【未確認】（検索要約のみ・原文未読）2014-10 に、Mojang の COO Vu Bui が Guardian のインタビューで Minecraft の動画を全面的に支持すると発言したと報じられた、とされる [S11]。原文は読めていない。
