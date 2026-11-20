@@ -3,12 +3,11 @@
 > 対象: 撮影・計測に使う予定の mod・シェーダーパックについて、ライセンスの種類と、動画・配信での利用、再配布（配布ワールド・modpack）、クレジットに関する条件を、各 mod の公式ページ（Modrinth）と LICENSE の本文から整理する。
 > 使う場面: 使う mod・シェーダーを決めるとき（`mc/mods.yaml` に記録するとき）、説明欄のクレジットを書くとき、視聴者向けにワールドや modpack を配るとき、自作の撮影用 mod を作るとき。
 > 調査日: 2026-11-19 ／ mc_version: Java Edition。各 mod の対応版は Modrinth の表示（2026-11-19 取得）で、範囲は 1.7.10〜26.4-snapshot-10。ライセンス本文は取得時点の、参照先の URL に書いたブランチ（develop / master / main / HEAD）のもの（過去の版のライセンスは未確認）。
-> 関連: [Mojang利用ガイドライン.md](Mojang利用ガイドライン.md)（ゲーム画面そのものの扱い）, [../mods/バージョン対応表.md](../mods/バージョン対応表.md), [../filming/シェーダーと画質mod.md](../filming/シェーダーと画質mod.md), [../filming/ReplayMod.md](../filming/ReplayMod.md), [../filming/Flashback.md](../filming/Flashback.md), [../mods/物理系mod.md](../mods/物理系mod.md), [../mods/Carpet.md](../mods/Carpet.md), [../mods/計測と可視化のmod.md](../mods/計測と可視化のmod.md)
+> 関連: [Mojang利用ガイドライン.md](Mojang利用ガイドライン.md)（ゲーム画面そのものの扱い）, [../mods/バージョン対応表.md](../mods/バージョン対応表.md), [../filming/シェーダーと画質mod.md](../filming/シェーダーと画質mod.md), [../filming/ReplayMod.md](../filming/ReplayMod.md), [../filming/Flashback.md](../filming/Flashback.md), [../mods/物理系mod.md](../mods/物理系mod.md), [../mods/Carpet.md](../mods/Carpet.md), [../mods/計測と可視化のmod.md](../mods/計測と可視化のmod.md), [AI生成・改変コンテンツの開示.md（movie）](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/AI生成・改変コンテンツの開示.md)（YouTube の『第三者の企業によるトレーニング』設定）
 
 ## 要点
 - 動画での利用を**ライセンスの文面で明示的に許可**しているのは、読んだ範囲では Complementary（License Agreement 1.8）、BSL（Modrinth 本文の AGREEMENT）、Photon（LICENSE）の3つのシェーダーだけ。【一次】[S13][S14][S16]
 - Complementary のライセンスは、Complementary を使って撮ったゲーム映像を**AIモデルの学習に使うことを明示的に禁止**している（2.1）。【一次】[S13]
-- YouTube には、AI モデルを作る第三者の企業に動画を学習に使わせる設定（『第三者の企業によるトレーニング』）があり、既定はオフ。【一次】[S36]
 - Photon は、商業的に公開するスクリーンショットと動画での利用を明示的に許可している。制作者に直接・間接の金銭的な見返りを与えるプラットフォーム（例として Modrinth・CurseForge）での再配布は、作者の明示の書面の許可が要る。【一次】[S16]
 - BSL は動画・スクリーンショットでの利用を許可し、許可のない再配布と、収益型のURL短縮サービスで作者のサイトやファイルにリンクすることを禁止している。【一次】[S14]
 - 録画 mod の Flashback は Modrinth で ARR と表示され、LICENSE.md は再配布を禁止し全権利を留保している。動画利用についての記述は LICENSE.md にない。【一次】[S3][S4]
@@ -126,12 +125,8 @@
   > 「You are free to include WorldEdit, without having to asking for explicit permission.」[S35]
   > 「A link back to this page or our GitHub Sponsors would be appreciated, however.」[S35]
 
-### YouTube の『第三者の企業によるトレーニング』設定
-- YouTube のクリエイターは、AI モデルを作る第三者の企業に、自分の動画を学習に使うことを許可できる。既定ではこの設定はオフ。【一次】[S36]
-  > 「デフォルトでは、第三者の企業によるトレーニングの設定はオフになっています。」[S36]
-- オンにすると、YouTube Studio を使うクリエイターの場合、チャンネルにアップロードされた対象の動画がすべて含まれる。【一次】[S36]
-  > 「YouTube Studio を使用しているクリエイターの場合: コンテンツには、チャンネルにアップロードされた対象となる動画がすべて含まれます。」[S36]
-- 対象になるのは、権利所有者がこのトレーニングを許可していて、プライバシー設定が公開で、利用規約とコミュニティガイドラインに準拠した動画。【一次】[S36]
+### YouTube の『第三者の企業によるトレーニング』設定との関係
+- YouTube には、AI モデルを作る第三者の企業にチャンネルの動画を学習に使わせる設定があり、既定はオフで、オンにすると（YouTube Studio を使うクリエイターの場合）チャンネルの対象の動画がすべて含まれる（設定の詳細は movie の [AI生成・改変コンテンツの開示.md](https://github.com/mitsuo822/movie/blob/main/knowledge/youtube/AI生成・改変コンテンツの開示.md) の §10）。Complementary の 2.1（映像の AI 学習への利用の禁止）との関係は下の提案の節に書く。【一次】[S36]
 
 ## このチャンネルでの使い方（提案）
 > ※この節は上の事実から導いた提案で、事実ではない。法的な助言でもない。
