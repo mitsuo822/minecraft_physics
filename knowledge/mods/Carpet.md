@@ -42,8 +42,9 @@ Modrinth の題名の下の説明は次のとおり。【一次】[S1]
 | Modrinth の互換性欄 | 26.3、26.2、26.1.x、1.21.x、1.20.x、1.19.x、1.18.x、1.17.1、1.16.x、1.15.x、1.14.4 | 【一次】[S1] |
 | master の gradle.properties | `minecraft_version=26.4-snapshot-8`、`loader_version=0.20.1`、`mod_version = 26.4-beta-6` | 【一次】[S3] |
 | 同ファイルの別ブランチ設定 | `release-extra-branch = false`、`release-extra-branch-name = 1.21.10` | 【一次】[S3] |
+| 26.3 向けのリリース（Modrinth の版のページ /version/yt9oDFOj） | 版名『Carpet 26.3』、種類はリリース、対応 MC は 26.3、プラットフォームは Fabric、変更履歴は「support for Minecraft 26.3」。公開日は 2026-09-18（ページに埋め込まれたデータの値。画面の表示は「2 か月前」） | 【一次】[S17] |
 
-- Modrinth のバージョン一覧のページは本文が JS で読み込まれ、個別のリリースのファイル名・公開日は読めなかった（2026-11-19）。【一次】[S1]
+- Modrinth のバージョン一覧のページは本文が JS で読み込まれ、個別のリリースのファイル名・公開日は読めなかった（2026-11-19）。【一次】[S1] 個別の版のページは読めた（上の表の 26.3 の行。[バージョン対応表.md](バージョン対応表.md) と同じ出典）。【一次】[S17]
 - 他の mod との揃い具合は [バージョン対応表.md](バージョン対応表.md) に任せる。
 
 ### ルールの設定（/carpet）と既定値
@@ -214,7 +215,7 @@ master の CarpetSettings の定義。【一次】[S5]
 - `mc/mods.yaml` には Carpet の版に加えて、変えたルールと `carpet.conf` の中身を書く。（根拠: [S6]）
 
 ## わかっていないこと・要確認
-- 26.3 向けの最新リリースの版番号・公開日（Modrinth のバージョン一覧は JS で読めず、CurseForge は 403 だった）。
+- 26.3 向けの最新リリースの版番号・公開日（Modrinth のバージョン一覧は JS で読めず、CurseForge は 403 だった）。→ 2026-11-20 に、[バージョン対応表.md](バージョン対応表.md) が読んだ Modrinth の版のページで確かめた: Carpet 26.3、2026-09-18、release【一次】[S17]。それが 26.3 向けの最新であることは、バージョン対応表.md の調べ（プロジェクトページに埋め込まれた版の一覧）による。
 - `commandTick` ルールが現在何を制御しているか。Carpet がバニラの /tick に何かを足しているか（Modrinth の説明文には `/tick warp` が残る）。
 - `/log projectiles` が対象にするエンティティの種類（矢・トライデント・雪玉・エンダーパール・花火など、どれが含まれるか）と、軌跡ログのヘルパーが作られるタイミング（エンティティの生成時か）。ソースのミックスインは未読。
 - `/player use continuous` → N tick 後に `stop` で、弓の引き時間を tick 単位で決められるか（`releaseUsingItem` が呼ばれることだけはソースで確認。弓の挙動は未実測）。
@@ -243,3 +244,4 @@ master の CarpetSettings の定義。【一次】[S5]
 - [S14] Scarpet のドキュメント（docs/scarpet/Full.md、master） — gnembon/fabric-carpet — https://raw.githubusercontent.com/gnembon/fabric-carpet/master/docs/scarpet/Full.md — 不明 — 取得: 2026-11-19 — 原文: 読んだ
 - [S15] Carpet TIS Addition README.md — TISUnion — https://raw.githubusercontent.com/TISUnion/Carpet-TIS-Addition/HEAD/README.md — 不明 — 取得: 2026-11-19 — 原文: 読んだ
 - [S16] Carpet TIS Addition - Minecraft Mod — Modrinth — https://modrinth.com/mod/carpet-tis-addition — 更新: 「5日前」の表示 — 取得: 2026-11-19 — 原文: 読んだ
+- [S17] Carpet 26.3（Modrinth の版のページ） — Modrinth（gnembon） — https://modrinth.com/mod/carpet/version/yt9oDFOj — 2026-09-18（ページに埋め込まれた公開日。表示は「2 か月前」） — 取得: 2026-11-19 — 原文: 読んだ

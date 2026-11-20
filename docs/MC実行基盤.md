@@ -63,5 +63,15 @@ P2 では、半自動と全自動（試作）を同じショットで比べて�
 撮影と計測の結果を一致させるために、次を固定する。
 
 - ワールド: 実験用のフラットワールドを毎回作り直す（シード固定）。
-- `doDaylightCycle false`、`doWeatherCycle false`、`randomTickSpeed 0`、`doMobSpawning false` など、乱れの元を止める。
+- 昼夜・天候・ランダムティック・モブの自然スポーンなど、乱れの元をゲームルールで止める。**ゲームルールの名前は版で違う**: 1.21.11（開発版 25w44a）で、すべてのゲームルールが camelCase から snake case のリソースロケーションの名前に変わった【二次】（minecraft.wiki『Game rule』の履歴。2026-11-20 取得。詳細は [knowledge/mechanics/時間とtick.md](../knowledge/mechanics/時間とtick.md)）。
+
+  | 止めるもの | 1.21.11 以降（基盤の候補 26.3 を含む） | 1.21.10 以前 |
+  |---|---|---|
+  | 昼夜 | `advance_time false` | `doDaylightCycle false` |
+  | 天候 | `advance_weather false` | `doWeatherCycle false` |
+  | ランダムティック | `random_tick_speed 0` | `randomTickSpeed 0` |
+  | モブの自然スポーン | `spawn_mobs false` | `doMobSpawning false` |
+
+  - 改名後に旧名がそのまま通るかは、wiki に書かれていない【未確認】。`experiment.yaml` の `world.gamerules` は基盤の版の名前で書き、P0 で版が決まったら実機の `gamerule` コマンドで確かめる（基盤の版の候補は [knowledge/mods/バージョン対応表.md](../knowledge/mods/バージョン対応表.md)）。
+  - 訂正（2026-11-20）: この行は以前、旧名（`doDaylightCycle` など）だけを書いていた。
 - 乱数を使う現象（TNTの爆発の向きなど）は「完全には一致しない」ものとして扱う。計測はN回繰り返して分布で示し、撮影は見栄えのよい回を選ぶ。

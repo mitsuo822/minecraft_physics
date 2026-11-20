@@ -6,7 +6,7 @@
 > 関連: [Flashback.md](Flashback.md), [時間制御とスロー.md](時間制御とスロー.md), [カメラワーク技法.md](カメラワーク技法.md), [縦型撮影.md](縦型撮影.md), [シェーダーと画質mod.md](シェーダーと画質mod.md), [録画設定.md](録画設定.md), [../mods/バージョン対応表.md](../mods/バージョン対応表.md), [../rights/mod・シェーダーの利用条件.md](../rights/mod・シェーダーの利用条件.md)
 
 ## 要点
-- Replay Mod は完全にクライアント側の mod で、サーバには入れられない。MC 1.14 以上は Fabric、1.12.2 以下は Forge が必要。【一次】[S1][S2]
+- Replay Mod は完全にクライアント側の mod で、サーバには入れられない。ドキュメントは MC 1.14 以上は Fabric、1.12.2 以下は Forge が必要と書く。ダウンロードページでは、現行版（2.6.28）の Fabric 版がある最も古い MC は 1.14.4 で、旧版の一覧に打ち切られた 1.14.2・1.14.3 向けの版（2.2.0 のベータ）がある。1.13.x と 1.14・1.14.1 向けの版は一覧にない。【一次】[S1][S2]
 - 2026-11-19 時点の最新は v2.6.28 で、MC 26.3・26.2・26.1・1.21.11 から古い版まで、同じ 2.6.28 が各MCバージョン向けに配布されている。【一次】[S2][S3]
 - 開発方針として、MCバージョンごとに1つの版を保ち、全バージョンで機能をそろえている。【一次】[S5]
 - ライセンスは GPL-3.0-or-later。【一次】[S4][S5]
@@ -26,12 +26,14 @@
 | 項目 | 内容 | 確度 | 出典 |
 |---|---|---|---|
 | 動作環境 | クライアント側のみ | 【一次】 | [S1][S4] |
-| ローダー | MC 1.14 以上は Fabric、1.12.2 以下は Forge | 【一次】 | [S1][S2] |
+| ローダー | ドキュメントの記載は MC 1.14 以上が Fabric、1.12.2 以下が Forge。ダウンロードページで配布されている Fabric 版は 1.14.4 以上（現行版）と 1.14.2・1.14.3（打ち切られた 2.2.0 のベータ、Fabric と Fabric API が必要）。1.13.x と 1.14・1.14.1 の版は無い | 【一次】 | [S1][S2] |
 | ライセンス | GPL-3.0-or-later（Modrinth の表示と README） | 【一次】 | [S4][S5] |
 | Modrinth の数値 | 1950万（19.5M）ダウンロード、4.6K フォロワー、「4 年前に作成」「先月 に更新」と表示（2026-11-19 取得） | 【一次】 | [S4] |
 | 先行配布 | ダウンロードページに、VIP の Patreon 支援者は新しい版を先に使えるとある | 【一次】 | [S2] |
 
 > 「Note: The Replay Mod is entirely client side and can not be installed on the servers you play on.」[S1]
+> 「The ReplayMod for Minecraft 1.14 and above requires Fabric to be installed.」[S1]
+> 「Minecraft 1.14.3 (discontinued in favor of 1.14.4)」「Replay Mod v1.14.3-2.2.0-b6 (requires Fabric and Fabric API)」[S2]
 
 README の開発方針（訳）: MCバージョンごとに Replay Mod を1つずつ保ち、それらはすべて同じ機能（とほとんどのバグ）を共有する。【一次】[S5]
 > 「we maintain one version of the ReplayMod for each version of Minecraft and all these versions share the same feature set (and most bugs)」[S5]

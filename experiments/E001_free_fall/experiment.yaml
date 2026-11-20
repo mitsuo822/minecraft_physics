@@ -23,7 +23,10 @@ theory:
 world:
   type: flat
   seed: 1
-  gamerules: {doDaylightCycle: false, doWeatherCycle: false, randomTickSpeed: 0, doMobSpawning: false}
+  # ゲームルールの名前は 1.21.11（25w44a）で snake case に変わった【二次】minecraft.wiki『Game rule』（docs/MC実行基盤.md §5）。
+  # 下は 1.21.11 以降（基盤の候補 26.3）の名前。1.21.10 以前なら doDaylightCycle / doWeatherCycle / randomTickSpeed / doMobSpawning。
+  # 旧名が今の版でも通るかは未確認。mc_version が決まったら実機で確かめる。
+  gamerules: {advance_time: false, advance_weather: false, random_tick_speed: 0, spawn_mobs: false}
   time: noon
 
 setup:

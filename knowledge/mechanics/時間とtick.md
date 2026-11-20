@@ -84,6 +84,9 @@ Java では1サブチャンクから選ぶ数がゲームルール `random_tick_
 
 ゲームルール `randomTickSpeed` は 1.8（14w17a）で追加された。【二次】[S1]
 
+Java では 1.21.11（開発版 25w44a）で、ゲームルールがレジストリに移され、すべてのゲームルールが camelCase から snake case のリソースロケーションの名前に変わった。`randomTickSpeed` は `random_tick_speed`、`doDaylightCycle` は `advance_time`、`doWeatherCycle` は `advance_weather`、`doMobSpawning` は `spawn_mobs` になった。統合版の名前は同じ記事の表で `randomtickspeed`・`dodaylightcycle` など。改名後に旧名が通るかは記事に書かれていない。【二次】[S6]
+> 「all game rules have been renamed to resource locations in snake case instead of camel case」[S6]
+
 ### 予定 tick（scheduled tick）
 一部のブロックは、決まった時間後の tick を予約できる。Java のリピーターの状態変化や、水が流れるときに使われる。【二次】[S1]
 
@@ -114,7 +117,7 @@ Java の火の広がりと消え方は予定 tick で決まり（30〜40 ゲー�
 `/time set` の値（Java）: `/time set 0` で1日の始まり、`day` で 1000、`noon` で 6000、`12000` で日の入り。統合版の `sunrise` は 23000。【二次】[S2]
 > 「Sets the time to 1000.」[S2]
 
-昼夜のサイクルを止めるゲームルールは、取得時点の記事の表記で Java が `advance_time`、統合版が `dodaylightcycle`。もとの `doDaylightCycle` は 1.6.1（13w24a）で追加された。【二次】[S2]
+昼夜のサイクルを止めるゲームルールは、取得時点の記事の表記で Java が `advance_time`、統合版が `dodaylightcycle`。もとの `doDaylightCycle` は 1.6.1（13w24a）で追加された。【二次】[S2] `advance_time` への改名は 1.21.11（25w44a）。【二次】[S6]
 
 ### 空の動きの速さ
 空の角度は時刻に比例せず、正午と真夜中に速く、日の出・日の入りに遅い。【二次】[S2]
@@ -152,7 +155,7 @@ Java の火の広がりと消え方は予定 tick で決まり（30〜40 ゲー�
 
 ## わかっていないこと・要確認
 - 処理の順序の一覧 [S1] が Java 26.3 でもそのままか（記事に版の記載がない）。
-- ゲームルールの名前が `random_tick_speed`・`advance_time` のような表記に変わったのがどの版か（今回の出典に記載がない）。撮影で使う版のコマンドで確かめる。
+- ゲームルールの名前が `random_tick_speed`・`advance_time` のような表記に変わったのがどの版か。→ 2026-11-20 に minecraft.wiki『Game rule』の履歴で 1.21.11（25w44a）と確認した【二次】[S6]。旧名が改名後も通るかは記事に書かれていないので、撮影で使う版のコマンドで確かめる。
 - 統合版の処理の順序（記事で空欄）。
 - 晴れの夜に屋外で敵対モブが湧ける時間の長さ。記事 [S2] の本文は「The exact duration for which hostile mobs are able to spawn in exposed areas is 13188 ticks.」と書くが、同じ記事の表（最初 13188・最後 22812）から計算すると 9625 tick になり、食い違う。【未確認】
 - TPS が 20 を下回ったとき、`/tick` の設定やエンティティの動きの計算が実時間とどうずれるか（[../filming/時間制御とスロー.md](../filming/時間制御とスロー.md) と合わせて確認）。
@@ -163,3 +166,4 @@ Java の火の広がりと消え方は予定 tick で決まり（30〜40 ゲー�
 - [S3] Redstone mechanics — minecraft.wiki — https://minecraft.wiki/w/Redstone_mechanics?action=raw — 更新日不明 — 取得: 2026-11-19 — 原文: 読んだ
 - [S4] Light（内部の空の光と時刻の表） — minecraft.wiki — https://minecraft.wiki/w/Light?action=raw — 更新日不明 — 取得: 2026-11-19 — 原文: 読んだ
 - [S5] Template:Version（各エディションの最新版の値） — minecraft.wiki — https://minecraft.wiki/w/Template:Version?action=raw — 更新日不明 — 取得: 2026-11-19 — 原文: 読んだ
+- [S6] Game rule — minecraft.wiki — https://minecraft.wiki/w/Game_rule?action=raw — 更新日不明 — 取得: 2026-11-20 — 原文: 読んだ

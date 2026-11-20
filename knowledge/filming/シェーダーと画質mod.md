@@ -15,7 +15,7 @@
 - BSL は明るくカラフルな作風を掲げ（原文「It's bright, colorful, and distinct.」）、被写界深度・モーションブラー・セルシェーディング・地平線の湾曲などの効果を持つ。ページの AGREEMENT でスクリーンショットと動画への使用を許可している。ライセンス表示は ARR。【一次】[S7]
 - Photon は半リアル調。ブルーム・被写界深度・モーションブラーのカメラ効果と TAA / FXAA / CAS を持ち、対応 mod として Voxy と Distant Horizons を挙げる。Apple GPU（Metal）には非対応。【一次】[S8]
 - Bliss は Chocapic13 の V9 系を大きく改変したファンタジー調のパック。Iris が必要（OptiFine でも動くかもしれない、と作者）、1.17 以上向け。ライセンス表示は ARR。【一次】[S9]
-- Replay Mod の公式 docs は、1.16.5 以上で Iris を fully supported とする一方、Sodium 入りでレンダリングするには Replay Mod 側が配布する改造版 Sodium が要ると書いている（docs の更新日は不明）。【一次】[S11]
+- Replay Mod の公式 docs は、1.16.5 以上で Iris を fully supported とし、Sodium 入りでの描画には Replay Mod 配布の改造版 Sodium が要ると書く（docs の更新日は不明）。一方、同じ Replay Mod のダウンロードページは Sodium 0.4.3 以降の公式版が対応したと書き、変更履歴 2.6 は Sodium での描画に対応した項目に、公式版が対応するまでは改造版が要るという条件を付けている。docs の改造版の案内は、公式版が対応する前の状態のまま残っていると読める（[ReplayMod.md](ReplayMod.md) と同じ読み）。【一次】[S11][S14][S15]
 - バニラの Fabulous! はノートPC と 4K 画面で性能に大きく響く可能性がある、と wiki は記す。RTX 4070 Ti SUPER でのシェーダー別・プロファイル別の fps の資料は見つからなかった。【二次】[S10]
 
 ## 詳細
@@ -108,6 +108,9 @@
 ### 録画 mod との組み合わせ（概要だけ。詳細は録画 mod のファイル）
 - Replay Mod の docs: 「On Minecraft 1.16.5 and up you can use Iris, which is fully supported. For the time being, you will have to use it with the custom Sodium provided on our download page.」【一次】[S11]
 - 同じく: 「ReplayMod can record when Sodium is installed, but currently lacks the FREX Flawless Frames API to render.」（訳: Sodium 入りでも録画はできるが、レンダリングに要る FREX Flawless Frames API がない）。改造版 Sodium は Replay Mod のダウンロードページから入手する、としている。【一次】[S11]
+- ダウンロードページ: 互換 Sodium の一覧の MC 1.19.1 の位置に「Official Sodium (as of 0.4.3) is now compatible」とある。改造版 Sodium が並んでいるのは MC 1.16.5〜1.19 向けまで。【一次】[S14]
+- 変更履歴の 2.6: 「Add support for rendering with Sodium (by using the FREX "Flawless Frames" API) (this requires a custom version until the official one supports it)」（訳: FREX Flawless Frames API を使って Sodium での描画に対応。公式版が対応するまでは改造版が要る）。【一次】[S15]
+- 上の3つを合わせると、docs の改造版 Sodium の案内は、公式版（0.4.3 以降）が対応する前の記述と読める。ただし 26.3 向けの Sodium（0.9.2）と Iris で Replay Mod の描画が通ると、版を挙げて書いた資料はない。【一次】[S11][S14][S15]
 - Flashback との互換は [Flashback.md](Flashback.md)、Replay Mod の詳細は [ReplayMod.md](ReplayMod.md) を見る。
 
 ## このチャンネルでの使い方（提案）
@@ -117,7 +120,7 @@
 - 物理の計測を見せるショットは、シェーダーなし、または効果を減らしたプロファイルで撮る。モーションブラー・被写界深度・TAA があると、動いている物体の位置が画面上で読みにくくなるおそれがあるので、効果のオン・オフを同じショットで撮り比べて決める（撮り比べた結果は【実測】として残す）。（根拠: [S7][S8]）
 - 遠景が要る回（大規模な爆発、長距離の投射物など）だけ Distant Horizons を入れる。シェーダーと併用するなら、DH への対応を明記している Photon を第一候補にする。（根拠: [S3][S4][S8]）
 - シェーダーの選択は、作風（Reimagined＝バニラ寄り、Unbound / Photon＝リアル寄り、BSL＝明るくカラフル）とライセンスの両方で決める。動画での使用の許可が明文で読めるのは今回 BSL だけなので、他は利用条件のファイルで確認してから使う。（根拠: [S5][S6][S7][S8][S9]）
-- Replay Mod でシェーダー付きの書き出しをするなら、Replay Mod 配布の改造版 Sodium が今も必要かを、使う MC バージョンで最初に確かめる。（根拠: [S11]）
+- Replay Mod でシェーダー付きの書き出しをするなら、Sodium は公式版を使う（ダウンロードページの改造版は MC 1.19 向けまでしかない）。docs の改造版の案内は古いと見る（[ReplayMod.md](ReplayMod.md) の提案と同じ）。使う MC バージョンで、Sodium と Iris を入れたまま短いパスを描画して書き出せるかを最初に確かめる。（根拠: [S11][S14][S15]）
 - 自宅 PC（RTX 4070 Ti SUPER）で、シェーダー×プロファイル×描画距離ごとの fps を一度測り、`knowledge/` に【実測】として残す。（根拠: [S1][S10]）
 
 ## わかっていないこと・要確認
@@ -126,7 +129,7 @@
 - SEUS PTGI の現在の配布先、対応バージョン、Iris での動作、ライセンス。検索要約（原文未読）では、OptiFine 上で動くソフトウェアのパストレーシングとして作られ RTX カードは不要だが高性能な GPU が要る、ビルドごとに必要な OptiFine の版が違う、Iris で動くとする配布サイトもあるが出典同士で食い違う、配布は作者の Patreon の投稿、とされていた。【未確認】[S13]
 - Modrinth のタグ「軽量」「低負荷」「標準」「高負荷」「スクリーンショット」の定義と、誰が付けるか。
 - Photon のライセンス（Modrinth のライセンス欄が空欄）。
-- Replay Mod の docs の更新日。改造版 Sodium が 2026-11 時点でも必要か。
+- Replay Mod の docs の更新日。ダウンロードページと変更履歴からは公式 Sodium（0.4.3 以降）で描画できると読めるが、26.3 向けの Sodium 0.9.2・Iris 1.11.7 と Replay Mod 2.6.28 の組み合わせで描画が通るかは、どの資料にも書かれていない（実機で確かめる）。
 - 各シェーダーの録画時の負荷（RTX 4070 Ti SUPER、1080p / 4K、OBS の NVENC 同時使用時）。
 - Iris の非対応シェーダー一覧・制限一覧の中身（未読）。
 
@@ -144,3 +147,5 @@
 - [S11] Replay Mod Documentation — Replay Mod — https://www.replaymod.com/docs — 更新日不明 — 取得: 2026-11-19 — 原文: 読んだ
 - [S12] 検索「Iris shaders Vulkan Minecraft 26.2 support」の要約（主な結果: Distant Horizons & Iris Shaders モッドパックのファイルページ） — CurseForge ほか — https://www.curseforge.com/minecraft/modpacks/distant-horizons-iris-shaders/files/8299382 — 不明 — 取得: 2026-11-19 — 原文: 検索要約のみ
 - [S13] 検索「SEUS PTGI path tracing shader requirements Iris OptiFine」の要約（主な結果: texture-packs.com の SEUS PTGI ページ、作者の Patreon 投稿） — https://texture-packs.com/shaders/seus-ptgi ／ https://www.patreon.com/posts/seus-ptgi-e6-25937144 — 不明 — 取得: 2026-11-19 — 原文: 検索要約のみ
+- [S14] Minecraft Replay Mod - Download Page — Replay Mod — https://www.replaymod.com/download — 更新日不明（最新 v2.6.28 を掲載） — 取得: 2026-11-19 — 原文: 読んだ
+- [S15] changelog.txt — Replay Mod — https://www.replaymod.com/changelog.txt — 更新日不明（先頭が 2.6.28） — 取得: 2026-11-19 — 原文: 読んだ
