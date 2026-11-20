@@ -1,6 +1,7 @@
 # MC実行基盤
 
 状態: 叩き台（2026-11-18）。下の【未確認】は P0 で確認する。
+2026-11-19 の調査で、mod の対応バージョン・録画 mod の機能・/tick の仕様を `knowledge/` にまとめた（下の各行の「調査結果」）。実機での確認は引き続き必要。
 
 ## 1. 構成
 
@@ -18,12 +19,12 @@
 
 | 用途 | 候補 | 確認すること |
 |---|---|---|
-| 基盤 | Java版 + Fabric | 下の必須modがすべて揃う最新のMCバージョン【未確認】 |
+| 基盤 | Java版 + Fabric | 下の必須modがすべて揃う最新のMCバージョン【未確認】。調査結果: [knowledge/mods/バージョン対応表.md](../knowledge/mods/バージョン対応表.md) |
 | 偽プレイヤー・各種計測 | Carpet mod | `/player` で走る・投げる等の操作を再現できるか |
-| 撮影（半自動） | Flashback（または Replay Mod） | 対応バージョン、カメラパスの書き出し方法【未確認】 |
+| 撮影（半自動） | Flashback（または Replay Mod） | 対応バージョン、カメラパスの書き出し方法【未確認】。調査結果: [Flashback.md](../knowledge/filming/Flashback.md)、[ReplayMod.md](../knowledge/filming/ReplayMod.md) |
 | 画質 | Iris（シェーダー）、Distant Horizons（遠景） | 録画の負荷。実験の見やすさを損なわないか |
 | 構造物の配置 | 構造ブロック / WorldEdit | Pythonで生成した .nbt を配置できるか |
-| 物理系の題材 | Create、Valkyrien Skies 2 など | Create の本流は Fabric 以外のローダーの可能性あり【未確認】。その回だけ別インスタンスにする |
+| 物理系の題材 | Create、Valkyrien Skies 2 など | Create の本流は Fabric 以外のローダーの可能性あり【未確認】。その回だけ別インスタンスにする。調査結果: [knowledge/mods/物理系mod.md](../knowledge/mods/物理系mod.md) |
 
 決まったら `mc/mods.yaml` に、modの名前・バージョン・入手元・ライセンスを書く。
 
@@ -39,7 +40,7 @@
 - 長所: 1tickごとの値が漏れなく正確に取れる。バニラのコマンドだけでできる。
 - 短所: RCONの往復が1tickごとに入るので、実時間よりずっと遅い。長い実験では遅すぎるかもしれない。
 - 遅すぎる場合: サーバ側modで毎tickの値をファイルに書き出す方式に移る（P1で実測して判断する）。
-- 確認すること: `/tick step` 中もエンティティの物理が通常のtickと同じに進むか【未確認】。E001 で、普通に動かしたときの着地tickと一致するかを見る。
+- 確認すること: `/tick step` 中もエンティティの物理が通常のtickと同じに進むか【未確認】。E001 で、普通に動かしたときの着地tickと一致するかを見る。/tick の仕様の調査結果は [knowledge/filming/時間制御とスロー.md](../knowledge/filming/時間制御とスロー.md)。
 - 実装済み（2026-11-18）: `lab/runner.py`。`tick step 1` は非同期に進むので、`time query gametime` が1増えるまで待ってから読む。
   プレイヤーがいないとサーバが一時停止する設定（`pause-when-empty-seconds`）は0にする（`mc/server/`）。
 
