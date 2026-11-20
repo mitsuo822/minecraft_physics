@@ -11,6 +11,9 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 | `filming/` | MCの撮影技術（録画mod、カメラ、シェーダー、録画設定、ワールド内の演出、時間制御） |
 | `rights/` | Mojang の利用ガイドライン、MC の音楽、mod・シェーダーの利用条件 |
 | `market/` | マイクラ動画の市場、参考チャンネル、企画の型、既存の物理動画（ネタ被りの確認） |
+| `commands/` | 計測・ワールド準備のコマンド（RCON、/data、/summon、ゲームルール） |
+| `measurement/` | 計測データの扱い（繰り返し、不確かさ、単位の換算、誤差の見せ方） |
+| `physics/` | 現実の物理の参照値（比べる相手の値）と、物理の誤概念（台本の「予想」の材料） |
 
 - 調査日: 2026-11-19〜20（`mechanics/` と `filming/` の一部は既存の内容を更新）。mod の対応バージョンや規約はよく変わるので、使う前に各ファイルの「参照先」の原文を確かめる。
 - `mechanics/` の値の多くは minecraft.wiki などによる【二次】。**動画で断言してよいのは【実測】か【一次】だけ**（`CLAUDE.md`）なので、実験で【実測】に上げてから使う。
@@ -19,17 +22,18 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 
 | 工程 | 読むファイル |
 |---|---|
-| **P0 環境決め** | [バージョン対応表](mods/バージョン対応表.md)、[物理系mod](mods/物理系mod.md)、[mod・シェーダーの利用条件](rights/mod・シェーダーの利用条件.md)、[シェーダーと画質mod](filming/シェーダーと画質mod.md) |
+| **P0 環境決め** | [バージョン対応表](mods/バージョン対応表.md)、[物理系mod](mods/物理系mod.md)、[mod・シェーダーの利用条件](rights/mod・シェーダーの利用条件.md)、[シェーダーと画質mod](filming/シェーダーと画質mod.md)、[Fabricのmod開発](mods/Fabricのmod開発.md)（自作modを作るとき） |
 | **① テーマ選定** | [既存のマイクラ物理動画](market/既存のマイクラ物理動画.md)、[科学・物理・検証系の参考チャンネル](market/科学・物理・検証系の参考チャンネル.md)、[伸びている企画パターン](market/伸びている企画パターン.md)、[日本のマイクラ動画ジャンル](market/日本のマイクラ動画ジャンル.md)、[視聴者層とマイクラ動画の規模](market/視聴者層とマイクラ動画の規模.md)、下の「テーマと物理のファイル」 |
-| **② 実験設計・③ 計測** | `mechanics/` の該当ファイル、[Carpet](mods/Carpet.md)、[計測と可視化のmod](mods/計測と可視化のmod.md)、[時間とtick](mechanics/時間とtick.md)、[時間制御とスロー](filming/時間制御とスロー.md) |
-| **⑤ 撮影** | [Flashback](filming/Flashback.md)、[ReplayMod](filming/ReplayMod.md)、[カメラワーク技法](filming/カメラワーク技法.md)、[縦型撮影](filming/縦型撮影.md)、[録画設定](filming/録画設定.md)、[シェーダーと画質mod](filming/シェーダーと画質mod.md)、[ワールド内の演出](filming/ワールド内の演出.md)、[時間制御とスロー](filming/時間制御とスロー.md) |
+| **② 実験設計・③ 計測** | `mechanics/` の該当ファイル、[計測とワールド準備のコマンド](commands/計測とワールド準備のコマンド.md)、[計測データの扱い](measurement/計測データの扱い.md)、[現実の物理の参照値](physics/現実の物理の参照値.md)、[Carpet](mods/Carpet.md)、[計測と可視化のmod](mods/計測と可視化のmod.md)、[時間とtick](mechanics/時間とtick.md)、[時間制御とスロー](filming/時間制御とスロー.md) |
+| **④ 台本**（MC固有の材料） | [物理の誤概念](physics/物理の誤概念.md)（「予想」の区間）、[現実の物理の参照値](physics/現実の物理の参照値.md)、[計測データの扱い](measurement/計測データの扱い.md)（誤差の言い方） |
+| **⑤ 撮影** | [Flashback](filming/Flashback.md)、[ReplayMod](filming/ReplayMod.md)、[カメラワーク技法](filming/カメラワーク技法.md)、[縦型撮影](filming/縦型撮影.md)、[録画設定](filming/録画設定.md)、[シェーダーと画質mod](filming/シェーダーと画質mod.md)、[ワールド内の演出](filming/ワールド内の演出.md)、[時間制御とスロー](filming/時間制御とスロー.md)、[リソースパックとスキン](filming/リソースパックとスキン.md) |
 | **⑥ 編集・⑦ 投稿**（MC固有の権利） | [Mojang利用ガイドライン](rights/Mojang利用ガイドライン.md)、[マイクラ音楽の使用](rights/マイクラ音楽の使用.md)、[mod・シェーダーの利用条件](rights/mod・シェーダーの利用条件.md) |
 
 工程の番号は [README の制作の流れ](../README.md) に合わせている。台本・編集・投稿の一般的な知見は movie 側を読む。
 
 ## テーマと物理のファイル
 
-`themes/backlog.yaml` の候補ごとに、まず読む `mechanics/`・`mods/` のファイル。どのテーマも、先行例は [既存のマイクラ物理動画](market/既存のマイクラ物理動画.md) で確かめる。
+`themes/backlog.yaml` の候補ごとに、まず読む `mechanics/`・`mods/` のファイル。どのテーマも、先行例は [既存のマイクラ物理動画](market/既存のマイクラ物理動画.md)、比べる現実の値は [現実の物理の参照値](physics/現実の物理の参照値.md)、視聴者の思い込みは [物理の誤概念](physics/物理の誤概念.md) で確かめる。
 
 | テーマ | ファイル |
 |---|---|
@@ -41,9 +45,10 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 | T08 明るさと逆2乗 | [光](mechanics/光.md) |
 | T09 音速 | [音と振動](mechanics/音と振動.md) |
 | T10 レッドストーンの速さ | [レッドストーン信号](mechanics/レッドストーン信号.md)、[時間とtick](mechanics/時間とtick.md) |
-| T11 ニュートンのゆりかご / T12 フーコーの振り子 / T14 Createの永久機関 | [物理系mod](mods/物理系mod.md) |
+| T11 ニュートンのゆりかご | [衝突と落下ブロック](mechanics/衝突と落下ブロック.md)、[物理系mod](mods/物理系mod.md) |
+| T12 フーコーの振り子 / T14 Createの永久機関 | [Createの動力と振り子](mods/Createの動力と振り子.md)、[物理系mod](mods/物理系mod.md) |
 | T13 エラトステネス | [世界の形と大きさ](mechanics/世界の形と大きさ.md) |
-| T16 砂の安息角 | [既存のマイクラ物理動画](market/既存のマイクラ物理動画.md)（T16 の節） |
+| T16 砂の安息角 | [衝突と落下ブロック](mechanics/衝突と落下ブロック.md)、[既存のマイクラ物理動画](market/既存のマイクラ物理動画.md)（T16 の節） |
 | T17 現実の重力にしたら | [重力と空気抵抗](mechanics/重力と空気抵抗.md)、[物理系mod](mods/物理系mod.md) |
 
 ## 書き方
@@ -71,7 +76,13 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 
 <!-- BEGIN:index -->
 
-### `filming/`（8）
+### `commands/`（1）
+
+| ファイル | 対象 |
+|---|---|
+| [計測とワールド準備のコマンド](commands/計測とワールド準備のコマンド.md) | 計測用サーバを RCON で操作するための設定（server.properties・権限レベル）と、計測とワールド準備に使うコマンド（/data get entity、/summo… |
+
+### `filming/`（9）
 
 | ファイル | 対象 |
 |---|---|
@@ -79,10 +90,11 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 | [ReplayMod](filming/ReplayMod.md) | Replay Mod（ReplayMod）の録画・再生・カメラパス・レンダリングの機能、対応バージョン、Iris/Sodium との互換、ファイル、既知の制限、自動化に使える仕組み… |
 | [カメラワーク技法](filming/カメラワーク技法.md) | Minecraft Java版を中心に、カメラを動かす技法（キーフレームのカメラパス、周回、ロール、FOV、補間、エンティティの追従）と、それを実現する道具（Replay Mod… |
 | [シェーダーと画質mod](filming/シェーダーと画質mod.md) | Java版の画質を上げる mod（Sodium、Iris、Distant Horizons）と、動画でよく使われるシェーダーパック（Complementary Reimagined… |
+| [リソースパックとスキン](filming/リソースパックとスキン.md) | 計測映像を見やすくするリソースパック（ブロックの格子・縁取り、組み込みパック、自作パックの仕組み）と、プレイヤー・キャラクターのスキン（スキンの形式、マネキンでの表示、ローカルのス… |
 | [ワールド内の演出](filming/ワールド内の演出.md) | 撮影する映像の中に、文字・目印・軌跡・数値を出すバニラの仕組み。 |
 | [時間制御とスロー](filming/時間制御とスロー.md) | ゲームの時間の進み方を変える方法。 |
 | [縦型撮影](filming/縦型撮影.md) | ショート用の 9:16（と 1:1）の映像を Minecraft Java版から作る方法。 |
-| [録画設定](filming/録画設定.md) | Java版を録画するときのゲーム内の設定（HUD の非表示、FOV、画面の揺れ、GUI の大きさ、描画距離、シネマティックカメラ、fps の上限）と、OBS Studio の録画設… |
+| [録画設定](filming/録画設定.md) | Java版を録画するときのゲーム内の設定（HUD の非表示、FOV、画面の揺れ、GUI の大きさ、描画距離、シネマティックカメラ、fps の上限）と、リアルタイム録画（OBS）と… |
 
 ### `market/`（5）
 
@@ -94,7 +106,13 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 | [科学・物理・検証系の参考チャンネル](market/科学・物理・検証系の参考チャンネル.md) | マイクラ×科学・物理・数学・検証・テクニカルの参考チャンネル（日本語・英語）と、マイクラ以外の科学・数学チャンネルがマイクラを扱った回。 |
 | [視聴者層とマイクラ動画の規模](market/視聴者層とマイクラ動画の規模.md) | YouTube 上の Minecraft 動画の規模（公式の再生回数の節目・年間の数値）、Minecraft の販売本数・月間プレイヤー数、日本の市場の数値、プレイヤー・視聴者の年… |
 
-### `mechanics/`（10）
+### `measurement/`（1）
+
+| ファイル | 対象 |
+|---|---|
+| [計測データの扱い](measurement/計測データの扱い.md) | MC 内で取った計測値（位置・速度・tick 数・回数）の扱い方。 |
+
+### `mechanics/`（11）
 
 | ファイル | 対象 |
 |---|---|
@@ -106,17 +124,27 @@ Minecraft 固有の知見（MC の物理の仕様、mod、MC の撮影技術、M
 | [時間とtick](mechanics/時間とtick.md) | MC の時間の単位。 |
 | [流体](mechanics/流体.md) | 水と溶岩が広がる速さ（tick 数）と距離、流れの向きの決まり方、水流・溶岩流がエンティティを押す速さ、水中・溶岩中での浮き沈みと減速、気泡の柱、水源の増え方。 |
 | [爆発](mechanics/爆発.md) | 爆発がブロックを壊す仕組み（光線・威力・爆発耐性）、エンティティに与える速度とダメージの式、露出度、TNT の導火線と着火時の初速、TNT キャノンの原理。 |
+| [衝突と落下ブロック](mechanics/衝突と落下ブロック.md) | エンティティ同士の衝突と押し合い、`minecraft:bounciness` 属性・スライムブロック・ベッド・硫黄キューブでの反発、砂・砂利などの落下ブロックの落ち方と積もり方（… |
 | [重力と空気抵抗](mechanics/重力と空気抵抗.md) | エンティティの種類ごとの重力加速度・空気抵抗・1tickの中での処理の順序・終端速度と、それを変える属性（gravity など）。 |
 | [音と振動](mechanics/音と振動.md) | 音の届く範囲と距離による減衰、音が遅れて届く例（花火）、スカルクセンサーと調律されたスカルクセンサーが受け取る振動（伝わる速さ、範囲、強さ、周波数、遮り方）。 |
 
-### `mods/`（4）
+### `mods/`（6）
 
 | ファイル | 対象 |
 |---|---|
 | [Carpet](mods/Carpet.md) | Carpet mod（gnembon/fabric-carpet）のうち、物理の計測・実験の再現・ワールド内の可視化に使える機能（/player、/log、/distance、/i… |
+| [Createの動力と振り子](mods/Createの動力と振り子.md) | Create の回転動力（応力＝SU）の計算の仕組みと、動力源ごとに何を消費しているか。 |
+| [Fabricのmod開発](mods/Fabricのmod開発.md) | Minecraft 26.x 向けの Fabric mod 開発の前提（難読化のない本体、Fabric Loom、Java 25、Mixin）、クライアント側の描画のフックとカメラ… |
 | [バージョン対応表](mods/バージョン対応表.md) | 2026-11-19 時点の最新の Java Edition と、計測・撮影の基盤に使う mod（Fabric API、Carpet、Flashback、Replay Mod、So… |
 | [物理系mod](mods/物理系mod.md) | Minecraft の物理を扱う・変える mod（Create、Create Aeronautics と Sable、Valkyrien Skies 2、Physics Mod、重… |
 | [計測と可視化のmod](mods/計測と可視化のmod.md) | 画面に座標・速度・明るさなどを出す道具（MiniHUD、バニラの F3 デバッグ画面とデバッグレンダラー）と、実験装置を作る・置き直す道具（Litematica、WorldEdit… |
+
+### `physics/`（2）
+
+| ファイル | 対象 |
+|---|---|
+| [物理の誤概念](physics/物理の誤概念.md) | 落下・投射（慣性）・作用反作用・円運動・摩擦・浮力について、学習者が持ちやすい素朴概念（誤概念）を、どの研究で・どの集団で・どのくらい見られたかと一緒にまとめる。 |
+| [現実の物理の参照値](physics/現実の物理の参照値.md) | 各テーマで、現実の物理ならこうなるはず、と比べる現実側の値（重力加速度、終端速度、摩擦係数、音速、光速と逆2乗の法則、密度と浮力、投射の最適角、宇宙速度、安息角、地球の自転と大きさ… |
 
 ### `rights/`（3）
 
