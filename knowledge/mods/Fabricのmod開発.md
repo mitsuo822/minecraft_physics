@@ -2,7 +2,7 @@
 
 > 対象: Minecraft 26.x 向けの Fabric mod 開発の前提（難読化のない本体、Fabric Loom、Java 25、Mixin）、クライアント側の描画のフックとカメラ、/tick freeze 中の描画、録画との連携、既存 mod のコードを流用するときの注意。
 > 使う場面: [MC実行基盤.md](../../docs/MC実行基盤.md) §4 の全自動撮影（自作のクライアント mod）を作り始める前と、P2 の半自動・全自動の比較の前。
-> 調査日: 2026-11-20 ／ mc_version: Java Edition 26.1〜26.3（Fabric Docs の移植ガイドは取得時点で 26.2→26.3 を扱っている）。統合版（Bedrock）は対象外。
+> 調査日: 2026-11-20 ／ mc_version: Java Edition 26.1〜26.3（Fabric Docs の移植ガイドは取得時点で 26.2→26.3 を扱っている）。`/tick` の記述は 1.20.3（23w43a）以降。統合版（Bedrock）は対象外。
 > 関連: [バージョン対応表.md](バージョン対応表.md), [Carpet.md](Carpet.md), [../filming/Flashback.md](../filming/Flashback.md), [../filming/ReplayMod.md](../filming/ReplayMod.md), [../filming/時間制御とスロー.md](../filming/時間制御とスロー.md), [../filming/カメラワーク技法.md](../filming/カメラワーク技法.md), [../rights/mod・シェーダーの利用条件.md](../rights/mod・シェーダーの利用条件.md)
 
 ## 要点
@@ -10,14 +10,14 @@
 - Fabric の告知では、1.21.11 以前の mod は少なくとも再コンパイルしないと 26.1 では動かず、Yarn マッピングは Fabric の公式サポートから外れた 【一次】[S1]。
 - 26.x の mod は新しい Gradle プラグイン `net.fabricmc.fabric-loom` を使う。このプラグインは本体も mod もリマップしない。`modImplementation` は `implementation`、`remapJar` は `jar` に置き換える 【一次】[S1]。
 - Gradle を動かす JVM は Java 25 以上が必要。IntelliJ IDEA で Mixin を正しく扱うには 2025.3 以上が必要 【一次】[S1]。公式のテンプレート（26.3 ブランチ）は `options.release = 25` と Java 25 互換を指定している 【一次】[S5]。
-- 推奨の版は時期で変わる。26.3 の告知（2026-09-15）は Loom 1.17・Gradle 9.6.0・Loader 0.19.5 を挙げたが、2026-11-20 取得時のテンプレートは Loader 0.20.1・Loom 1.19-SNAPSHOT・Fabric API 0.166.2+26.3 を指定していた 【一次】[S3][S6]。
-- 26.x の描画は、データを集める extraction と描画する drawing の2段階に分かれる方向で作り直されている。Fabric API のイベントは `LevelExtractionEvents` と `LevelRenderEvents`（パッケージ `...rendering.v1.level`）で、drawing の段階では不変の render state しか触れない 【一次】[S7][S8]。
+- 告知の推奨とテンプレートの版は一致しない。26.3 の告知（2026-09-15）は開発用に Loom 1.17・Gradle 9.6.0（執筆時点）、プレイヤー用に Loader の最新安定版（当時 0.19.5）を挙げたが、2026-11-20 取得時のテンプレートは Loader 0.20.1・Loom 1.19-SNAPSHOT・Fabric API 0.166.2+26.3 を指定していた 【一次】[S3][S6]。
+- Fabric Docs（26.3 向け）によると、最近の版の描画は、データを集める extraction と描画する drawing の2段階に分けられつつある。例のコードが使う Fabric API のイベントは `LevelExtractionEvents` と `LevelRenderEvents`（パッケージ `...rendering.v1.level`）で、drawing の段階では不変の render state しか触れない 【一次】[S7][S8]。
 - Fabric API がすべての描画フックを用意しているわけではない。26.3 の公式ドキュメントの例でも、描画パスを得るために `LevelRenderer` への Mixin（MixinExtras の `@WrapOperation`）を使っている 【一次】[S7][S9]。
 - 26.1 は OpenGL だけに対応する最後の版になる見込みとされ、26.2 で Vulkan の実験的なバックエンドに切り替えられるようになった。生の OpenGL 呼び出しを使う mod は Blaze3D の API に移行する必要がある 【一次】[S1][S2]。
 - 26.3 ではウィンドウとキー入力のライブラリが GLFW から SDL に替わり、マウスボタンなどの定数も変わった。入力は `InputConstants` を通す 【一次】[S3]。
-- `/tick freeze` はプレイヤーと、プレイヤーが乗っているエンティティ以外のゲーム要素を止める。止めたままプレイヤーは自由に動いて世界を見られる 【一次】[S13]【二次】[S12]。ただし、止めている間のクライアント側の描画（補間）がどう動くかを書いた資料は見つからなかった。
+- `/tick freeze`（23w43a で追加、Java Edition 1.20.3 から）はプレイヤーと、プレイヤーが乗っているエンティティ以外のゲーム要素を止める。止めたままプレイヤーは自由に動いて世界を見られる 【一次】[S13]【二次】[S12]。ただし、止めている間のクライアント側の描画（補間）がどう動くかを書いた資料は見つからなかった。
 - カメラを動かす既存の mod は、ライセンスがばらばら。Flashback は ARR、Replay Mod は GPL-3.0-or-later、CMDCam は LGPL-2.1-only、Free Camera は MIT（いずれも Modrinth の表示、2026-11-20 取得）【一次】[S14][S15][S16][S17]。
-- CMDCam はサーバのコマンドでプレイヤーにカメラパスをたどらせられるが、Modrinth の表示では Forge と NeoForge だけで Fabric 版はない 【一次】[S16]。
+- CMDCam はサーバのコマンドでプレイヤーにカメラパスをたどらせられるが、Modrinth のこのプロジェクト（modrinth.com/mod/cmdcam）の対応ローダーは Forge と NeoForge だけで、Fabric は入っていない 【一次】[S16]。
 
 ## 詳細
 
@@ -28,7 +28,8 @@
 - 同じ告知は、移行の準備のために、難読化した版と並べて難読化しない実験版を出すとした 【一次】[S10]。
 - 難読化をやめても EULA と利用ガイドラインは変わらず、mod にも適用されると書かれている 【一次】[S10]。
   > 「these changes don’t affect our Minecraft End User License Agreement and Minecraft Usage Guidelines. Both still apply to Minecraft: Java Edition and any mods」[S10]
-  （訳）この変更は EULA と利用ガイドラインには影響しない。どちらも Java Edition とあらゆる mod に引き続き適用される。動画での扱いは [../rights/](../rights/) の各ファイルを参照。
+  （訳）この変更は EULA と利用ガイドラインには影響しない。どちらも Java Edition とあらゆる mod に引き続き適用される。
+- 動画での扱いは [../rights/](../rights/) の各ファイルを参照。
 - minecraft.wiki によると、26.1 は年.ドロップ.修正 の新しい版番号を使う最初のリリースで、2026-03-24 に出た 【二次】[S11]。
   > 「to be fully unobfuscated without an accompanying obfuscated variant」[S11]
 - 同じページの技術的な変更の欄に「The game now requires Java 25.」とある 【二次】[S11]。
@@ -36,11 +37,11 @@
   > 「no mods from 1.21.11 or before will work without, at a minimum, recompilation.」[S1]
   > 「as Yarn is no longer officially supported by Fabric」[S1]
 - Fabric API の名前も Yarn 由来から公式名に合わせて変わった。例として `ItemGroupEvents` は `CreativeModeTabEvents` になった。後方互換はない 【一次】[S1]。
-- Fabric は逆コンパイルしたソースをブラウザで読む『mcsrc.dev』を作った。Mojang のサーバから本体の jar を落とし、WASM にした Vineflower で逆コンパイルする仕組みで、Mixin と AccessWidener/ClassTweaker を書く補助もある 【一次】[S1]。
+- Fabric は逆コンパイルした本体のソースをオンラインで読む道具『mcsrc.dev』を開発している。Mojang のサーバから本体の jar を落とし、WASM にした Vineflower で逆コンパイルする仕組みで、Mixin と AccessWidener/ClassTweaker を書く補助もある 【一次】[S1]。
   > 「mcsrc.dev also provides tools to aid with creating mixins and AccessWideners/ClassTweakers」[S1]
 
 ### 2. ビルドの道具: Fabric Loom・Gradle・Java 25
-- 26.1 告知の推奨は Loom 1.15・Gradle 9.4.0・Loader 0.18.4（告知時点）【一次】[S1]。26.2 告知（2026-06-15）は Loom 1.17・Gradle 9.5.1・Loader 0.19.3 【一次】[S2]。26.3 告知（2026-09-15）は Loom 1.17・Gradle 9.6.0・Loader 0.19.5 【一次】[S3]。
+- 26.1 告知の推奨は Loom 1.15・Gradle 9.4.0・Loader 0.18.4（告知時点）【一次】[S1]。26.2 告知（2026-06-15）は Loom 1.17・Gradle 9.5.1・Loader 0.19.3 【一次】[S2]。26.3 告知（2026-09-15）は Loom 1.17・Gradle 9.6.0・Loader 0.19.5 【一次】[S3]。どの告知も Loom と Gradle は開発者向け（執筆時点）、Loader の版はプレイヤー向けの最新安定版として書いている 【一次】[S1][S2][S3]。
 - 26.x では旧プラグイン（`net.fabricmc.fabric-loom-remap` または `fabric-loom`）から新プラグイン `net.fabricmc.fabric-loom` に切り替える 【一次】[S1]。
   > 「which does not remap Minecraft or mods」[S1]
   > 「Any use of `modImplementation`, `modCompileOnly`, or similar should be switched out for the standard `implementation` or `compileOnly`」[S1]
@@ -61,7 +62,7 @@
 | loom_version | 1.19-SNAPSHOT | 【一次】[S6] |
 | fabric_api_version | 0.166.2+26.3 | 【一次】[S6] |
 
-- 26.3 告知の推奨（Loom 1.17・Loader 0.19.5）とテンプレートの値（Loom 1.19-SNAPSHOT・Loader 0.20.1）は違う。告知の値は「at the time of writing」と断ってあり、取得日の差によるもの 【一次】[S3][S6]。
+- 26.3 告知の推奨（Loom 1.17・Loader 0.19.5）とテンプレートの値（Loom 1.19-SNAPSHOT・Loader 0.20.1）は違う。告知の値は「at the time of writing」と断ってある（告知は 2026-09-15、テンプレートは 2026-11-20 取得）【一次】[S3][S6]。
 - Fabric Docs の移植ガイド（取得時点で 26.2→26.3 を扱う）は、`./gradlew wrapper --gradle-version latest` で Gradle を上げ、推奨の版は Fabric Develop のサイトで確かめ、迷ったらテンプレートを参照するよう書いている 【一次】[S4]。
 - 26.1 の初期リリースでは Fabric Model Loading API と Renderer/Indigo のモジュールが使えないかもしれないと告知された 【一次】[S1]。現在の状態は未確認（下の要確認の節）。
 - Fabric API は `fabric` という mod ID を提供しなくなった。`fabric.mod.json` の依存は `fabric-api` と書く 【一次】[S1]。
@@ -70,40 +71,39 @@
 - Fabric Docs『Rendering in the World』によると、最近の版は描画を extraction（準備）と drawing（描画）の2段階に分けようとしている。描画に要るデータは extraction で集め、drawing ではバッファを画面に描く 【一次】[S7]。
   > 「allow for drawing the previous frame in parallel to extracting the next frame」[S7]
   （訳）前のフレームの描画と次のフレームの extraction を並行して行えるようにする（性能のため）。
-- 同ページの例のコードでは、`LevelExtractionEvents.END_EXTRACTION` で描くものを用意し、`LevelRenderEvents.BEFORE_RENDER_PASS` と `LevelRenderEvents.END_MAIN` で描画の準備と後始末をしている。パッケージは `net.fabricmc.fabric.api.client.rendering.v1.level` 【一次】[S8]。
+- 同ページの例のコードでは、`LevelExtractionEvents.END_EXTRACTION` で描くものを用意し、`LevelRenderEvents.BEFORE_RENDER_PASS` で描画の準備（頂点の書き込みとアップロード）を、`LevelRenderEvents.END_MAIN` でバッファの `endFrame()` を呼んでいる。パッケージは `net.fabricmc.fabric.api.client.rendering.v1.level` 【一次】[S8]。
   > 「You can only access the (immutable and thread safe) render state in the drawing phase.」[S8]
-- 例のコードはカメラの位置を `context.levelState().cameraRenderState.pos` から読み、その分だけ座標をずらして箱を描いている。描画の座標はカメラ基準になる 【一次】[S8]。
+- 例のコードはカメラの位置を `context.levelState().cameraRenderState.pos` から読み、行列を (-camera.x, -camera.y, -camera.z) だけ平行移動してから、ワールド座標 (0, 100, 0) の箱の頂点を書いている 【一次】[S8]。
 - 26.3 では描画パスを Fabric API が渡してくれないため、ドキュメントの例は `LevelRenderer` に Mixin を当てて `draw` を呼んでいる。後始末にも `GameRenderer#close` への Mixin が要る 【一次】[S7]。
   > 「In 26.3, we use a mixin to call `draw`, since Fabric API does not provide the render pass.」[S7]
 - その Mixin は MixinExtras の `@WrapOperation` で `LevelRenderer` の `executeClassicTransparency` 内の呼び出しを包み、元の処理の後に自分の描画を足している 【一次】[S9]。
 - 26.3 の例のコードは、描画パスやパイプラインのクラスを `com.mojang.renderpearl.api` から import している 【一次】[S8][S9]。
 - 画面に重ねる HUD は、26.1 で非推奨の `HudRenderCallback` が削除され `HudElementRegistry` に置き換わった 【一次】[S1]。
   > 「the deprecated `HudRenderCallback` event has been removed in favour of `HudElementRegistry`」[S1]
-- 26.1 以前の名前（`WorldRenderEvents` など）から `LevelRenderEvents` への改名は、Fabric Docs の 26.1 向け Fabric API 移植ガイドに対応表がある（独語版・中国語版の検索要約のみ・原文未読）【未確認】[S18]。
+- 26.1 告知は、Fabric API の改名の全一覧と IntelliJ IDEA 用の移行マップが Fabric Docs にあると書く 【一次】[S1]。その一覧に旧名 `WorldRenderEvents` から `LevelRenderEvents` への改名が載っていること（独語版・中国語版の検索要約のみ・原文未読）【未確認】[S18]。
 - Vulkan への移行: 26.1 告知は、26.1 が OpenGL だけに対応する最後の版になる見込みとし、26.2 告知は OpenGL（既定）と実験的な Vulkan を切り替えられるようになったと書く。OpenGL は Vulkan が安定したら外す予定 【一次】[S1][S2]。
   > 「Developers making use of raw OpenGL calls rather than going through the Blaze3D API will need to migrate for their mods to work.」[S1][S2]
-- 26.3 の告知は、技術的な変更が主に描画に集中していると書く 【一次】[S3]。版を上げるたびに描画まわりのコードは直す前提になる。
+- 26.3 の告知は、技術的な変更が主に描画（as always と付記）、新しいアイテムコンポーネント、ワールド生成、レジストリに集中していると書く 【一次】[S3]。26.2 の告知も、主に描画（as always）と登録に集中した小さめの更新と書く 【一次】[S2]。
 
 ### 4. 入力（キー操作）
 - 26.3 でウィンドウとキー割り当ての管理に使っていた GLFW が外れ、SDL に替わった 【一次】[S3]。
   > 「The GLFW library used for window and keybind management has been removed in favour of SDL.」[S3]
-- `GLFW` の定数を直接使っていた mod が主に影響を受け、マウスボタンを含む一部の定数の値が変わった 【一次】[S3]。
+- 主に影響を受けるのは、バニラの `InputConstants` ではなく `GLFW` の入力定数を使っていた mod で、一部の定数（マウスボタンはすべて）の値が変わった 【一次】[S3]。
   > 「do not attempt to hardcode your inputs to avoid using `InputConstants`」[S3]
 
 ### 5. /tick freeze 中の動き（mod から見て）
-- `/tick` は 23w43a（2023-10-25 公開のスナップショット、Java Edition 1.20.3 の開発版）で追加された管理・デバッグ用のコマンドで、既定ではコマンドブロックやデータパックからは使えない権限レベル 【一次】[S13]。
+- `/tick` は 23w43a（2023-10-25 公開のスナップショット）で追加された管理・デバッグ用のコマンドで、23w43a の告知の時点では、管理者以上の権限が要るため既定ではコマンドブロックやデータパックからは使えない 【一次】[S13]。minecraft.wiki の履歴では、23w43a は Java Edition 1.20.3 の開発版 【二次】[S12]。
 - freeze はプレイヤーと、プレイヤーが乗っているエンティティ以外を止める 【一次】[S13]【二次】[S12]。
   > 「allowing the player to move around freely and inspect the world」[S13]
   > 「Freezes ticking. All gameplay elements are not ticked, except players and any」[S12]
-- tick の速さを 20 より上げると、プレイヤーは 20 tick/秒のまま動き、エンティティの補間に乱れが出ることがあるとされた 【一次】[S13]。
+- 23w43a の告知では、tick の速さを 20 より上げると、プレイヤーは 20 tick/秒のまま動き、エンティティの補間に乱れが出ることがあるとされた 【一次】[S13]。
   > 「but can cause artifacts in entities interpolation」[S13]
-- 26.3 の開発版（snap1）で、`/tick step`・`/tick step stop`・`/tick sprint stop` が失敗時にメッセージを出すだけでなくエラーを返すように変わった 【二次】[S12]。
+- minecraft.wiki の履歴によると、26.3 の開発版（snap1）で、`/tick step`・`/tick step stop`・`/tick sprint stop` は、エラーメッセージを出して `0` を返すだけだったのが、エラーを返す（signal an error）ように変わった 【二次】[S12]。
   > 「will now signal an error instead of just printing an error message」[S12]
-  `lab/runner.py` が戻り値で成否を見ているなら、26.3 で挙動が変わる。
 - freeze 中にクライアントがエンティティをどう描くか（補間を止めるか、最後の位置で止まるか）を書いた一次資料・Wiki は見つからなかった。/tick の詳しい仕様は [../filming/時間制御とスロー.md](../filming/時間制御とスロー.md)。
 
 ### 6. 録画との連携と、カメラを動かす既存の mod
-Modrinth の各ページの表示（2026-11-20 取得）。対応版・ライセンスは更新で変わる。
+Modrinth の各ページの表示（2026-11-20 取得）。対応版・ライセンスは取得時点の表示で、確認の時点で見直す。
 
 | mod | 対応する Java Edition | ローダー | 動く側 | ライセンス | 確度・出典 |
 |---|---|---|---|---|---|
@@ -128,7 +128,7 @@ Modrinth の各ページの表示（2026-11-20 取得）。対応版・ライセ
 - Flashback と Replay Mod のカメラパスや書き出しの詳細は [../filming/Flashback.md](../filming/Flashback.md) と [../filming/ReplayMod.md](../filming/ReplayMod.md)。
 
 ### 7. 既存 mod のコードを流用するとき
-- 上の表のとおり、カメラ系の mod でもライセンスは ARR・GPL・LGPL・MIT と分かれている 【一次】[S14][S15][S16][S17]。ソースが公開されていることと、流用してよいことは別。各ライセンスの条件と動画での扱いは [../rights/mod・シェーダーの利用条件.md](../rights/mod・シェーダーの利用条件.md) を参照。
+- 上の表のとおり、カメラ系の mod でもライセンスは ARR・GPL・LGPL・MIT と分かれている 【一次】[S14][S15][S16][S17]。Flashback は Modrinth に「ソースを見る」のリンクがあるが、ライセンスの表示は ARR 【一次】[S14]。各ライセンスの条件と動画での扱いは [../rights/mod・シェーダーの利用条件.md](../rights/mod・シェーダーの利用条件.md) を参照。
 - 自作 mod にも Minecraft の EULA と利用ガイドラインが適用される 【一次】[S10]。
 
 ## このチャンネルでの使い方（提案）
@@ -136,9 +136,9 @@ Modrinth の各ページの表示（2026-11-20 取得）。対応版・ライセ
 - 自作 mod は fabric-example-mod の基盤の版のブランチ（26.3 なら 26.3 ブランチ）を複製して始める。JDK 25 と IntelliJ IDEA 2025.3 以上を入れる。旧版向けの解説記事（Yarn 名、`modImplementation`、`remapJar` を使うもの）は 26.x では使えないので参考にしない。（根拠: [S1][S5][S6]）
 - `gradle.properties` の4つの版（Minecraft・Loader・Loom・Fabric API）は、決めたら `mc/mods.yaml` に記録して固定する。推奨値は数か月で変わる。（根拠: [S1][S2][S3][S6]）
 - 撮影用 mod はクライアント専用にし、テンプレートの client ソースセットに置く。サーバ側（計測）は Carpet と RCON のまま分ける。（根拠: [S5]、[Carpet.md](Carpet.md)）
-- 作る前に P2 で既存の mod と比べる。Free Camera（MIT・キーフレームのパスをファイルに保存）が 26.3 に対応したら、`experiment.yaml` の `shots` からパスのファイルを生成できるかを最初に試す。できれば自作の量が大きく減る。CMDCam はサーバのコマンドでパスを再生できるので RCON から操作しやすいが、Fabric 版がないため基盤には入らない。（根拠: [S16][S17]）
+- 作る前に P2 で既存の mod と比べる。Free Camera（MIT・キーフレームのパスをファイルに保存）が 26.3 に対応したら、`experiment.yaml` の `shots` からパスのファイルを生成できるかを最初に試す。できれば自作の量が大きく減る。CMDCam はサーバのコマンドでパスを再生できるので RCON から操作しやすいが、modrinth.com/mod/cmdcam の版は Fabric に対応していないので、そのままでは基盤には入らない（別プロジェクト `cmdcam-fabric` は未確認）。（根拠: [S16][S17]）
 - カメラの位置はフレームごとに補間して決め、tick（20/秒）ごとにしない。描画のコードは extraction と drawing の分け方に合わせ、生の OpenGL を呼ばない。軌跡の線などワールド内の描き足しは `LevelExtractionEvents`/`LevelRenderEvents`、計測値の表示は `HudElementRegistry` を使う。（根拠: [S1][S2][S7][S8]）
-- カメラを動かすフック（どのクラスのどのメソッドに Mixin を当てるか）は、基盤の版の本体のソースを『mcsrc.dev』で読んで決め、版を上げたら必ず見直す。描画まわりは毎版変わる前提で、Mixin は MixinExtras の `@WrapOperation` のように元の処理を残す形を優先する。（根拠: [S1][S3][S9]）
+- カメラを動かすフック（どのクラスのどのメソッドに Mixin を当てるか）は、基盤の版の本体のソースを『mcsrc.dev』で読んで決め、版を上げたら必ず見直す。26.2・26.3 の告知とも技術的な変更が主に描画に集中しているので、描画まわりは毎版変わる前提で、Mixin は MixinExtras の `@WrapOperation` のように元の処理を残す形を優先する。（根拠: [S1][S2][S3][S9]）
 - キー割り当ては `InputConstants` を通し、GLFW の定数を直書きしない。（根拠: [S3]）
 - コマ撮り（全自動・発展）は、/tick freeze 中もプレイヤーは動けるので、原理的にはカメラだけ動かして撮れる見込みがある。ただし止まっている物体の描画（補間）の挙動が資料で確かめられないので、P2 で、freeze 中に動く物体が静止して描かれるかを最初に実測する。（根拠: [S12][S13]）
 - 26.3 では `/tick step` の失敗がエラーとして返るので、`lab/runner.py` の成否判定を基盤の版で確かめる。（根拠: [S12]）
